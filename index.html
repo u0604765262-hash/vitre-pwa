@@ -3,123 +3,103 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bulle de Savon - Tarifs</title>
-  <link rel="manifest" href="manifest.json">
+  <title>Nettoyage Vitres</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header { display: flex; align-items: center; padding: 10px; background: #f0f0f0; }
-    header img { height: 50px; margin-right: 10px; }
-    .container { padding: 20px; }
-    .row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .buttons { display: flex; align-items: center; gap: 5px; }
-    .total-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #007bff; color: white; padding: 15px; text-align: center; font-size: 18px; }
-    .total-bar a { color: white; text-decoration: none; font-weight: bold; }
-    select, input { padding: 5px; margin-left: 10px; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .vitre { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      margin: 10px 0; 
+      padding: 10px; 
+      border: 1px solid #ccc; 
+      border-radius: 8px;
+    }
+    .total { 
+      position: fixed; 
+      bottom: 0; 
+      left: 0; 
+      right: 0; 
+      background: #007bff; 
+      color: white; 
+      text-align: center; 
+      padding: 15px; 
+      font-size: 20px; 
+      cursor: pointer;
+    }
+    select, input[type="number"] { margin-left: 10px; }
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="Logo">
-    <h2>Bulle de Savon</h2>
-  </header>
-  <div class="container" id="services"></div>
+  <h1>Choisissez vos vitres</h1>
+  <div id="vitres"></div>
+  <div class="total" id="total">Total : 0,00 €</div>
 
-  <div class="container">
-    <h3>Frais de déplacement</h3>
-    <select id="deplacement" onchange="updateTotal()">
-      <option value="0">Moins de 5 km → 0€</option>
-      <option value="10">Entre 5 km et 10 km → 10€</option>
-      <option value="devis">Plus de 10 km → sur devis</option>
-    </select>
+  <script>
+    const vitres = [
+      { nom: "Vitre classique (≤ 1m²)", prix: 2.70, supplement: 3.60 },
+      { nom: "Porte-fenêtre", prix: 6.00, supplement: 8.00 },
+      { nom: "Baie vitrée", prix: 12.00, supplement: 15.00 },
+      { nom: "Petite vitre (≤ 0.5m²)", prix: 1.50, supplement: 2.00 }
+    ];
 
-    <h3>Remise</h3>
-    <input type="number" id="remise" value="0" min="0" max="100" onchange="updateTotal()"> %
-  </div>
+    const vitresContainer = document.getElementById("vitres");
+    const totalDiv = document.getElementById("total");
 
-  <div class="total-bar">
-    <a href="resume.html" onclick="saveSelection()">Total : <span id="total">0</span> €</a>
-  </div>
-
-<script>
-const services = [
-  { name: "Vitre classique (≤ 1m²)", priceNormal: 3, priceSupp: 3.6 },
-  { name: "Porte-fenêtre", priceNormal: 6, priceSupp: 7.2 },
-  { name: "Baie vitrée (particulier) (€/m²)", priceNormal: 5, priceSupp: 6 },
-  { name: "Velux", priceNormal: 6, priceSupp: 7.2 },
-  { name: "Vitre avec séparation", priceNormal: 2, priceSupp: 2.4 },
-  { name: "Petit carreau (≤ 15x15 cm)", priceNormal: 1, priceSupp: 1.2 },
-  { name: "Miroir classique (≤ 2m²)", priceNormal: 3, priceSupp: 3.6 },
-  { name: "Grand miroir (> 2m²)", priceNormal: 5, priceSupp: 6 },
-  { name: "Paroi de douche", priceNormal: 5, priceSupp: 6 },
-  { name: "Vitrine commerciale (€/m²)", priceNormal: 10, priceSupp: 12 },
-  { name: "Vitres en hauteur (2m-4m, €/m²)", priceNormal: 10, priceSupp: 12 }
-];
-
-let countsNormal = Array(services.length).fill(0);
-let countsSupp = Array(services.length).fill(0);
-
-function renderServices() {
-  const container = document.getElementById("services");
-  services.forEach((s, i) => {
-    container.innerHTML += `
-      <div class="row">
-        <div>${s.name}</div>
-        <div class="buttons">
-          Normal: <button onclick="changeCount(${i}, -1, 'normal')">-</button>
-          <span id="count-normal-${i}">0</span>
-          <button onclick="changeCount(${i}, 1, 'normal')">+</button>
+    vitres.forEach((v, i) => {
+      const div = document.createElement("div");
+      div.className = "vitre";
+      div.innerHTML = `
+        <span>${v.nom}</span>
+        <div>
+          <label>Quantité :</label>
+          <input type="number" id="qte-${i}" value="0" min="0" style="width:60px">
+          <label>Type :</label>
+          <select id="opt-${i}">
+            <option value="normal">Normal (${v.prix.toFixed(2)} €)</option>
+            <option value="supplement">Supplément (${v.supplement.toFixed(2)} €)</option>
+          </select>
         </div>
-        <div class="buttons">
-          Suppl.: <button onclick="changeCount(${i}, -1, 'supp')">-</button>
-          <span id="count-supp-${i}">0</span>
-          <button onclick="changeCount(${i}, 1, 'supp')">+</button>
-        </div>
-      </div>`;
-  });
-}
-renderServices();
+      `;
+      vitresContainer.appendChild(div);
+    });
 
-function changeCount(i, delta, type) {
-  if (type === 'normal') {
-    countsNormal[i] = Math.max(0, countsNormal[i] + delta);
-    document.getElementById("count-normal-" + i).innerText = countsNormal[i];
-  } else {
-    countsSupp[i] = Math.max(0, countsSupp[i] + delta);
-    document.getElementById("count-supp-" + i).innerText = countsSupp[i];
-  }
-  updateTotal();
-}
+    function calculerTotal() {
+      let total = 0;
+      vitres.forEach((v, i) => {
+        const qte = parseInt(document.getElementById(`qte-${i}`).value) || 0;
+        const opt = document.getElementById(`opt-${i}`).value;
+        const prix = opt === "supplement" ? v.supplement : v.prix;
+        total += qte * prix;
+      });
+      totalDiv.textContent = "Total : " + total.toFixed(2) + " €";
+    }
 
-function updateTotal() {
-  let total = 0;
-  services.forEach((s, i) => {
-    total += countsNormal[i] * s.priceNormal + countsSupp[i] * s.priceSupp;
-  });
-  const deplacement = document.getElementById("deplacement").value;
-  if (deplacement !== "devis") total += parseFloat(deplacement);
-  const remise = parseFloat(document.getElementById("remise").value || 0);
-  if (remise > 0) total = total * (1 - remise/100);
-  document.getElementById("total").innerText = total.toFixed(2);
-}
+    vitresContainer.addEventListener("input", calculerTotal);
+    vitresContainer.addEventListener("change", calculerTotal);
 
-function saveSelection() {
-  const selections = services.map((s, i) => {
-    return {
-      name: s.name,
-      countNormal: countsNormal[i],
-      countSupp: countsSupp[i],
-      priceNormal: s.priceNormal,
-      priceSupp: s.priceSupp
-    };
-  }).filter(item => item.countNormal > 0 || item.countSupp > 0);
+    totalDiv.addEventListener("click", () => {
+      const selections = [];
+      vitres.forEach((v, i) => {
+        const qte = parseInt(document.getElementById(`qte-${i}`).value) || 0;
+        if (qte > 0) {
+          const opt = document.getElementById(`opt-${i}`).value;
+          const prix = opt === "supplement" ? v.supplement : v.prix;
+          selections.push({
+            nom: v.nom,
+            quantite: qte,
+            type: opt,
+            prix: prix,
+            sousTotal: qte * prix
+          });
+        }
+      });
+      localStorage.setItem("commande", JSON.stringify(selections));
+      window.location.href = "resume.html";
+    });
 
-  const deplacement = document.getElementById("deplacement").value;
-  const remise = document.getElementById("remise").value;
-
-  localStorage.setItem("selections", JSON.stringify(selections));
-  localStorage.setItem("deplacement", deplacement);
-  localStorage.setItem("remise", remise);
-}
-</script>
+    calculerTotal();
+  </script>
 </body>
 </html>

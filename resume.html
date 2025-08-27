@@ -3,53 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Résumé</title>
+  <title>Résumé de la commande</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h2 { margin-top: 0; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    .item { margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 8px; }
+    .total { font-size: 22px; font-weight: bold; text-align: center; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <h2>Résumé de la commande</h2>
-  <ul id="resume-list"></ul>
-  <p id="resume-deplacement"></p>
-  <p id="resume-remise"></p>
-  <h3 id="resume-total"></h3>
+  <h1>Résumé de la commande</h1>
+  <div id="resume"></div>
+  <div class="total" id="total"></div>
 
   <script>
-    const selections = JSON.parse(localStorage.getItem("selections")) || [];
-    const deplacement = localStorage.getItem("deplacement");
-    const remise = parseFloat(localStorage.getItem("remise") || 0);
-    let total = 0;
-    let html = "";
+    const resumeDiv = document.getElementById("resume");
+    const totalDiv = document.getElementById("total");
 
-    selections.forEach(item => {
-      if (item.countNormal > 0) {
-        const subtotal = item.countNormal * item.priceNormal;
-        html += `<li>${item.countNormal} × ${item.name} – Normal → ${subtotal.toFixed(2)} €</li>`;
-        total += subtotal;
-      }
-      if (item.countSupp > 0) {
-        const subtotal = item.countSupp * item.priceSupp;
-        html += `<li>${item.countSupp} × ${item.name} – Supplément → ${subtotal.toFixed(2)} €</li>`;
-        total += subtotal;
-      }
+    const commande = JSON.parse(localStorage.getItem("commande")) || [];
+    let total = 0;
+
+    commande.forEach(item => {
+      const optText = item.type === "supplement" ? "Supplément" : "Normal";
+      const div = document.createElement("div");
+      div.className = "item";
+      div.textContent = `${item.quantite} × ${item.nom} – ${optText} (${item.prix.toFixed(2)} €) → ${item.sousTotal.toFixed(2)} €`;
+      resumeDiv.appendChild(div);
+      total += item.sousTotal;
     });
 
-    if (deplacement && deplacement !== "devis") {
-      html += `<li>Frais de déplacement → ${parseFloat(deplacement).toFixed(2)} €</li>`;
-      total += parseFloat(deplacement);
-    } else if (deplacement === "devis") {
-      html += `<li>Frais de déplacement → Sur devis</li>`;
-    }
-
-    if (remise > 0) {
-      html += `<li>Remise appliquée: ${remise}%</li>`;
-      total = total * (1 - remise/100);
-    }
-
-    document.getElementById("resume-list").innerHTML = html;
-    document.getElementById("resume-total").innerText = "Total final : " + total.toFixed(2) + " €";
+    totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
   </script>
 </body>
 </html>
