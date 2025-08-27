@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
   <style>
-    body { background: #f9f9f9; padding-bottom: 80px; }
+    body { background: #f9f9f9; padding-bottom: 120px; }
     header { background: #0d6efd; color: white; padding: 10px; text-align: center; }
     .card { border-radius: 10px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     .total-fixed {
@@ -16,8 +16,7 @@
       font-size: 1.4rem; font-weight: bold;
       text-align: center; padding: 15px;
       box-shadow: 0 -3px 6px rgba(0,0,0,0.2);
-      z-index: 1000;
-      cursor: pointer;
+      z-index: 1000; cursor: pointer;
     }
   </style>
 </head>
@@ -29,6 +28,20 @@
   </header>
 
   <main class="container my-4" id="services"></main>
+
+  <div class="card p-3">
+    <h5>Frais de déplacement</h5>
+    <select id="deplacement" class="form-select" onchange="updateTotal()">
+      <option value="0">Moins de 5 km → 0 €</option>
+      <option value="10">Entre 5 km et 10 km → 10 €</option>
+      <option value="devis">Plus de 10 km → sur devis</option>
+    </select>
+  </div>
+
+  <div class="card p-3">
+    <h5>Remise (%)</h5>
+    <input type="number" id="remise" class="form-control" value="0" min="0" max="100" onchange="updateTotal()">
+  </div>
 
   <div id="total" class="total-fixed" onclick="goToResume()">Total : 0 €</div>
 
@@ -47,64 +60,84 @@
       { name: "Vitres en hauteur (2m à 4m) / m²", priceNormal: 10, priceSupp: 12 }
     ];
 
-    let counts = Array(services.length).fill(0);
+    let countsNormal = Array(services.length).fill(0);
+    let countsSupp = Array(services.length).fill(0);
 
     function renderServices() {
       const container = document.getElementById("services");
       services.forEach((s, i) => {
         container.innerHTML += `
           <div class="card p-3">
+            <h5>${s.name}</h5>
+            <div class="row align-items-center mb-2">
+              <div class="col">Normal (${s.priceNormal} €)</div>
+              <div class="col-auto">
+                <button onclick="changeCount(${i}, 'normal', -1)" class="btn btn-danger btn-sm">-</button>
+                <span id="count-normal-${i}">0</span>
+                <button onclick="changeCount(${i}, 'normal', 1)" class="btn btn-success btn-sm">+</button>
+              </div>
+            </div>
             <div class="row align-items-center">
-              <div class="col">
-                <h5>${s.name}</h5>
-              </div>
+              <div class="col">Supplément (${s.priceSupp} €)</div>
               <div class="col-auto">
-                <button onclick="changeCount(${i},-1)" class="btn btn-danger btn-sm">-</button>
-                <span id="count-${i}">0</span>
-                <button onclick="changeCount(${i},1)" class="btn btn-success btn-sm">+</button>
-              </div>
-              <div class="col-auto">
-                <select id="option-${i}" onchange="updateTotal()" class="form-select form-select-sm">
-                  <option value="normal">Normal</option>
-                  <option value="supplement">Supplément</option>
-                </select>
+                <button onclick="changeCount(${i}, 'supp', -1)" class="btn btn-danger btn-sm">-</button>
+                <span id="count-supp-${i}">0</span>
+                <button onclick="changeCount(${i}, 'supp', 1)" class="btn btn-success btn-sm">+</button>
               </div>
             </div>
           </div>`;
       });
     }
 
-    function changeCount(i, delta) {
-      counts[i] = Math.max(0, counts[i] + delta);
-      document.getElementById("count-" + i).innerText = counts[i];
+    function changeCount(i, type, delta) {
+      if (type === "normal") {
+        countsNormal[i] = Math.max(0, countsNormal[i] + delta);
+        document.getElementById("count-normal-" + i).innerText = countsNormal[i];
+      } else {
+        countsSupp[i] = Math.max(0, countsSupp[i] + delta);
+        document.getElementById("count-supp-" + i).innerText = countsSupp[i];
+      }
       updateTotal();
     }
 
     function updateTotal() {
       let total = 0;
       services.forEach((s, i) => {
-        const option = document.getElementById("option-" + i).value;
-        const price = option === "supplement" ? s.priceSupp : s.priceNormal;
-        total += counts[i] * price;
+        total += countsNormal[i] * s.priceNormal;
+        total += countsSupp[i] * s.priceSupp;
       });
+
+      let dep = document.getElementById("deplacement").value;
+      if (dep !== "devis") {
+        total += parseFloat(dep);
+      }
+
+      let remise = parseFloat(document.getElementById("remise").value) || 0;
+      if (remise > 0) {
+        total = total - (total * remise / 100);
+      }
+
       document.getElementById("total").innerText = "Total : " + total.toFixed(2) + " €";
     }
 
     function goToResume() {
       const panier = services.map((s, i) => {
-        const option = document.getElementById("option-" + i).value;
-        if (counts[i] > 0) {
-          return {
-            name: s.name,
-            qty: counts[i],
-            option: option,
-            price: option === "supplement" ? s.priceSupp : s.priceNormal,
-            subtotal: counts[i] * (option === "supplement" ? s.priceSupp : s.priceNormal)
-          };
-        }
-        return null;
-      }).filter(x => x !== null);
+        return {
+          name: s.name,
+          qtyNormal: countsNormal[i],
+          qtySupp: countsSupp[i],
+          priceNormal: s.priceNormal,
+          priceSupp: s.priceSupp
+        };
+      });
+
+      const deplacement = document.getElementById("deplacement").value;
+      const remise = document.getElementById("remise").value;
+
       localStorage.setItem("panier", JSON.stringify(panier));
+      localStorage.setItem("deplacement", deplacement);
+      localStorage.setItem("remise", remise);
+
       window.location.href = "resume.html";
     }
 

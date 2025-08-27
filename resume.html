@@ -26,27 +26,56 @@
   <script>
     const resumeContainer = document.getElementById("resume");
     const panier = JSON.parse(localStorage.getItem("panier")) || [];
+    const deplacement = localStorage.getItem("deplacement");
+    const remise = parseFloat(localStorage.getItem("remise")) || 0;
 
-    if (panier.length === 0) {
-      resumeContainer.innerHTML = "<p>Aucun article sélectionné.</p>";
-    } else {
-      let total = 0;
-      panier.forEach(item => {
-        total += item.subtotal;
-        const label = item.option === "supplement" ? "Supplément" : "Normal";
+    let total = 0;
+
+    panier.forEach(item => {
+      if (item.qtyNormal > 0) {
+        let subtotal = item.qtyNormal * item.priceNormal;
+        total += subtotal;
         resumeContainer.innerHTML += `
           <div class="card p-3">
-            <h5>${item.name}</h5>
-            <p>Quantité : ${item.qty}</p>
-            <p>Option : ${label}</p>
-            <p>Sous-total : ${item.subtotal.toFixed(2)} €</p>
+            <h5>${item.name} (Normal)</h5>
+            <p>Quantité : ${item.qtyNormal}</p>
+            <p>Sous-total : ${subtotal.toFixed(2)} €</p>
           </div>`;
-      });
-      resumeContainer.innerHTML += `
-        <div class="alert alert-success text-center fs-4 fw-bold">
-          Total : ${total.toFixed(2)} €
-        </div>`;
+      }
+      if (item.qtySupp > 0) {
+        let subtotal = item.qtySupp * item.priceSupp;
+        total += subtotal;
+        resumeContainer.innerHTML += `
+          <div class="card p-3">
+            <h5>${item.name} (Supplément)</h5>
+            <p>Quantité : ${item.qtySupp}</p>
+            <p>Sous-total : ${subtotal.toFixed(2)} €</p>
+          </div>`;
+      }
+    });
+
+    if (deplacement) {
+      if (deplacement === "devis") {
+        resumeContainer.innerHTML += `
+          <div class="alert alert-warning">Frais de déplacement : sur devis</div>`;
+      } else {
+        total += parseFloat(deplacement);
+        resumeContainer.innerHTML += `
+          <div class="alert alert-info">Frais de déplacement : ${parseFloat(deplacement).toFixed(2)} €</div>`;
+      }
     }
+
+    if (remise > 0) {
+      let remiseMontant = total * remise / 100;
+      total -= remiseMontant;
+      resumeContainer.innerHTML += `
+        <div class="alert alert-secondary">Remise appliquée : -${remise}% (${remiseMontant.toFixed(2)} €)</div>`;
+    }
+
+    resumeContainer.innerHTML += `
+      <div class="alert alert-success text-center fs-4 fw-bold">
+        Total final : ${total.toFixed(2)} €
+      </div>`;
   </script>
 </body>
 </html>
