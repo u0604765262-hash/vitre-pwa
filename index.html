@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nettoyage Vitres</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; padding-bottom: 120px; }
     h1 { text-align: center; padding: 20px; background: #007bff; color: white; margin: 0; }
-    .container { padding: 20px; padding-bottom: 100px; }
+    .container { padding: 20px; }
     .card {
       background: white;
       border-radius: 10px;
@@ -44,6 +44,7 @@
       font-size: 20px;
       cursor: pointer;
       font-weight: bold;
+      z-index: 999;
     }
   </style>
 </head>
@@ -174,6 +175,9 @@
       localStorage.setItem("commande", JSON.stringify(selections));
       window.location.href = "resume.html";
     });
+
+    // ✅ Mettre à jour automatiquement quand l'utilisateur change le select de déplacement
+    deplacementSelect.addEventListener("change", calculerTotal);
 
     calculerTotal();
   </script>
