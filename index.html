@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculateur Nettoyage Vitres</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .item { margin-bottom: 10px; }
+    button { width: 30px; }
+    .suppl { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <h2>Calculateur Nettoyage Vitres</h2>
+
+  <div id="items"></div>
+  <h3>Total : <span id="total">0</span> €</h3>
+
+  <script>
+    const tarifs = {
+      "Vitre classique (≤ 1m²)": [3, 3.6],
+      "Porte-fenêtre": [6, 7.2],
+      "Baie vitrée (particulier) €/m²": [5, 6],
+      "Velux": [6, 7.2],
+      "Vitre avec séparation": [2, 2.4],
+      "Petit carreau (≤ 15x15 cm)": [1, 1.2],
+      "Miroir classique (≤ 2m²)": [3, 3.6],
+      "Grand miroir (> 2m²)": [5, 6],
+      "Paroi de douche": [5, 6],
+      "Vitrine commerciale €/m²": [10, 12],
+      "Vitres en hauteur (2m–4m) €/m²": [10, 12]
+    };
+
+    const quantite = {};
+    const suppl = {};
+
+    const container = document.getElementById("items");
+
+    for (let nom in tarifs) {
+      quantite[nom] = 0;
+      suppl[nom] = false;
+
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <span>${nom} (${tarifs[nom][0]}€ / ${tarifs[nom][1]}€)</span>
+        <button onclick="changeQty('${nom}', -1)">-</button>
+        <span id="${nom}_qte">0</span>
+        <button onclick="changeQty('${nom}', 1)">+</button>
+        <label class="suppl">
+          <input type="checkbox" onchange="toggleSuppl('${nom}', this.checked)"> Supplément
+        </label>
+      `;
+      container.appendChild(div);
+    }
+
+    function changeQty(type, delta) {
+      quantite[type] = Math.max(0, quantite[type] + delta);
+      document.getElementById(type + "_qte").textContent = quantite[type];
+      calculerTotal();
+    }
+
+    function toggleSuppl(type, state) {
+      suppl[type] = state;
+      calculerTotal();
+    }
+
+    function calculerTotal() {
+      let total = 0;
+      for (let type in quantite) {
+        const prix = suppl[type] ? tarifs[type][1] : tarifs[type][0];
+        total += quantite[type] * prix;
+      }
+      document.getElementById("total").textContent = total.toFixed(2);
+    }
+
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js");
+    }
+  </script>
+</body>
+</html>
