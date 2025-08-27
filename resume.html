@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résumé</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h2>Résumé de la commande</h2>
+  <ul id="resume-list"></ul>
+  <p id="resume-deplacement"></p>
+  <p id="resume-remise"></p>
+  <h3 id="resume-total"></h3>
+
+  <script>
+    const selections = JSON.parse(localStorage.getItem("selections")) || [];
+    const deplacement = localStorage.getItem("deplacement");
+    const remise = parseFloat(localStorage.getItem("remise") || 0);
+    let total = 0;
+    let html = "";
+
+    selections.forEach(item => {
+      if (item.countNormal > 0) {
+        const subtotal = item.countNormal * item.priceNormal;
+        html += `<li>${item.countNormal} × ${item.name} – Normal → ${subtotal.toFixed(2)} €</li>`;
+        total += subtotal;
+      }
+      if (item.countSupp > 0) {
+        const subtotal = item.countSupp * item.priceSupp;
+        html += `<li>${item.countSupp} × ${item.name} – Supplément → ${subtotal.toFixed(2)} €</li>`;
+        total += subtotal;
+      }
+    });
+
+    if (deplacement && deplacement !== "devis") {
+      html += `<li>Frais de déplacement → ${parseFloat(deplacement).toFixed(2)} €</li>`;
+      total += parseFloat(deplacement);
+    } else if (deplacement === "devis") {
+      html += `<li>Frais de déplacement → Sur devis</li>`;
+    }
+
+    if (remise > 0) {
+      html += `<li>Remise appliquée: ${remise}%</li>`;
+      total = total * (1 - remise/100);
+    }
+
+    document.getElementById("resume-list").innerHTML = html;
+    document.getElementById("resume-total").innerText = "Total final : " + total.toFixed(2) + " €";
+  </script>
+</body>
+</html>
