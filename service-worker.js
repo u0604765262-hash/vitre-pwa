@@ -1,10 +1,11 @@
-const CACHE_NAME = "bulle-savon-v1";
+const CACHE_NAME = "bulle-savon-v2";
 const urlsToCache = [
   "./",
   "./index.html",
   "./resume.html",
   "./logo.png",
-  "./manifest.json"
+  "./manifest.json",
+  "./service-worker.js"
 ];
 
 // Installation : mettre les fichiers en cache
