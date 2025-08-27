@@ -3,10 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nettoyage Vitres</title>
+  <title>Bulle de Savon - Nettoyage Vitres</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; padding-bottom: 120px; }
-    h1 { text-align: center; padding: 20px; background: #007bff; color: white; margin: 0; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #007bff;
+      color: white;
+      padding: 15px;
+    }
+    header img {
+      height: 60px;
+    }
     .container { padding: 20px; }
     .card {
       background: white;
@@ -49,7 +59,10 @@
   </style>
 </head>
 <body>
-  <h1>Choisissez vos vitres</h1>
+  <header>
+    <img src="logo.png" alt="Logo Bulle de Savon">
+  </header>
+
   <div class="container" id="vitres"></div>
 
   <div class="container card">
