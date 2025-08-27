@@ -3,107 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bulle de Savon - Calculateur</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <meta name="theme-color" content="#0d6efd">
+  <title>Bulle de Savon - Nettoyage de vitres</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
   <style>
-    body { background: #f0f8ff; padding-bottom: 80px; }
-    header {
-      background: #ffffff; border-bottom: 3px solid #0d6efd;
-      padding: 15px; display: flex; align-items: center; justify-content: center; gap: 15px;
-    }
-    header img { height: 60px; }
-    .card { border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    body { background: #f9f9f9; padding-bottom: 80px; }
+    header { background: #0d6efd; color: white; padding: 10px; text-align: center; }
+    .card { border-radius: 10px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
     .total-fixed {
       position: fixed; bottom: 0; left: 0; width: 100%;
-      background: #0d6efd; color: white; font-size: 1.4rem; font-weight: bold;
-      text-align: center; padding: 15px; box-shadow: 0 -3px 6px rgba(0,0,0,0.2); z-index: 1000; cursor: pointer;
+      background: #0d6efd; color: white;
+      font-size: 1.4rem; font-weight: bold;
+      text-align: center; padding: 15px;
+      box-shadow: 0 -3px 6px rgba(0,0,0,0.2);
+      z-index: 1000;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo Bulle de Savon">
-    <h1 class="m-0">Bulle de Savon</h1>
+    <img src="logo.png" alt="Logo Bulle de Savon" height="60">
+    <h1>Bulle de Savon</h1>
+    <p>Calculateur de devis - Nettoyage de vitres</p>
   </header>
 
-  <main class="container my-4">
-    <h2 class="text-center mb-4">Calculateur de nettoyage de vitres</h2>
-    <div id="services" class="row g-3"></div>
-  </main>
+  <main class="container my-4" id="services"></main>
 
   <div id="total" class="total-fixed" onclick="goToResume()">Total : 0 €</div>
 
   <script>
     const services = [
-      { name: "Vitre classique (≤ 1m²)", price: 3, priceExtra: 3.6 },
-      { name: "Porte-fenêtre", price: 6, priceExtra: 7.2 },
-      { name: "Baie vitrée (particulier, €/m²)", price: 5, priceExtra: 6 },
-      { name: "Velux", price: 6, priceExtra: 7.2 },
-      { name: "Vitre avec séparation", price: 2, priceExtra: 2.4 },
-      { name: "Petit carreau (≤ 15x15 cm)", price: 1, priceExtra: 1.2 },
-      { name: "Miroir classique (≤ 2m²)", price: 3, priceExtra: 3.6 },
-      { name: "Grand miroir (> 2m²)", price: 5, priceExtra: 6 },
-      { name: "Paroi de douche", price: 5, priceExtra: 6 },
-      { name: "Vitrine commerciale (€/m²)", price: 10, priceExtra: 12 },
-      { name: "Vitres en hauteur (2m-4m, €/m²)", price: 10, priceExtra: 12 }
+      { name: "Vitre classique (≤ 1m²)", priceNormal: 3, priceSupp: 3.6 },
+      { name: "Porte-fenêtre", priceNormal: 6, priceSupp: 7.2 },
+      { name: "Baie vitrée (particulier) / m²", priceNormal: 5, priceSupp: 6 },
+      { name: "Velux", priceNormal: 6, priceSupp: 7.2 },
+      { name: "Vitre avec séparation", priceNormal: 2, priceSupp: 2.4 },
+      { name: "Petit carreau (≤ 15x15 cm)", priceNormal: 1, priceSupp: 1.2 },
+      { name: "Miroir classique (≤ 2m²)", priceNormal: 3, priceSupp: 3.6 },
+      { name: "Grand miroir (> 2m²)", priceNormal: 5, priceSupp: 6 },
+      { name: "Paroi de douche", priceNormal: 5, priceSupp: 6 },
+      { name: "Vitrine commerciale / m²", priceNormal: 10, priceSupp: 12 },
+      { name: "Vitres en hauteur (2m à 4m) / m²", priceNormal: 10, priceSupp: 12 }
     ];
-    const counts = new Array(services.length).fill(0);
 
-    const container = document.getElementById("services");
-    const totalDiv = document.getElementById("total");
+    let counts = Array(services.length).fill(0);
 
-    function updateTotal() {
-      let total = 0;
-      services.forEach((s, i) => { total += counts[i] * s.price; });
-      totalDiv.textContent = "Total : " + total.toFixed(2) + " €";
-    }
-
-    function render() {
-      container.innerHTML = "";
+    function renderServices() {
+      const container = document.getElementById("services");
       services.forEach((s, i) => {
-        const col = document.createElement("div");
-        col.className = "col-md-6";
-        col.innerHTML = `
+        container.innerHTML += `
           <div class="card p-3">
-            <h5>${s.name}</h5>
-            <p>Tarif : ${s.price} € (Supplément : ${s.priceExtra} €)</p>
-            <div class="d-flex align-items-center gap-2">
-              <button class="btn btn-danger btn-sm" onclick="changeCount(${i}, -1)">-</button>
-              <span id="count-${i}">${counts[i]}</span>
-              <button class="btn btn-success btn-sm" onclick="changeCount(${i}, 1)">+</button>
+            <div class="row align-items-center">
+              <div class="col">
+                <h5>${s.name}</h5>
+              </div>
+              <div class="col-auto">
+                <button onclick="changeCount(${i},-1)" class="btn btn-danger btn-sm">-</button>
+                <span id="count-${i}">0</span>
+                <button onclick="changeCount(${i},1)" class="btn btn-success btn-sm">+</button>
+              </div>
+              <div class="col-auto">
+                <select id="option-${i}" onchange="updateTotal()" class="form-select form-select-sm">
+                  <option value="normal">Normal</option>
+                  <option value="supplement">Supplément</option>
+                </select>
+              </div>
             </div>
           </div>`;
-        container.appendChild(col);
       });
-      updateTotal();
     }
 
     function changeCount(i, delta) {
       counts[i] = Math.max(0, counts[i] + delta);
-      document.getElementById("count-" + i).textContent = counts[i];
+      document.getElementById("count-" + i).innerText = counts[i];
       updateTotal();
     }
 
-    function goToResume() {
-      const panier = services.map((s, i) => ({
-        name: s.name,
-        qty: counts[i],
-        price: s.price,
-        subtotal: counts[i] * s.price
-      })).filter(item => item.qty > 0);
+    function updateTotal() {
+      let total = 0;
+      services.forEach((s, i) => {
+        const option = document.getElementById("option-" + i).value;
+        const price = option === "supplement" ? s.priceSupp : s.priceNormal;
+        total += counts[i] * price;
+      });
+      document.getElementById("total").innerText = "Total : " + total.toFixed(2) + " €";
+    }
 
+    function goToResume() {
+      const panier = services.map((s, i) => {
+        const option = document.getElementById("option-" + i).value;
+        if (counts[i] > 0) {
+          return {
+            name: s.name,
+            qty: counts[i],
+            option: option,
+            price: option === "supplement" ? s.priceSupp : s.priceNormal,
+            subtotal: counts[i] * (option === "supplement" ? s.priceSupp : s.priceNormal)
+          };
+        }
+        return null;
+      }).filter(x => x !== null);
       localStorage.setItem("panier", JSON.stringify(panier));
       window.location.href = "resume.html";
     }
 
-    render();
-
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js").then(() => console.log("Service Worker ok"));
-    }
+    renderServices();
   </script>
 </body>
 </html>

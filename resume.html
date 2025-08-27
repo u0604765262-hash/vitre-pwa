@@ -12,8 +12,13 @@
   </style>
 </head>
 <body>
-  <header><h2>Résumé de la commande</h2></header>
+  <header>
+    <img src="logo.png" alt="Logo Bulle de Savon" height="60">
+    <h2>Résumé de la commande</h2>
+  </header>
+
   <main class="container my-4" id="resume"></main>
+
   <div class="text-center my-4">
     <a href="index.html" class="btn btn-primary">← Retour</a>
   </div>
@@ -28,10 +33,12 @@
       let total = 0;
       panier.forEach(item => {
         total += item.subtotal;
+        const label = item.option === "supplement" ? "Supplément" : "Normal";
         resumeContainer.innerHTML += `
           <div class="card p-3">
             <h5>${item.name}</h5>
             <p>Quantité : ${item.qty}</p>
+            <p>Option : ${label}</p>
             <p>Sous-total : ${item.subtotal.toFixed(2)} €</p>
           </div>`;
       });
