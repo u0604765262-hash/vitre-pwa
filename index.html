@@ -5,96 +5,172 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nettoyage Vitres</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    h1 { text-align: center; }
-    .vitre { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin: 10px 0; 
-      padding: 10px; 
-      border: 1px solid #ccc; 
-      border-radius: 8px;
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; }
+    h1 { text-align: center; padding: 20px; background: #007bff; color: white; margin: 0; }
+    .container { padding: 20px; padding-bottom: 100px; }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .total { 
-      position: fixed; 
-      bottom: 0; 
-      left: 0; 
-      right: 0; 
-      background: #007bff; 
-      color: white; 
-      text-align: center; 
-      padding: 15px; 
-      font-size: 20px; 
+    .card h2 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
+    .input-group { display: flex; align-items: center; margin: 5px 0; }
+    .label { flex: 1; }
+    .counter {
+      display: flex; align-items: center;
+      border: 1px solid #ccc; border-radius: 6px;
+      overflow: hidden;
+    }
+    .counter button {
+      background: #007bff; color: white;
+      border: none; width: 30px; height: 30px;
+      font-size: 18px; cursor: pointer;
+    }
+    .counter input {
+      width: 50px; text-align: center;
+      border: none; outline: none;
+    }
+    .total {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #28a745;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 20px;
       cursor: pointer;
+      font-weight: bold;
     }
-    select, input[type="number"] { margin-left: 10px; }
   </style>
 </head>
 <body>
   <h1>Choisissez vos vitres</h1>
-  <div id="vitres"></div>
+  <div class="container" id="vitres"></div>
+
+  <div class="container card">
+    <h2>Frais de déplacement</h2>
+    <div class="input-group">
+      <label for="deplacement">Distance :</label>
+      <select id="deplacement">
+        <option value="0">Moins de 5 km → 0€</option>
+        <option value="10">5 à 10 km → 10€</option>
+        <option value="devis">Plus de 10 km → Sur devis</option>
+      </select>
+    </div>
+  </div>
+
   <div class="total" id="total">Total : 0,00 €</div>
 
   <script>
     const vitres = [
-      { nom: "Vitre classique (≤ 1m²)", prix: 2.70, supplement: 3.60 },
-      { nom: "Porte-fenêtre", prix: 6.00, supplement: 8.00 },
-      { nom: "Baie vitrée", prix: 12.00, supplement: 15.00 },
-      { nom: "Petite vitre (≤ 0.5m²)", prix: 1.50, supplement: 2.00 }
+      { nom: "Vitre classique (≤ 1m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Porte-fenêtre", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Baie vitrée (particulier)", prix: 5.00, supplement: 6.00, unite: "m2" },
+      { nom: "Velux", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Vitre avec séparation", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { nom: "Petit carreau (≤ 15x15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { nom: "Miroir classique (≤ 2m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Grand miroir (> 2m²)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Paroi de douche", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Vitrine commerciale", prix: 10.00, supplement: 12.00, unite: "m2" },
+      { nom: "Vitres en hauteur (2m à 4m)", prix: 10.00, supplement: 12.00, unite: "m2" }
     ];
 
     const vitresContainer = document.getElementById("vitres");
     const totalDiv = document.getElementById("total");
+    const deplacementSelect = document.getElementById("deplacement");
+
+    function createCounter(id) {
+      return `
+        <div class="counter">
+          <button type="button" onclick="updateValue('${id}', -1)">-</button>
+          <input type="number" id="${id}" value="0" min="0" step="1" readonly>
+          <button type="button" onclick="updateValue('${id}', 1)">+</button>
+        </div>
+      `;
+    }
 
     vitres.forEach((v, i) => {
       const div = document.createElement("div");
-      div.className = "vitre";
+      div.className = "card";
       div.innerHTML = `
-        <span>${v.nom}</span>
-        <div>
-          <label>Quantité :</label>
-          <input type="number" id="qte-${i}" value="0" min="0" style="width:60px">
-          <label>Type :</label>
-          <select id="opt-${i}">
-            <option value="normal">Normal (${v.prix.toFixed(2)} €)</option>
-            <option value="supplement">Supplément (${v.supplement.toFixed(2)} €)</option>
-          </select>
+        <h2>${v.nom}</h2>
+        <div class="input-group">
+          <span class="label">Normal (${v.prix.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
+          ${createCounter("normal-" + i)}
+        </div>
+        <div class="input-group">
+          <span class="label">Supplément (${v.supplement.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
+          ${createCounter("supp-" + i)}
         </div>
       `;
       vitresContainer.appendChild(div);
     });
 
+    function updateValue(id, delta) {
+      const input = document.getElementById(id);
+      let val = parseInt(input.value) || 0;
+      val = Math.max(0, val + delta);
+      input.value = val;
+      calculerTotal();
+    }
+
     function calculerTotal() {
       let total = 0;
       vitres.forEach((v, i) => {
-        const qte = parseInt(document.getElementById(`qte-${i}`).value) || 0;
-        const opt = document.getElementById(`opt-${i}`).value;
-        const prix = opt === "supplement" ? v.supplement : v.prix;
-        total += qte * prix;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        total += qteNormal * v.prix + qteSupp * v.supplement;
       });
+
+      const dep = deplacementSelect.value;
+      if (dep !== "devis") total += parseFloat(dep);
+
       totalDiv.textContent = "Total : " + total.toFixed(2) + " €";
     }
-
-    vitresContainer.addEventListener("input", calculerTotal);
-    vitresContainer.addEventListener("change", calculerTotal);
 
     totalDiv.addEventListener("click", () => {
       const selections = [];
       vitres.forEach((v, i) => {
-        const qte = parseInt(document.getElementById(`qte-${i}`).value) || 0;
-        if (qte > 0) {
-          const opt = document.getElementById(`opt-${i}`).value;
-          const prix = opt === "supplement" ? v.supplement : v.prix;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
+        if (qteNormal > 0) {
           selections.push({
             nom: v.nom,
-            quantite: qte,
-            type: opt,
-            prix: prix,
-            sousTotal: qte * prix
+            quantite: qteNormal,
+            unite: v.unite,
+            type: "normal",
+            prix: v.prix,
+            sousTotal: qteNormal * v.prix
+          });
+        }
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        if (qteSupp > 0) {
+          selections.push({
+            nom: v.nom,
+            quantite: qteSupp,
+            unite: v.unite,
+            type: "supplement",
+            prix: v.supplement,
+            sousTotal: qteSupp * v.supplement
           });
         }
       });
+
+      const dep = deplacementSelect.value;
+      selections.push({
+        nom: "Frais de déplacement",
+        quantite: 1,
+        unite: "",
+        type: "",
+        prix: dep === "devis" ? 0 : parseFloat(dep),
+        sousTotal: dep === "devis" ? 0 : parseFloat(dep),
+        devis: dep === "devis"
+      });
+
       localStorage.setItem("commande", JSON.stringify(selections));
       window.location.href = "resume.html";
     });
