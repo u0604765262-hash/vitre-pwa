@@ -7,39 +7,19 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <meta name="theme-color" content="#0d6efd">
-
-  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <style>
-    body {
-      background: #f0f8ff;
-    }
+    body { background: #f0f8ff; padding-bottom: 80px; }
     header {
-      background: #ffffff;
-      border-bottom: 3px solid #0d6efd;
-      padding: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
+      background: #ffffff; border-bottom: 3px solid #0d6efd;
+      padding: 15px; display: flex; align-items: center; justify-content: center; gap: 15px;
     }
-    header img {
-      height: 60px;
-    }
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .total-box {
-      background: #0d6efd;
-      color: white;
-      font-size: 1.5rem;
-      padding: 20px;
-      border-radius: 15px;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    header img { height: 60px; }
+    .card { border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .total-fixed {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      background: #0d6efd; color: white; font-size: 1.4rem; font-weight: bold;
+      text-align: center; padding: 15px; box-shadow: 0 -3px 6px rgba(0,0,0,0.2); z-index: 1000; cursor: pointer;
     }
   </style>
 </head>
@@ -52,8 +32,9 @@
   <main class="container my-4">
     <h2 class="text-center mb-4">Calculateur de nettoyage de vitres</h2>
     <div id="services" class="row g-3"></div>
-    <div class="total-box mt-4" id="total">Total : 0 €</div>
   </main>
+
+  <div id="total" class="total-fixed" onclick="goToResume()">Total : 0 €</div>
 
   <script>
     const services = [
@@ -67,55 +48,61 @@
       { name: "Grand miroir (> 2m²)", price: 5, priceExtra: 6 },
       { name: "Paroi de douche", price: 5, priceExtra: 6 },
       { name: "Vitrine commerciale (€/m²)", price: 10, priceExtra: 12 },
-      { name: "Vitres en hauteur (2m–4m, €/m²)", price: 10, priceExtra: 12 }
+      { name: "Vitres en hauteur (2m-4m, €/m²)", price: 10, priceExtra: 12 }
     ];
+    const counts = new Array(services.length).fill(0);
 
-    let counts = new Array(services.length).fill(0);
+    const container = document.getElementById("services");
+    const totalDiv = document.getElementById("total");
 
     function updateTotal() {
       let total = 0;
-      services.forEach((s, i) => {
-        total += counts[i] * s.price;
-      });
-      document.getElementById("total").textContent = "Total : " + total.toFixed(2) + " €";
+      services.forEach((s, i) => { total += counts[i] * s.price; });
+      totalDiv.textContent = "Total : " + total.toFixed(2) + " €";
     }
 
-    function renderServices() {
-      const container = document.getElementById("services");
+    function render() {
+      container.innerHTML = "";
       services.forEach((s, i) => {
         const col = document.createElement("div");
         col.className = "col-md-6";
         col.innerHTML = `
           <div class="card p-3">
             <h5>${s.name}</h5>
-            <p>Prix : ${s.price} € (supplément : ${s.priceExtra} €)</p>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-danger me-2" onclick="changeCount(${i}, -1)">-</button>
-              <span id="count-${i}" class="mx-2">${counts[i]}</span>
-              <button class="btn btn-success ms-2" onclick="changeCount(${i}, 1)">+</button>
+            <p>Tarif : ${s.price} € (Supplément : ${s.priceExtra} €)</p>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-danger btn-sm" onclick="changeCount(${i}, -1)">-</button>
+              <span id="count-${i}">${counts[i]}</span>
+              <button class="btn btn-success btn-sm" onclick="changeCount(${i}, 1)">+</button>
             </div>
-          </div>
-        `;
+          </div>`;
         container.appendChild(col);
       });
-    }
-
-    function changeCount(index, delta) {
-      counts[index] = Math.max(0, counts[index] + delta);
-      document.getElementById("count-" + index).textContent = counts[index];
       updateTotal();
     }
 
-    renderServices();
-    updateTotal();
-  </script>
+    function changeCount(i, delta) {
+      counts[i] = Math.max(0, counts[i] + delta);
+      document.getElementById("count-" + i).textContent = counts[i];
+      updateTotal();
+    }
 
-  <!-- Service Worker registration -->
-  <script>
+    function goToResume() {
+      const panier = services.map((s, i) => ({
+        name: s.name,
+        qty: counts[i],
+        price: s.price,
+        subtotal: counts[i] * s.price
+      })).filter(item => item.qty > 0);
+
+      localStorage.setItem("panier", JSON.stringify(panier));
+      window.location.href = "resume.html";
+    }
+
+    render();
+
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("service-worker.js")
-        .then(() => console.log("Service Worker enregistré"))
-        .catch(err => console.error("Erreur SW:", err));
+      navigator.serviceWorker.register("service-worker.js").then(() => console.log("Service Worker ok"));
     }
   </script>
 </body>
