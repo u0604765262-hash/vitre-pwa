@@ -1,60 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <link rel="icon" type="image/png" href="logo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulle de Savon - Nettoyage Vitres</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; padding-bottom: 120px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      background: #f4f6f8; 
+      padding-bottom: 120px; 
+    }
     header {
       display: flex;
       align-items: center;
       justify-content: center;
-      background: #ffffff; /* fond blanc */
-      padding: 0; /* s'adapte exactement à la hauteur du logo */
+      background: #ffffff;
+      padding: 0;
     }
     header img {
-      height: 220px; /* logo agrandi */
+      height: 120px; /* ✅ même taille que resume.html */
     }
     .container { padding: 20px; }
     .card {
       background: white;
       border-radius: 10px;
       padding: 15px;
-      margin: 10px 0;
+      margin: 15px 0;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    .card h2 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
-    .input-group { display: flex; align-items: center; margin: 5px 0; }
+    .card h2 { 
+      margin: 0 0 15px 0; 
+      font-size: 20px; 
+      color: #007bff; 
+      display: flex; 
+      align-items: center; 
+      font-weight: bold;
+    }
+    .card h2::before {
+      content: "🪟"; /* Icône vitre */
+      margin-right: 8px;
+      font-size: 22px;
+    }
+    /* ✅ Supprimer toute case ou puce parasite */
+    h2, .card h2 { list-style: none; }
+    .input-group { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      margin: 10px 0; 
+    }
     .label { flex: 1; }
     .counter {
-      display: flex; align-items: center;
-      border: 1px solid #ccc; border-radius: 6px;
+      display: flex; 
+      align-items: center;
+      border: 1px solid #ccc; 
+      border-radius: 6px;
       overflow: hidden;
     }
     .counter button {
-      background: #007bff; color: white;
-      border: none; width: 30px; height: 30px;
-      font-size: 18px; cursor: pointer;
+      background: #007bff; 
+      color: white;
+      border: none; 
+      width: 35px; 
+      height: 35px;
+      font-size: 18px; 
+      cursor: pointer;
+      transition: background 0.3s ease;
     }
-    .counter input {
-      width: 50px; text-align: center;
-      border: none; outline: none;
+    .counter button:hover {
+      background: #0056b3;
+    }
+    .counter span {
+      width: 50px; 
+      text-align: center;
+      font-size: 16px;
+      display: inline-block;
     }
     .total {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #28a745;
+      background: #28a745; /* ✅ vert uniforme */
       color: white;
       text-align: center;
-      padding: 15px;
+      padding: 18px;
       font-size: 20px;
       cursor: pointer;
       font-weight: bold;
       z-index: 999;
+      animation: pulse 2s infinite; /* ✅ effet pulsation */
+    }
+    @keyframes pulse {
+      0% { background-color: #28a745; }
+      50% { background-color: #34c759; } /* vert plus clair */
+      100% { background-color: #28a745; }
     }
   </style>
 </head>
@@ -65,19 +106,7 @@
 
   <div class="container" id="vitres"></div>
 
-  <div class="container card">
-    <h2>Frais de déplacement</h2>
-    <div class="input-group">
-      <label for="deplacement">Distance :</label>
-      <select id="deplacement">
-        <option value="0">Moins de 5 km → 0€</option>
-        <option value="10">5 à 10 km → 10€</option>
-        <option value="devis">Plus de 10 km → Sur devis</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="total" id="total">Total : 0,00 €</div>
+  <div class="total" id="total">Total : 0,00 € – Cliquez pour continuer</div>
 
   <script>
     const vitres = [
@@ -96,13 +125,12 @@
 
     const vitresContainer = document.getElementById("vitres");
     const totalDiv = document.getElementById("total");
-    const deplacementSelect = document.getElementById("deplacement");
 
     function createCounter(id) {
       return `
         <div class="counter">
           <button type="button" onclick="updateValue('${id}', -1)">-</button>
-          <input type="number" id="${id}" value="0" min="0" step="1" readonly>
+          <span id="${id}">0</span>
           <button type="button" onclick="updateValue('${id}', 1)">+</button>
         </div>
       `;
@@ -126,31 +154,28 @@
     });
 
     function updateValue(id, delta) {
-      const input = document.getElementById(id);
-      let val = parseInt(input.value) || 0;
+      const span = document.getElementById(id);
+      let val = parseInt(span.textContent) || 0;
       val = Math.max(0, val + delta);
-      input.value = val;
+      span.textContent = val;
       calculerTotal();
     }
 
     function calculerTotal() {
       let total = 0;
       vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`).textContent) || 0;
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`).textContent) || 0;
         total += qteNormal * v.prix + qteSupp * v.supplement;
       });
 
-      const dep = deplacementSelect.value;
-      if (dep !== "devis") total += parseFloat(dep);
-
-      totalDiv.textContent = "Total : " + total.toFixed(2) + " €";
+      totalDiv.textContent = "Total : " + total.toFixed(2) + " € – Cliquez pour continuer";
     }
 
     totalDiv.addEventListener("click", () => {
       const selections = [];
       vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`).textContent) || 0;
         if (qteNormal > 0) {
           selections.push({
             nom: v.nom,
@@ -161,7 +186,7 @@
             sousTotal: qteNormal * v.prix
           });
         }
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`).textContent) || 0;
         if (qteSupp > 0) {
           selections.push({
             nom: v.nom,
@@ -174,34 +199,11 @@
         }
       });
 
-      const dep = deplacementSelect.value;
-      selections.push({
-        nom: "Frais de déplacement",
-        quantite: 1,
-        unite: "",
-        type: "",
-        prix: dep === "devis" ? 0 : parseFloat(dep),
-        sousTotal: dep === "devis" ? 0 : parseFloat(dep),
-        devis: dep === "devis"
-      });
-
       localStorage.setItem("commande", JSON.stringify(selections));
       window.location.href = "resume.html";
     });
 
-    // ✅ Mettre à jour automatiquement quand l'utilisateur change le select de déplacement
-    deplacementSelect.addEventListener("change", calculerTotal);
-
     calculerTotal();
   </script>
-
-  <!-- ✅ Enregistrement du Service Worker -->
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("./service-worker.js")
-      .then(reg => console.log("✅ Service Worker enregistré :", reg))
-      .catch(err => console.error("❌ Erreur Service Worker :", err));
-  }
-</script>
 </body>
 </html>
