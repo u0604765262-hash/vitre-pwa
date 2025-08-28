@@ -1,73 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <link rel="icon" type="image/png" href="logo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Résumé de la commande</title>
+  <title>Résumé - Bulle de Savon</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; }
-    h1 { text-align: center; padding: 20px; background: #007bff; color: white; margin: 0; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6f8; padding-bottom: 120px; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      padding: 0;
+    }
+    header img {
+      height: 120px;
+    }
     .container { padding: 20px; }
-    .item {
+    .card {
       background: white;
-      padding: 15px;
       border-radius: 10px;
+      padding: 15px;
       margin: 10px 0;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
+    h2 { color: #333; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 5px 0; }
     .total {
-      font-size: 22px;
       font-weight: bold;
-      text-align: center;
+      font-size: 20px;
       margin-top: 20px;
-      background: #28a745;
+    }
+    .btn-send {
+      display: block;
+      margin: 30px auto;
+      padding: 15px 25px;
+      font-size: 18px;
+      font-weight: bold;
       color: white;
-      padding: 15px;
-      border-radius: 10px;
+      background: #007bff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .btn-send:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Résumé de la commande</h1>
-  <div class="container" id="resume"></div>
-  <div class="container total" id="total"></div>
+  <header>
+    <img src="logo.png" alt="Logo Bulle de Savon">
+  </header>
 
+  <div class="container card">
+    <h2>Résumé de votre commande</h2>
+    <ul id="resume"></ul>
+    <div class="total" id="total"></div>
+    <button class="btn-send" id="sendMail">📩 Envoyer ma demande</button>
+  </div>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    const resumeDiv = document.getElementById("resume");
+    (function(){
+      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ remplace par ta clé publique EmailJS
+    })();
+
+    const resumeUl = document.getElementById("resume");
     const totalDiv = document.getElementById("total");
-
     const commande = JSON.parse(localStorage.getItem("commande")) || [];
+
     let total = 0;
-
     commande.forEach(item => {
-      const div = document.createElement("div");
-      div.className = "item";
-
-      if (item.nom === "Frais de déplacement" && item.devis) {
-        div.textContent = "Frais de déplacement : Sur devis";
-      } else if (item.nom === "Frais de déplacement") {
-        div.textContent = `Frais de déplacement : ${item.sousTotal.toFixed(2)} €`;
-        total += item.sousTotal;
-      } else {
-        const optText = item.type === "supplement" ? "Supplément" : "Normal";
-        div.textContent = `${item.quantite} ${item.unite === "m2" ? "m²" : "×"} ${item.nom} – ${optText} (${item.prix.toFixed(2)} €${item.unite === "m2" ? "/m²" : ""}) → ${item.sousTotal.toFixed(2)} €`;
-        total += item.sousTotal;
-      }
-
-      resumeDiv.appendChild(div);
+      const li = document.createElement("li");
+      li.textContent = `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €`;
+      resumeUl.appendChild(li);
+      total += item.sousTotal;
     });
 
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
-  </script>
 
-  <!-- ✅ Enregistrement du Service Worker -->
- <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("vitre-pwa/service-worker.js")
-      .then(reg => console.log("✅ Service Worker enregistré :", reg))
-      .catch(err => console.error("❌ Erreur Service Worker :", err));
-  }
-</script>
+    // ✅ Envoi du mail via EmailJS
+    document.getElementById("sendMail").addEventListener("click", function() {
+      let message = "Résumé de la commande :\n\n";
+      commande.forEach(item => {
+        message += `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €\n`;
+      });
+      message += `\nTOTAL = ${total.toFixed(2)} €`;
+
+      emailjs.send("service_b7vi3ol", "template_wxnjg9e", {
+          from_name: "Site Bulle de Savon",
+          message: message,
+          reply_to: "contact@bulle-de-savon.fr" // ✅ ton mail Ionos
+      }).then(
+        function(response) {
+          alert("✅ Votre demande a bien été envoyée !");
+        },
+        function(error) {
+          alert("❌ Erreur lors de l'envoi : " + JSON.stringify(error));
+        }
+      );
+    });
+  </script>
 </body>
 </html>
