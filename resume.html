@@ -5,11 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Résumé - Bulle de Savon</title>
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 0; 
-      background: #f4f6f8; 
-      padding-bottom: 120px; 
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden; /* ✅ empêche le scroll horizontal */
+      background: #f4f6f8;
+      font-family: Arial, sans-serif;
+      padding-bottom: 120px;
     }
     header {
       display: flex;
@@ -67,10 +70,10 @@
       width: 100%;
       margin-top: 20px;
       padding: 15px;
-      font-size: 20px; /* ✅ même taille que bouton index */
+      font-size: 20px; /* ✅ même taille que le texte du bandeau index */
       font-weight: bold;
       color: white;
-      background: #28a745; /* ✅ même vert que bouton index */
+      background: #28a745; /* ✅ vert comme le bandeau index */
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -99,7 +102,7 @@
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background: #007bff; /* ✅ bleu */
+      background: #007bff; /* 🔵 changé en bleu */
       color: white;
       border: none;
       border-radius: 50%;
@@ -116,7 +119,7 @@
       transform: scale(1.1);
     }
     .btn-home:active {
-      background: #00408f;
+      background: #004080;
       transform: scale(0.95);
     }
   </style>
