@@ -5,26 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Résumé - Bulle de Savon</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      overflow-x: hidden; /* ✅ empêche le scroll horizontal */
-      background: #f4f6f8;
-      font-family: Arial, sans-serif;
-      padding-bottom: 120px;
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 0; 
+      background: #f4f6f8; 
+      padding-bottom: 120px; 
+      overflow-x: hidden;
     }
     header {
       display: flex;
       align-items: center;
-      justify-content: flex-start; /* logo à gauche */
+      justify-content: flex-start;
       background: #ffffff;
       padding: 10px 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    header img {
-      height: 60px;
-    }
+    header img { height: 60px; }
     .container { padding: 20px; }
     .card {
       background: white;
@@ -43,6 +39,7 @@
     }
     ul { list-style: none; padding: 0; }
     li { margin: 5px 0; }
+    /* ✅ Style du total comme avant */
     .total {
       font-weight: bold;
       font-size: 20px;
@@ -64,27 +61,27 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 16px;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
     }
     .btn-send {
       display: block;
       width: 100%;
       margin-top: 20px;
       padding: 15px;
-      font-size: 20px; /* ✅ même taille que le texte du bandeau index */
+      font-size: 20px; /* même taille que index */
       font-weight: bold;
       color: white;
-      background: #28a745; /* ✅ vert comme le bandeau index */
+      background: #28a745; /* vert comme index */
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
-    .btn-send:hover {
-      background: #218838;
-    }
-    .btn-send:active {
-      background: #1e7e34;
-    }
+    .btn-send:hover { background: #218838; }
     .success-msg {
       display: none;
       margin-top: 20px;
@@ -102,7 +99,7 @@
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background: #007bff; /* 🔵 changé en bleu */
+      background: #007bff; /* bleu */
       color: white;
       border: none;
       border-radius: 50%;
@@ -119,7 +116,7 @@
       transform: scale(1.1);
     }
     .btn-home:active {
-      background: #004080;
+      background: #004494;
       transform: scale(0.95);
     }
   </style>
@@ -161,7 +158,7 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); // remplace par ta clé publique EmailJS
+      emailjs.init("P5p4M_38kKjmuJPjz"); 
     })();
 
     const resumeUl = document.getElementById("resume");
@@ -178,10 +175,8 @@
     });
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
 
-    // ✅ Envoi du mail via EmailJS
     document.getElementById("contactForm").addEventListener("submit", function(e) {
       e.preventDefault();
-
       const params = {
         from_name: document.getElementById("name").value,
         from_email: document.getElementById("email").value,
@@ -191,7 +186,6 @@
         message: commande.map(item => `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €`).join("\n") 
                 + `\n\nTOTAL = ${total.toFixed(2)} €`
       };
-
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", params).then(
         function(response) {
           document.getElementById("contactForm").style.display = "none";
