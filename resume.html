@@ -67,17 +67,20 @@
       width: 100%;
       margin-top: 20px;
       padding: 15px;
-      font-size: 18px;
+      font-size: 20px; /* ✅ même taille que bouton index */
       font-weight: bold;
       color: white;
-      background: #007bff;
+      background: #28a745; /* ✅ même vert que bouton index */
       border: none;
       border-radius: 8px;
       cursor: pointer;
       transition: background 0.3s ease;
     }
     .btn-send:hover {
-      background: #0056b3;
+      background: #218838;
+    }
+    .btn-send:active {
+      background: #1e7e34;
     }
     .success-msg {
       display: none;
@@ -96,7 +99,7 @@
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background: #28a745; /* vert identique à l'index */
+      background: #007bff; /* ✅ bleu */
       color: white;
       border: none;
       border-radius: 50%;
@@ -109,11 +112,11 @@
       z-index: 1000;
     }
     .btn-home:hover {
-      background: #218838;
+      background: #0056b3;
       transform: scale(1.1);
     }
     .btn-home:active {
-      background: #1e7e34;
+      background: #00408f;
       transform: scale(0.95);
     }
   </style>
