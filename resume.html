@@ -11,50 +11,53 @@
       align-items: center;
       justify-content: center;
       background: #ffffff;
-      padding: 0;
+      padding: 10px;
     }
     header img {
       height: 120px;
     }
-    .container { padding: 20px; }
+    h1 { text-align: center; color: #333; }
+    .container { padding: 20px; max-width: 700px; margin: auto; }
     .card {
       background: white;
       border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
+      padding: 20px;
+      margin: 20px 0;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    h2 { color: #333; }
-    p.intro {
-      font-size: 16px;
-      color: #444;
-      margin-top: 10px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
+    h2 { color: #007bff; }
     ul { list-style: none; padding: 0; }
     li { margin: 5px 0; }
     .total {
       font-weight: bold;
       font-size: 20px;
       margin-top: 20px;
+      text-align: center;
     }
-    form {
-      margin-top: 20px;
+    .intro {
+      margin-top: 15px;
+      font-size: 16px;
+      line-height: 1.5;
+      text-align: center;
+      color: #555;
     }
-    input, textarea {
+    form label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    form input, form textarea {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
+      margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 16px;
     }
-    textarea {
-      resize: vertical;
-    }
+    textarea { resize: vertical; min-height: 80px; }
     .btn-send {
       display: block;
-      margin: 30px auto;
+      margin: 25px auto;
       padding: 15px 25px;
       font-size: 18px;
       font-weight: bold;
@@ -68,6 +71,46 @@
     .btn-send:hover {
       background: #0056b3;
     }
+    /* ✅ Message de confirmation */
+    .success-message {
+      display: none;
+      margin-top: 30px;
+      padding: 25px;
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+      border-radius: 10px;
+      font-size: 22px;
+      font-weight: bold;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* ✅ Bouton flottant maison */
+    .home-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.2s;
+      z-index: 1000;
+    }
+    .home-button:hover {
+      background: #0056b3;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
@@ -76,31 +119,50 @@
   </header>
 
   <div class="container card">
-    <h2>Résumé de votre commande</h2>
+    <h2>🧾 Résumé de votre commande</h2>
     <ul id="resume"></ul>
     <div class="total" id="total"></div>
 
     <p class="intro">
-      💬 Le prix vous convient et vous souhaitez prendre contact avec nous ?<br>
-      Merci de remplir le formulaire ci-dessous. Nous vous recontacterons sous <b>48h maximum</b>.
+      Le prix vous convient et vous souhaitez prendre contact avec nous ?  
+      Merci de remplir le formulaire ci-dessous et nous reviendrons vers vous dans moins de <b>48h</b>.
     </p>
 
-    <h2>Vos coordonnées</h2>
+    <h2>📩 Vos coordonnées</h2>
     <form id="contactForm">
-      <input type="text" id="clientName" placeholder="Votre nom *" required>
-      <input type="email" id="clientEmail" placeholder="Votre email *" required>
-      <input type="text" id="clientAddress" placeholder="Votre adresse complète * (nécessaire pour estimer les frais de déplacement)" required>
-      <input type="text" id="clientPhone" placeholder="Votre téléphone (facultatif)">
-      <textarea id="clientComment" placeholder="Commentaire (facultatif)"></textarea>
-      <button type="submit" class="btn-send">📩 Envoyer ma demande</button>
+      <label for="from_name">Nom *</label>
+      <input type="text" id="from_name" required>
+
+      <label for="reply_to">Email *</label>
+      <input type="email" id="reply_to" placeholder="Votre email est nécessaire pour vous recontacter" required>
+
+      <label for="address">Adresse *</label>
+      <input type="text" id="address" placeholder="Indiquez votre adresse pour le calcul des frais de déplacement" required>
+
+      <label for="phone">Téléphone (facultatif)</label>
+      <input type="text" id="phone">
+
+      <label for="comment">Commentaire (facultatif)</label>
+      <textarea id="comment"></textarea>
+
+      <button type="submit" class="btn-send">📨 Envoyer ma demande</button>
     </form>
+
+    <!-- ✅ Message de succès -->
+    <div class="success-message" id="successMessage">
+      ✅ Votre demande a bien été envoyée.<br>
+      Nous reviendrons vers vous dans moins de <b>48h</b>.
+    </div>
   </div>
+
+  <!-- ✅ Bouton flottant maison -->
+  <button class="home-button" onclick="window.location.href='index.html'">🏠</button>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ ta clé publique EmailJS
+      emailjs.init("P5p4M_38kKjmuJPjz"); // ta clé publique EmailJS
     })();
 
     const resumeUl = document.getElementById("resume");
@@ -114,36 +176,28 @@
       resumeUl.appendChild(li);
       total += item.sousTotal;
     });
-
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
 
-    // ✅ Envoi du formulaire
     document.getElementById("contactForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
-      const name = document.getElementById("clientName").value;
-      const email = document.getElementById("clientEmail").value;
-      const address = document.getElementById("clientAddress").value;
-      const phone = document.getElementById("clientPhone").value;
-      const comment = document.getElementById("clientComment").value;
-
-      let message = "Résumé de la commande :\n\n";
+      let message = "";
       commande.forEach(item => {
         message += `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €\n`;
       });
-      message += `\nTOTAL = ${total.toFixed(2)} €`;
 
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", {
-          from_name: name,
-          reply_to: email,
-          address: address,
-          phone: phone,
-          comment: comment,
+          from_name: document.getElementById("from_name").value,
+          reply_to: document.getElementById("reply_to").value,
+          address: document.getElementById("address").value,
+          phone: document.getElementById("phone").value,
+          comment: document.getElementById("comment").value,
           message: message,
           total: total.toFixed(2)
       }).then(
         function(response) {
-          alert("✅ Votre demande a bien été envoyée !");
+          document.getElementById("contactForm").style.display = "none";
+          document.getElementById("successMessage").style.display = "block";
         },
         function(error) {
           alert("❌ Erreur lors de l'envoi : " + JSON.stringify(error));
