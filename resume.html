@@ -32,6 +32,21 @@
       font-size: 20px;
       margin-top: 20px;
     }
+    .form-group {
+      margin-top: 15px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
     .btn-send {
       display: block;
       margin: 30px auto;
@@ -59,6 +74,25 @@
     <h2>Résumé de votre commande</h2>
     <ul id="resume"></ul>
     <div class="total" id="total"></div>
+
+    <!-- ✅ Formulaire client -->
+    <div class="form-group">
+      <label for="clientName">Votre nom (obligatoire) :</label>
+      <input type="text" id="clientName" placeholder="Entrez votre nom" required>
+    </div>
+    <div class="form-group">
+      <label for="clientEmail">Votre email (obligatoire) :</label>
+      <input type="email" id="clientEmail" placeholder="Entrez votre email" required>
+    </div>
+    <div class="form-group">
+      <label for="clientPhone">Votre téléphone (facultatif) :</label>
+      <input type="tel" id="clientPhone" placeholder="06 12 34 56 78">
+    </div>
+    <div class="form-group">
+      <label for="clientComment">Commentaire (facultatif) :</label>
+      <textarea id="clientComment" placeholder="Ex : disponibilité, infos sur vos vitres..." rows="3"></textarea>
+    </div>
+
     <button class="btn-send" id="sendMail">📩 Envoyer ma demande</button>
   </div>
 
@@ -66,7 +100,7 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ remplace par ta clé publique EmailJS
+      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ ta clé publique EmailJS
     })();
 
     const resumeUl = document.getElementById("resume");
@@ -85,16 +119,36 @@
 
     // ✅ Envoi du mail via EmailJS
     document.getElementById("sendMail").addEventListener("click", function() {
+      const clientName = document.getElementById("clientName").value.trim();
+      const clientEmail = document.getElementById("clientEmail").value.trim();
+      const clientPhone = document.getElementById("clientPhone").value.trim();
+      const clientComment = document.getElementById("clientComment").value.trim();
+
+      if (!clientName || !clientEmail) {
+        alert("⚠️ Merci de renseigner au minimum votre nom et votre email.");
+        return;
+      }
+
       let message = "Résumé de la commande :\n\n";
       commande.forEach(item => {
         message += `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €\n`;
       });
       message += `\nTOTAL = ${total.toFixed(2)} €`;
 
+      if (clientPhone) {
+        message += `\nTéléphone : ${clientPhone}`;
+      }
+      if (clientComment) {
+        message += `\n\nCommentaire :\n${clientComment}`;
+      }
+
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", {
-          from_name: "Site Bulle de Savon",
+          from_name: clientName,
+          reply_to: clientEmail,
+          phone: clientPhone || "Non renseigné",
+          comment: clientComment || "Non renseigné",
           message: message,
-          reply_to: "contact@bulle-de-savon.fr" // ✅ ton mail Ionos
+          total: total.toFixed(2) + " €"
       }).then(
         function(response) {
           alert("✅ Votre demande a bien été envoyée !");
