@@ -25,6 +25,13 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     h2 { color: #333; }
+    p.intro {
+      font-size: 16px;
+      color: #444;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
     ul { list-style: none; padding: 0; }
     li { margin: 5px 0; }
     .total {
@@ -73,12 +80,17 @@
     <ul id="resume"></ul>
     <div class="total" id="total"></div>
 
+    <p class="intro">
+      💬 Le prix vous convient et vous souhaitez prendre contact avec nous ?<br>
+      Merci de remplir le formulaire ci-dessous. Nous vous recontacterons sous <b>48h maximum</b>.
+    </p>
+
     <h2>Vos coordonnées</h2>
     <form id="contactForm">
       <input type="text" id="clientName" placeholder="Votre nom *" required>
-      <input type="email" id="clientEmail" placeholder="Votre email * (obligatoire pour vous répondre et calculer les frais de déplacement)" required>
-      <input type="text" id="clientPhone" placeholder="Votre téléphone (facultatif)">
+      <input type="email" id="clientEmail" placeholder="Votre email *" required>
       <input type="text" id="clientAddress" placeholder="Votre adresse complète * (nécessaire pour estimer les frais de déplacement)" required>
+      <input type="text" id="clientPhone" placeholder="Votre téléphone (facultatif)">
       <textarea id="clientComment" placeholder="Commentaire (facultatif)"></textarea>
       <button type="submit" class="btn-send">📩 Envoyer ma demande</button>
     </form>
@@ -88,7 +100,7 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ remplace par ta clé publique EmailJS
+      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ ta clé publique EmailJS
     })();
 
     const resumeUl = document.getElementById("resume");
@@ -105,14 +117,14 @@
 
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
 
-    // ✅ Gestion de l'envoi du formulaire
+    // ✅ Envoi du formulaire
     document.getElementById("contactForm").addEventListener("submit", function(e) {
       e.preventDefault();
 
       const name = document.getElementById("clientName").value;
       const email = document.getElementById("clientEmail").value;
-      const phone = document.getElementById("clientPhone").value;
       const address = document.getElementById("clientAddress").value;
+      const phone = document.getElementById("clientPhone").value;
       const comment = document.getElementById("clientComment").value;
 
       let message = "Résumé de la commande :\n\n";
@@ -124,8 +136,8 @@
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", {
           from_name: name,
           reply_to: email,
-          phone: phone,
           address: address,
+          phone: phone,
           comment: comment,
           message: message,
           total: total.toFixed(2)
