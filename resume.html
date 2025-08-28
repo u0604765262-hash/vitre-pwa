@@ -32,20 +32,18 @@
       font-size: 20px;
       margin-top: 20px;
     }
-    .form-group {
-      margin-top: 15px;
+    form {
+      margin-top: 20px;
     }
-    .form-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    .form-group input,
-    .form-group textarea {
+    input, textarea {
       width: 100%;
       padding: 10px;
+      margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 6px;
+    }
+    textarea {
+      resize: vertical;
     }
     .btn-send {
       display: block;
@@ -75,32 +73,22 @@
     <ul id="resume"></ul>
     <div class="total" id="total"></div>
 
-    <!-- ✅ Formulaire client -->
-    <div class="form-group">
-      <label for="clientName">Votre nom (obligatoire) :</label>
-      <input type="text" id="clientName" placeholder="Entrez votre nom" required>
-    </div>
-    <div class="form-group">
-      <label for="clientEmail">Votre email (obligatoire) :</label>
-      <input type="email" id="clientEmail" placeholder="Entrez votre email" required>
-    </div>
-    <div class="form-group">
-      <label for="clientPhone">Votre téléphone (facultatif) :</label>
-      <input type="tel" id="clientPhone" placeholder="06 12 34 56 78">
-    </div>
-    <div class="form-group">
-      <label for="clientComment">Commentaire (facultatif) :</label>
-      <textarea id="clientComment" placeholder="Ex : disponibilité, infos sur vos vitres..." rows="3"></textarea>
-    </div>
-
-    <button class="btn-send" id="sendMail">📩 Envoyer ma demande</button>
+    <h2>Vos coordonnées</h2>
+    <form id="contactForm">
+      <input type="text" id="clientName" placeholder="Votre nom *" required>
+      <input type="email" id="clientEmail" placeholder="Votre email * (obligatoire pour vous répondre et calculer les frais de déplacement)" required>
+      <input type="text" id="clientPhone" placeholder="Votre téléphone (facultatif)">
+      <input type="text" id="clientAddress" placeholder="Votre adresse complète * (nécessaire pour estimer les frais de déplacement)" required>
+      <textarea id="clientComment" placeholder="Commentaire (facultatif)"></textarea>
+      <button type="submit" class="btn-send">📩 Envoyer ma demande</button>
+    </form>
   </div>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ ta clé publique EmailJS
+      emailjs.init("P5p4M_38kKjmuJPjz"); // ✅ remplace par ta clé publique EmailJS
     })();
 
     const resumeUl = document.getElementById("resume");
@@ -117,17 +105,15 @@
 
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
 
-    // ✅ Envoi du mail via EmailJS
-    document.getElementById("sendMail").addEventListener("click", function() {
-      const clientName = document.getElementById("clientName").value.trim();
-      const clientEmail = document.getElementById("clientEmail").value.trim();
-      const clientPhone = document.getElementById("clientPhone").value.trim();
-      const clientComment = document.getElementById("clientComment").value.trim();
+    // ✅ Gestion de l'envoi du formulaire
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault();
 
-      if (!clientName || !clientEmail) {
-        alert("⚠️ Merci de renseigner au minimum votre nom et votre email.");
-        return;
-      }
+      const name = document.getElementById("clientName").value;
+      const email = document.getElementById("clientEmail").value;
+      const phone = document.getElementById("clientPhone").value;
+      const address = document.getElementById("clientAddress").value;
+      const comment = document.getElementById("clientComment").value;
 
       let message = "Résumé de la commande :\n\n";
       commande.forEach(item => {
@@ -135,20 +121,14 @@
       });
       message += `\nTOTAL = ${total.toFixed(2)} €`;
 
-      if (clientPhone) {
-        message += `\nTéléphone : ${clientPhone}`;
-      }
-      if (clientComment) {
-        message += `\n\nCommentaire :\n${clientComment}`;
-      }
-
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", {
-          from_name: clientName,
-          reply_to: clientEmail,
-          phone: clientPhone || "Non renseigné",
-          comment: clientComment || "Non renseigné",
+          from_name: name,
+          reply_to: email,
+          phone: phone,
+          address: address,
+          comment: comment,
           message: message,
-          total: total.toFixed(2) + " €"
+          total: total.toFixed(2)
       }).then(
         function(response) {
           alert("✅ Votre demande a bien été envoyée !");
