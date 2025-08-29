@@ -1,29 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PC3K8HGL');</script>
-<!-- End Google Tag Manager -->
-  <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NGR43J81FE');
-</script>
-<!-- End Google Analytics 4 -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mentions légales - Bulle de Savon</title>
   <link rel="icon" href="logo1.png" type="image/png">
 
-  <!-- ✅ Ajout PWA -->
+  <!-- ✅ PWA -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#007bff">
 
@@ -89,14 +72,37 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+
+    /* ✅ Bannière cookies */
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 15px;
+      text-align: center;
+      z-index: 2000;
+      font-size: 14px;
+      display: none;
+    }
+    #cookie-banner button {
+      background: #007bff;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #cookie-banner button:hover { background: #0056b3; }
+    #cookie-banner .refuse { background: #555; }
+    #cookie-banner .refuse:hover { background: #333; }
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC3K8HGL"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
   <header>
     <img src="logo.png" alt="Logo Bulle de Savon">
   </header>
@@ -130,8 +136,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
 
     <div class="card">
-      <h2>Données personnelles</h2>
-      <p>Aucune donnée n’est collectée automatiquement (pas de cookies). Les seules informations recueillies sont celles que vous fournissez volontairement via le formulaire de demande de devis :</p>
+      <h2>Données personnelles et cookies</h2>
+      <p>Ce site utilise des cookies uniquement à des fins de mesure d’audience (Google Analytics), et uniquement si vous les acceptez.  
+      Les autres informations recueillies sont celles que vous fournissez volontairement via le formulaire de demande de devis :</p>
       <ul>
         <li>Nom (obligatoire)</li>
         <li>Email (obligatoire)</li>
@@ -158,6 +165,59 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
   </footer>
 
+  <!-- ✅ Bannière cookies -->
+  <div id="cookie-banner">
+    Ce site utilise des cookies pour mesurer son audience (Google Analytics).
+    <br>
+    <button onclick="acceptCookies()">Accepter</button>
+    <button class="refuse" onclick="refuseCookies()">Refuser</button>
+  </div>
+
+  <!-- ✅ Script cookies + Google Analytics conditionnel -->
+  <script>
+    function loadAnalytics() {
+      // Google Tag Manager
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
+
+      // Google Analytics 4
+      var ga = document.createElement('script');
+      ga.async = true;
+      ga.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      document.head.appendChild(ga);
+
+      ga.onload = function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-NGR43J81FE');
+      }
+    }
+
+    function acceptCookies() {
+      localStorage.setItem("cookiesAccepted", "yes");
+      document.getElementById("cookie-banner").style.display = "none";
+      loadAnalytics();
+    }
+
+    function refuseCookies() {
+      localStorage.setItem("cookiesAccepted", "no");
+      document.getElementById("cookie-banner").style.display = "none";
+    }
+
+    window.onload = function() {
+      let choice = localStorage.getItem("cookiesAccepted");
+      if (!choice) {
+        document.getElementById("cookie-banner").style.display = "block";
+      } else if (choice === "yes") {
+        loadAnalytics();
+      }
+    };
+  </script>
+
   <!-- ✅ Enregistrement du service worker -->
   <script>
     if ("serviceWorker" in navigator) {
@@ -166,8 +226,5 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         .catch(err => console.error("Erreur Service Worker ❌", err));
     }
   </script>
-
 </body>
 </html>
-
-
