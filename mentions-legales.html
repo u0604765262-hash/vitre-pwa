@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentions légales - Bulle de Savon</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      background: #f4f6f8;
+      color: #333;
+      padding-bottom: 100px; /* place pour bouton flottant */
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .bloc {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin: 20px;
+    }
+    h1, h2 {
+      color: #007bff;
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Bouton flottant accueil */
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #007bff;
+      color: white;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 999;
+      transition: background 0.3s;
+    }
+    .floating-btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <header>Mentions légales</header>
+
+  <div class="bloc">
+    <h2>Éditeur du site</h2>
+    <p><strong>Bulle de Savon</strong><br>
+    Romain Vivien (Auto-entrepreneur)<br>
+    Adresse professionnelle : [3 rue de Neptune, France]<br>
+    SIRET : 990 486 425 00012<br>
+    Email : contact@bulle-de-savon.fr<br>
+    Téléphone : 06 69 52 89 26</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Responsable de la publication</h2>
+    <p>Romain Vivien</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Hébergement</h2>
+    <p>IONOS SARL<br>
+    7 place de la Gare<br>
+    57200 Sarreguemines – France</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Propriété intellectuelle</h2>
+    <p>Le contenu du site (textes, images, logos, etc.) est la propriété de <strong>Bulle de Savon</strong> et ne peut être reproduit sans autorisation préalable.</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Données personnelles</h2>
+    <p>Aucune donnée n’est collectée automatiquement (pas de cookies). Les seules informations recueillies sont celles que vous fournissez volontairement via le formulaire de demande de devis :</p>
+    <ul>
+      <li>Nom (obligatoire)</li>
+      <li>Email (obligatoire)</li>
+      <li>Adresse (obligatoire)</li>
+      <li>Téléphone (facultatif)</li>
+    </ul>
+    <p>Ces données sont uniquement utilisées pour répondre à votre demande et ne sont jamais transmises à des tiers.</p>
+  </div>
+
+  <div class="bloc">
+    <h2>Droit d'accès et de rectification</h2>
+    <p>Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression de vos données. Pour l’exercer, contactez : <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>.</p>
+  </div>
+
+  <!-- Bouton flottant retour à l'accueil -->
+  <a href="index.html" class="floating-btn">🏠</a>
+
+</body>
+</html>
