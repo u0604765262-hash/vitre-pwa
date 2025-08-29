@@ -17,7 +17,7 @@
     header {
       display: flex;
       align-items: center;
-      justify-content: flex-start; /* logo à gauche */
+      justify-content: flex-start;
       background: #ffffff;
       padding: 10px 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
@@ -28,11 +28,17 @@
     .intro {
       background: #ffffff;
       margin: 0;
-      padding: 20px; /* un peu plus d’air */
-      font-size: 17px; /* ✅ légèrement augmenté */
+      padding: 20px;
+      font-size: 17px;
       color: #333;
       text-align: center;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .info-minimum {
+      margin-top: 10px;
+      font-size: 15px;
+      color: #d9534f; /* rouge doux pour attirer l'attention */
+      font-weight: bold;
     }
     .container { padding: 20px; }
     .card {
@@ -45,7 +51,7 @@
     .card h2 { 
       margin: 0 0 10px 0; 
       font-size: 18px; 
-      color: #007bff; /* ✅ bleu pour les types de vitres */
+      color: #007bff;
     }
     .input-group { display: flex; align-items: center; margin: 5px 0; }
     .label { flex: 1; }
@@ -68,7 +74,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      background: #28a745; /* vert */
+      background: #28a745;
       color: white;
       text-align: center;
       padding: 15px;
@@ -78,11 +84,15 @@
       z-index: 999;
       transition: background 0.3s ease;
     }
-    .total:hover {
-      background: #218838; /* plus foncé au survol */
+    .total.disabled {
+      background: #aaa;
+      cursor: not-allowed;
     }
-    .total:active {
-      background: #1e7e34; /* encore plus foncé au clic */
+    .total:hover:not(.disabled) {
+      background: #218838;
+    }
+    .total:active:not(.disabled) {
+      background: #1e7e34;
     }
   </style>
 </head>
@@ -95,11 +105,14 @@
     Bienvenue chez <strong>Bulle de Savon</strong> !<br>
     Sélectionnez vos vitres et quantités, puis découvrez une estimation immédiate.<br>
     Cliquez ensuite sur <em>Suivant</em> pour nous envoyer votre demande de devis.
+    <div class="info-minimum">
+      ⚠️ Un total de 30 € minimum est demandé pour la prestation.
+    </div>
   </div>
 
   <div class="container" id="vitres"></div>
 
-  <div class="total" id="total">Total : 0,00 € — Suivant</div>
+  <div class="total disabled" id="total">Total : 0,00 € — Suivant</div>
 
   <script>
     const vitres = [
@@ -118,6 +131,7 @@
 
     const vitresContainer = document.getElementById("vitres");
     const totalDiv = document.getElementById("total");
+    let totalGlobal = 0;
 
     function createCounter(id) {
       return `
@@ -155,16 +169,28 @@
     }
 
     function calculerTotal() {
-      let total = 0;
+      totalGlobal = 0;
       vitres.forEach((v, i) => {
         const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
         const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
-        total += qteNormal * v.prix + qteSupp * v.supplement;
+        totalGlobal += qteNormal * v.prix + qteSupp * v.supplement;
       });
-      totalDiv.innerHTML = "Total : " + total.toFixed(2) + " € — Suivant";
+
+      totalDiv.innerHTML = "Total : " + totalGlobal.toFixed(2) + " € — Suivant";
+
+      if (totalGlobal >= 30) {
+        totalDiv.classList.remove("disabled");
+      } else {
+        totalDiv.classList.add("disabled");
+      }
     }
 
     totalDiv.addEventListener("click", () => {
+      if (totalGlobal < 30) {
+        alert("Le montant minimum pour valider est de 30 €.");
+        return;
+      }
+
       const selections = [];
       vitres.forEach((v, i) => {
         const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
