@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Résumé - Bulle de Savon</title>
-  
+
   <!-- ✅ Favicon -->
   <link rel="icon" href="logo1.png" type="image/png">
 
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 0; 
-      background: #f4f6f8; 
-      padding-bottom: 100px; 
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      padding-bottom: 100px;
       overflow-x: hidden;
     }
     header {
@@ -24,7 +24,9 @@
       padding: 10px 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    header img { height: 60px; }
+    header img {
+      height: 60px;
+    }
     .container { padding: 20px; }
     .card {
       background: white;
@@ -33,16 +35,20 @@
       margin: 15px 0;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    h2 { 
-      color: #333; 
-      margin-top: 0; 
-      display: flex; 
+    h2 {
+      color: #333;
+      margin-top: 0;
+      display: flex;
       align-items: center;
       gap: 8px;
       font-size: 20px;
     }
     ul { list-style: none; padding: 0; }
-    li { margin: 5px 0; font-size: 16px; color: #333; }
+    li {
+      margin: 5px 0;
+      font-size: 16px;
+      color: #333;
+    }
     .total {
       font-weight: bold;
       font-size: 20px;
@@ -75,10 +81,10 @@
       width: 100%;
       margin-top: 20px;
       padding: 15px;
-      font-size: 20px; 
+      font-size: 20px;
       font-weight: bold;
       color: white;
-      background: #28a745; 
+      background: #28a745;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -101,7 +107,7 @@
       position: fixed;
       bottom: 80px;
       right: 20px;
-      background: #007bff; 
+      background: #007bff;
       color: white;
       border: none;
       border-radius: 50%;
@@ -149,13 +155,16 @@
       cursor: pointer;
       font-weight: bold;
     }
-    #cookieConsent button:hover {
-      background: #218838;
+    #cookieConsent button:hover { background: #218838; }
+    #cookieConsent #declineCookies {
+      background: #dc3545;
+    }
+    #cookieConsent #declineCookies:hover {
+      background: #b02a37;
     }
   </style>
 </head>
 <body>
-
   <header>
     <img src="logo.png" alt="Logo Bulle de Savon">
   </header>
@@ -165,8 +174,7 @@
     <ul id="resume"></ul>
     <div class="total" id="total"></div>
     <p class="info-msg">
-      Le prix vous convient et vous souhaitez prendre contact avec nous ?  
-      Merci de remplir le formulaire ci-dessous et nous reviendrons vers vous dans moins de 48h.
+      Le prix vous convient et vous souhaitez prendre contact avec nous ? Merci de remplir le formulaire ci-dessous et nous reviendrons vers vous dans moins de 48h.
     </p>
   </div>
 
@@ -176,7 +184,7 @@
       <input type="text" id="name" placeholder="Votre nom *" required>
       <input type="email" id="email" placeholder="Votre adresse e-mail *" required>
       <input type="text" id="address" placeholder="Votre adresse * (obligatoire pour calculer les éventuels frais de déplacement)" required>
-      <input type="tel" id="phone" placeholder="Votre numéro de téléphone (facultatif)">      
+      <input type="tel" id="phone" placeholder="Votre numéro de téléphone (facultatif)">
       <textarea id="comment" rows="4" placeholder="Commentaire (facultatif)"></textarea>
       <button type="submit" class="btn-send">📩 Envoyer ma demande</button>
     </form>
@@ -188,36 +196,36 @@
   <button class="btn-home" onclick="window.location.href='index.html'">🏠</button>
 
   <footer>
-    <a href="mentions-legales.html">Mentions légales</a>
+    <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
     &nbsp;•&nbsp;
     <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
   </footer>
 
   <!-- ✅ Bandeau cookies -->
   <div id="cookieConsent">
-    🍪 Ce site utilise des cookies pour améliorer votre expérience.  
+    🍪 Ce site utilise des cookies pour améliorer votre expérience.
     <button id="acceptCookies">Accepter</button>
+    <button id="declineCookies">Refuser</button>
   </div>
 
   <!-- EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    (function(){
-      emailjs.init("P5p4M_38kKjmuJPjz"); 
-    })();
+    (function(){ emailjs.init("P5p4M_38kKjmuJPjz"); })();
 
     const resumeUl = document.getElementById("resume");
     const totalDiv = document.getElementById("total");
     const successMsg = document.getElementById("successMsg");
     const commande = JSON.parse(localStorage.getItem("commande")) || [];
-
     let total = 0;
+
     commande.forEach(item => {
       const li = document.createElement("li");
       li.textContent = `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €`;
       resumeUl.appendChild(li);
       total += item.sousTotal;
     });
+
     totalDiv.textContent = "TOTAL : " + total.toFixed(2) + " €";
 
     document.getElementById("contactForm").addEventListener("submit", function(e) {
@@ -228,9 +236,10 @@
         phone: document.getElementById("phone").value,
         address: document.getElementById("address").value,
         comment: document.getElementById("comment").value,
-        message: commande.map(item => `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €`).join("\n") 
-                + `\n\nTOTAL = ${total.toFixed(2)} €`
+        message: commande.map(item => `${item.quantite} × ${item.nom} → ${item.sousTotal.toFixed(2)} €`).join("\n")
+                 + `\n\nTOTAL = ${total.toFixed(2)} €`
       };
+
       emailjs.send("service_b7vi3ol", "template_wxnjg9e", params).then(
         function(response) {
           document.getElementById("contactForm").style.display = "none";
@@ -245,10 +254,15 @@
     // ✅ Gestion consentement cookies + injection GA/GTM
     function loadAnalytics() {
       // Google Tag Manager
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      (function(w,d,s,l,i){
+        w[l]=w[l]||[];
+        w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
+        var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),
+            dl=l!='dataLayer'?'&l='+l:'';
+        j.async=true;
+        j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+        f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-PC3K8HGL');
 
       // Google Analytics 4
@@ -261,14 +275,15 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-NGR43J81FE');
+        // ✅ IP anonymisée
+        gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
       }
     }
 
     window.addEventListener("load", function(){
-      if (localStorage.getItem("cookiesAccepted")) {
+      if (localStorage.getItem("cookiesAccepted") === "true") {
         loadAnalytics();
-      } else {
+      } else if (!localStorage.getItem("cookiesAccepted")) {
         document.getElementById("cookieConsent").style.display = "block";
       }
 
@@ -276,6 +291,11 @@
         localStorage.setItem("cookiesAccepted", "true");
         document.getElementById("cookieConsent").style.display = "none";
         loadAnalytics();
+      });
+
+      document.getElementById("declineCookies").addEventListener("click", function(){
+        localStorage.setItem("cookiesAccepted", "false");
+        document.getElementById("cookieConsent").style.display = "none";
       });
     });
   </script>
