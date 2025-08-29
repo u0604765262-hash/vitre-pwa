@@ -73,53 +73,37 @@
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* ✅ Bannière cookies (style amélioré) */
+    /* ✅ Bannière cookies (style uniforme) */
     #cookie-banner {
       position: fixed;
       bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90%;
-      max-width: 420px;
-      background: #ffffff;
-      color: #333;
-      padding: 18px 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      text-align: center;
-      z-index: 2000;
+      right: 20px;
+      max-width: 280px;
+      background: #222;
+      color: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      z-index: 10000;
       font-size: 14px;
-      display: none;
-      animation: fadeIn 0.4s ease-in-out;
+      display: none; /* caché par défaut */
     }
-    #cookie-banner p {
-      margin: 0 0 10px;
-      font-size: 14px;
-      line-height: 1.4em;
+    #cookie-banner .cookie-buttons {
+      margin-top: 10px;
+      text-align: right;
     }
     #cookie-banner button {
-      background: #007bff;
+      margin-left: 5px;
+      padding: 5px 10px;
       border: none;
-      color: white;
-      padding: 8px 16px;
-      margin: 5px;
-      border-radius: 6px;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s, transform 0.2s;
+      font-weight: bold;
     }
-    #cookie-banner button:hover { background: #0056b3; transform: scale(1.05); }
-    #cookie-banner button:active { transform: scale(0.95); }
-    #cookie-banner .refuse {
-      background: #ddd;
-      color: #333;
-    }
-    #cookie-banner .refuse:hover { background: #bbb; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, 10px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
+    #cookie-accept { background: #28a745; color: #fff; }
+    #cookie-reject { background: #dc3545; color: #fff; }
+    #cookie-accept:hover { background: #218838; }
+    #cookie-reject:hover { background: #b02a37; }
   </style>
 </head>
 <body>
@@ -264,3 +248,4 @@
   </script>
 </body>
 </html>
+
