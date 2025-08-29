@@ -6,6 +6,10 @@
   <title>Mentions légales - Bulle de Savon</title>
   <link rel="icon" href="logo1.png" type="image/png">
 
+  <!-- ✅ Ajout PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#007bff">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -127,11 +131,20 @@
   <!-- ✅ Bouton retour -->
   <button class="btn-home" onclick="window.location.href='index.html'">🏠</button>
 
-<footer>
+  <footer>
     <a href="mentions-legales.html">Mentions légales</a>
     &nbsp;•&nbsp;
     <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
   </footer>
+
+  <!-- ✅ Enregistrement du service worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("service-worker.js")
+        .then(() => console.log("Service Worker enregistré ✅"))
+        .catch(err => console.error("Erreur Service Worker ❌", err));
+    }
+  </script>
 
 </body>
 </html>
