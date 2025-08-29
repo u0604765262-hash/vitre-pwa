@@ -73,33 +73,53 @@
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* ✅ Bannière cookies */
+    /* ✅ Bannière cookies (style amélioré) */
     #cookie-banner {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 15px;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 420px;
+      background: #ffffff;
+      color: #333;
+      padding: 18px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       text-align: center;
       z-index: 2000;
       font-size: 14px;
       display: none;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    #cookie-banner p {
+      margin: 0 0 10px;
+      font-size: 14px;
+      line-height: 1.4em;
     }
     #cookie-banner button {
       background: #007bff;
       border: none;
       color: white;
-      padding: 8px 14px;
+      padding: 8px 16px;
       margin: 5px;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s;
+      font-size: 14px;
+      transition: background 0.3s, transform 0.2s;
     }
-    #cookie-banner button:hover { background: #0056b3; }
-    #cookie-banner .refuse { background: #555; }
-    #cookie-banner .refuse:hover { background: #333; }
+    #cookie-banner button:hover { background: #0056b3; transform: scale(1.05); }
+    #cookie-banner button:active { transform: scale(0.95); }
+    #cookie-banner .refuse {
+      background: #ddd;
+      color: #333;
+    }
+    #cookie-banner .refuse:hover { background: #bbb; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, 10px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
   </style>
 </head>
 <body>
@@ -183,8 +203,8 @@
 
   <!-- ✅ Bannière cookies -->
   <div id="cookie-banner">
-    Ce site utilise des cookies pour mesurer son audience (Google Analytics).
-    <br>
+    <p>Nous utilisons des cookies uniquement pour mesurer l’audience du site (Google Analytics).  
+    Vous pouvez accepter ou refuser.</p>
     <button onclick="acceptCookies()">Accepter</button>
     <button class="refuse" onclick="refuseCookies()">Refuser</button>
   </div>
