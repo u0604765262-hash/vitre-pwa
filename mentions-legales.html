@@ -4,116 +4,134 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mentions légales - Bulle de Savon</title>
+  <link rel="icon" href="logo1.png" type="image/png">
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
       margin: 0;
       background: #f4f6f8;
       color: #333;
-      padding-bottom: 100px; /* place pour bouton flottant */
+      padding-bottom: 100px;
     }
     header {
-      background: #007bff;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-    }
-    .bloc {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      background: #ffffff;
+      padding: 10px 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin: 20px;
     }
-    h1, h2 {
-      color: #007bff;
+    header img { height: 60px; }
+    .container { padding: 20px; }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    a {
-      color: #007bff;
-      text-decoration: none;
+    h2 {
+      color: #333;
+      margin-top: 0;
+      font-size: 20px;
     }
-    a:hover {
-      text-decoration: underline;
-    }
+    ul { list-style: disc; margin-left: 20px; }
+    li { margin: 5px 0; font-size: 16px; color: #333; }
 
-    /* Bouton flottant accueil */
-    .floating-btn {
+    /* ✅ Bouton retour à l'accueil */
+    .btn-home {
       position: fixed;
-      bottom: 20px;
+      bottom: 80px;
       right: 20px;
       background: #007bff;
       color: white;
-      width: 55px;
-      height: 55px;
+      border: none;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
       cursor: pointer;
-      z-index: 999;
-      transition: background 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+      z-index: 1000;
     }
-    .floating-btn:hover {
-      background: #0056b3;
+    .btn-home:hover { background: #0056b3; transform: scale(1.1); }
+    .btn-home:active { background: #004494; transform: scale(0.95); }
+
+    footer {
+      background: transparent;
+      color: #666;
+      font-size: 12px;
+      text-align: center;
+      padding: 14px 12px 24px;
     }
+    footer a { color: #007bff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-  <header>Mentions légales</header>
+  <header>
+    <img src="logo.png" alt="Logo Bulle de Savon">
+  </header>
 
-  <div class="bloc">
-    <h2>Éditeur du site</h2>
-    <p><strong>Bulle de Savon</strong><br>
-    Romain Vivien (Auto-entrepreneur)<br>
-    Adresse professionnelle : 3 rue de Neptune, 94700 Maisons-ALfort, France<br>
-    SIRET : 990 486 425 00012<br>
-    Email : contact@bulle-de-savon.fr<br>
-    Téléphone : 06 69 52 89 26</p>
+  <div class="container">
+    <div class="card">
+      <h2>Éditeur du site</h2>
+      <p><strong>Bulle de Savon</strong><br>
+      Romain Vivien (Auto-entrepreneur)<br>
+      Adresse professionnelle : 3 rue de Neptune, 94700 Maisons-Alfort, France<br>
+      SIRET : 990 486 425 00012<br>
+      Email : contact@bulle-de-savon.fr<br>
+      Téléphone : 06 69 52 89 26</p>
+    </div>
+
+    <div class="card">
+      <h2>Responsable de la publication</h2>
+      <p>Romain Vivien</p>
+    </div>
+
+    <div class="card">
+      <h2>Hébergement</h2>
+      <p>IONOS SARL<br>
+      7 place de la Gare<br>
+      57200 Sarreguemines – France</p>
+    </div>
+
+    <div class="card">
+      <h2>Propriété intellectuelle</h2>
+      <p>Le contenu du site (textes, images, logos, etc.) est la propriété de <strong>Bulle de Savon</strong> et ne peut être reproduit sans autorisation préalable.</p>
+    </div>
+
+    <div class="card">
+      <h2>Données personnelles</h2>
+      <p>Aucune donnée n’est collectée automatiquement (pas de cookies). Les seules informations recueillies sont celles que vous fournissez volontairement via le formulaire de demande de devis :</p>
+      <ul>
+        <li>Nom (obligatoire)</li>
+        <li>Email (obligatoire)</li>
+        <li>Adresse (obligatoire)</li>
+        <li>Téléphone (facultatif)</li>
+      </ul>
+      <p>Ces données sont uniquement utilisées pour répondre à votre demande et ne sont jamais transmises à des tiers.</p>
+    </div>
+
+    <div class="card">
+      <h2>Droit d'accès et de rectification</h2>
+      <p>Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression de vos données. Pour l’exercer, contactez : 
+        <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>.
+      </p>
+    </div>
   </div>
 
-  <div class="bloc">
-    <h2>Responsable de la publication</h2>
-    <p>Romain Vivien</p>
-  </div>
+  <!-- ✅ Bouton retour -->
+  <button class="btn-home" onclick="window.location.href='index.html'">🏠</button>
 
-  <div class="bloc">
-    <h2>Hébergement</h2>
-    <p>IONOS SARL<br>
-    7 place de la Gare<br>
-    57200 Sarreguemines – France</p>
-  </div>
-
-  <div class="bloc">
-    <h2>Propriété intellectuelle</h2>
-    <p>Le contenu du site (textes, images, logos, etc.) est la propriété de <strong>Bulle de Savon</strong> et ne peut être reproduit sans autorisation préalable.</p>
-  </div>
-
-  <div class="bloc">
-    <h2>Données personnelles</h2>
-    <p>Aucune donnée n’est collectée automatiquement (pas de cookies). Les seules informations recueillies sont celles que vous fournissez volontairement via le formulaire de demande de devis :</p>
-    <ul>
-      <li>Nom (obligatoire)</li>
-      <li>Email (obligatoire)</li>
-      <li>Adresse (obligatoire)</li>
-      <li>Téléphone (facultatif)</li>
-    </ul>
-    <p>Ces données sont uniquement utilisées pour répondre à votre demande et ne sont jamais transmises à des tiers.</p>
-  </div>
-
-  <div class="bloc">
-    <h2>Droit d'accès et de rectification</h2>
-    <p>Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification et de suppression de vos données. Pour l’exercer, contactez : <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>.</p>
-  </div>
-
-  <!-- Bouton flottant retour à l'accueil -->
-  <a href="index.html" class="floating-btn">🏠</a>
+<footer>
+    <a href="mentions-legales.html">Mentions légales</a>
+    &nbsp;•&nbsp;
+    <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
+  </footer>
 
 </body>
 </html>
-
