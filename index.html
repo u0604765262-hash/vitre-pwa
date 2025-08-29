@@ -125,6 +125,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       z-index: 10000;
       font-size: 14px;
+      display: none; /* Par défaut caché */
     }
     #cookie-banner .cookie-buttons {
       margin-top: 10px;
@@ -295,12 +296,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     const acceptBtn = document.getElementById("cookie-accept");
     const rejectBtn = document.getElementById("cookie-reject");
 
-    if (localStorage.getItem("cookiesAccepted") === "true") {
+    const cookieChoice = localStorage.getItem("cookiesAccepted");
+
+    if (cookieChoice === "true") {
+      // ✅ L'utilisateur a déjà accepté → on active Google Analytics
       gtag('js', new Date());
       gtag('config', 'G-NGR43J81FE');
       cookieBanner.style.display = "none";
-    } else if (localStorage.getItem("cookiesAccepted") === "false") {
+    } else if (cookieChoice === "false") {
+      // ❌ L'utilisateur a déjà refusé → on cache le bandeau
       cookieBanner.style.display = "none";
+    } else {
+      // ℹ️ L'utilisateur n'a pas encore choisi → on affiche le bandeau
+      cookieBanner.style.display = "block";
     }
 
     acceptBtn.addEventListener("click", () => {
