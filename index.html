@@ -12,7 +12,7 @@
       font-family: Arial, sans-serif; 
       margin: 0; 
       background: #f4f6f8; 
-      padding-bottom: 120px; 
+      padding-bottom: 120px; /* espace pour la barre Total (fixe) */
     }
     header {
       display: flex;
@@ -22,9 +22,7 @@
       padding: 10px 20px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    header img {
-      height: 60px;
-    }
+    header img { height: 60px; }
     .intro {
       background: #ffffff;
       margin: 0;
@@ -37,7 +35,7 @@
     .info-minimum {
       margin-top: 10px;
       font-size: 15px;
-      color: #d9534f; /* rouge doux pour attirer l'attention */
+      color: #d9534f;
       font-weight: bold;
     }
     .container { padding: 20px; }
@@ -71,7 +69,7 @@
     }
     .total {
       position: fixed;
-      bottom: 0;
+      bottom: 0;            /* ↩️ recollée en bas */
       left: 0;
       right: 0;
       background: #28a745;
@@ -84,16 +82,20 @@
       z-index: 999;
       transition: background 0.3s ease;
     }
-    .total.disabled {
-      background: #aaa;
-      cursor: not-allowed;
+    .total.disabled { background: #aaa; cursor: not-allowed; }
+    .total:hover:not(.disabled) { background: #218838; }
+    .total:active:not(.disabled) { background: #1e7e34; }
+
+    /* Footer léger, non fixe */
+    footer {
+      background: transparent;
+      color: #666;
+      font-size: 12px;
+      text-align: center;
+      padding: 14px 12px 24px;
     }
-    .total:hover:not(.disabled) {
-      background: #218838;
-    }
-    .total:active:not(.disabled) {
-      background: #1e7e34;
-    }
+    footer a { color: #007bff; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -106,13 +108,21 @@
     Sélectionnez vos vitres et quantités, puis découvrez une estimation immédiate.<br>
     Cliquez ensuite sur <em>Suivant</em> pour nous envoyer votre demande de devis.
     <div class="info-minimum">
-      ⚠️ Un total de 30 € minimum est demandé pour la prestation.
+      ⚠️ La commande doit atteindre un minimum de 30 € pour que nous puissions nous déplacer.
     </div>
   </div>
 
   <div class="container" id="vitres"></div>
 
+  <!-- Barre Total -->
   <div class="total disabled" id="total">Total : 0,00 € — Suivant</div>
+
+  <!-- Footer simple avec lien -->
+  <footer>
+    <a href="mentions-legales.html">Mentions légales</a>
+    &nbsp;•&nbsp;
+    <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
+  </footer>
 
   <script>
     const vitres = [
@@ -176,7 +186,7 @@
         totalGlobal += qteNormal * v.prix + qteSupp * v.supplement;
       });
 
-      totalDiv.innerHTML = "Total : " + totalGlobal.toFixed(2) + " € — Suivant";
+      totalDiv.textContent = "Total : " + totalGlobal.toFixed(2) + " € — Suivant";
 
       if (totalGlobal >= 30) {
         totalDiv.classList.remove("disabled");
