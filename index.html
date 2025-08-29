@@ -1,36 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PC3K8HGL');</script>
-<!-- End Google Tag Manager -->
-  <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NGR43J81FE');
-</script>
-<!-- End Google Analytics 4 -->
-  
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulle de Savon - Nettoyage Vitres</title>
 
-  <!-- ✅ Favicon (logo onglet navigateur) -->
+  <!-- ✅ Favicon -->
   <link rel="icon" href="logo1.png" type="image/png">
+
   <style>
     body { 
       font-family: Arial, sans-serif; 
       margin: 0; 
       background: #f4f6f8; 
-      padding-bottom: 120px; /* espace pour la barre Total (fixe) */
+      padding-bottom: 120px;
     }
     header {
       display: flex;
@@ -87,7 +70,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     .total {
       position: fixed;
-      bottom: 0;            /* ↩️ recollée en bas */
+      bottom: 0;
       left: 0;
       right: 0;
       background: #28a745;
@@ -104,7 +87,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .total:hover:not(.disabled) { background: #218838; }
     .total:active:not(.disabled) { background: #1e7e34; }
 
-    /* Footer léger, non fixe */
     footer {
       background: transparent;
       color: #666;
@@ -114,13 +96,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+
+    /* ✅ Bannière cookies */
+    #cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid #ddd;
+      padding: 15px;
+      text-align: center;
+      font-size: 14px;
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+      z-index: 10000;
+    }
+    #cookie-banner button {
+      margin: 0 5px;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #accept-cookies { background: #28a745; color: #fff; }
+    #decline-cookies { background: #ccc; color: #333; }
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC3K8HGL"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
   <header>
     <img src="logo.png" alt="Logo Bulle de Savon">
   </header>
@@ -130,21 +132,76 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Sélectionnez vos vitres et quantités, puis découvrez une estimation immédiate.<br>
     Cliquez ensuite sur <em>Suivant</em> pour nous envoyer votre demande de devis.
     <div class="info-minimum">
-      ⚠️ Le total doit être au minimum de 30 € afin de la valider la prestation.
+      ⚠️ Le total doit être au minimum de 30 € afin de valider la prestation.
     </div>
   </div>
 
   <div class="container" id="vitres"></div>
 
-  <!-- Barre Total -->
   <div class="total disabled" id="total">Total : 0,00 € — Suivant</div>
 
-  <!-- Footer simple avec lien -->
   <footer>
     <a href="mentions-legales.html">Mentions légales</a>
     &nbsp;•&nbsp;
     <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
   </footer>
+
+  <!-- ✅ Bannière Cookies -->
+  <div id="cookie-banner">
+    Ce site utilise des cookies pour mesurer l’audience (Google Analytics). 
+    <br>Souhaitez-vous les accepter ?
+    <br><br>
+    <button id="accept-cookies">Accepter</button>
+    <button id="decline-cookies">Refuser</button>
+  </div>
+
+  <script>
+    // ✅ Gestion du consentement cookies
+    const cookieBanner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("accept-cookies");
+    const declineBtn = document.getElementById("decline-cookies");
+
+    function loadAnalytics() {
+      // Google Tag Manager
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
+
+      // Google Analytics 4
+      let gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      document.head.appendChild(gaScript);
+
+      gaScript.onload = function() {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-NGR43J81FE');
+      };
+    }
+
+    // Vérification du choix utilisateur
+    if (localStorage.getItem("cookies-choice") === "accepted") {
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    } else if (localStorage.getItem("cookies-choice") === "declined") {
+      cookieBanner.style.display = "none";
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("cookies-choice", "accepted");
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    });
+
+    declineBtn.addEventListener("click", () => {
+      localStorage.setItem("cookies-choice", "declined");
+      cookieBanner.style.display = "none";
+    });
+  </script>
 
   <script>
     const vitres = [
