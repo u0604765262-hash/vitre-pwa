@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PC3K8HGL');</script>
-<!-- End Google Tag Manager -->
-
-  <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-NGR43J81FE');
-</script>
-<!-- End Google Analytics 4 -->
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Résumé - Bulle de Savon</title>
@@ -62,7 +43,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
     ul { list-style: none; padding: 0; }
     li { margin: 5px 0; font-size: 16px; color: #333; }
-    /* ✅ Style du total */
     .total {
       font-weight: bold;
       font-size: 20px;
@@ -117,7 +97,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border: 2px solid #28a745;
       border-radius: 10px;
     }
-    /* ✅ Bouton retour à l'accueil */
     .btn-home {
       position: fixed;
       bottom: 80px;
@@ -157,7 +136,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       padding: 15px;
       font-size: 14px;
       text-align: center;
-      display: none; /* caché par défaut */
+      display: none;
       z-index: 2000;
     }
     #cookieConsent button {
@@ -176,10 +155,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC3K8HGL"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
   <header>
     <img src="logo.png" alt="Logo Bulle de Savon">
@@ -210,7 +185,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </div>
 
-  <!-- ✅ Bouton retour -->
   <button class="btn-home" onclick="window.location.href='index.html'">🏠</button>
 
   <footer>
@@ -268,14 +242,40 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       );
     });
 
-    // ✅ Gestion consentement cookies
+    // ✅ Gestion consentement cookies + injection GA/GTM
+    function loadAnalytics() {
+      // Google Tag Manager
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
+
+      // Google Analytics 4
+      var gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      document.head.appendChild(gaScript);
+
+      gaScript.onload = function(){
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-NGR43J81FE');
+      }
+    }
+
     window.addEventListener("load", function(){
-      if (!localStorage.getItem("cookiesAccepted")) {
+      if (localStorage.getItem("cookiesAccepted")) {
+        loadAnalytics();
+      } else {
         document.getElementById("cookieConsent").style.display = "block";
       }
+
       document.getElementById("acceptCookies").addEventListener("click", function(){
         localStorage.setItem("cookiesAccepted", "true");
         document.getElementById("cookieConsent").style.display = "none";
+        loadAnalytics();
       });
     });
   </script>
