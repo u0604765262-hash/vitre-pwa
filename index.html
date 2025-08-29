@@ -1,22 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PC3K8HGL');</script>
-<!-- End Google Tag Manager -->
-
-  <!-- Google Analytics 4 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-</script>
-<!-- End Google Analytics 4 -->
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulle de Savon - Nettoyage Vitres</title>
@@ -143,11 +127,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PC3K8HGL"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-
   <header>
     <img src="logo.png" alt="Logo Bulle de Savon">
   </header>
@@ -183,6 +162,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </footer>
 
   <script>
+    /* ---------- LOGIQUE DES VITRES ---------- */
     const vitres = [
       { nom: "Vitre classique (≤ 1m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
       { nom: "Porte-fenêtre", prix: 6.00, supplement: 7.20, unite: "piece" },
@@ -291,30 +271,48 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     calculerTotal();
 
-    /* ✅ Gestion cookies */
+
+    /* ---------- COOKIES ---------- */
     const cookieBanner = document.getElementById("cookie-banner");
     const acceptBtn = document.getElementById("cookie-accept");
     const rejectBtn = document.getElementById("cookie-reject");
 
+    function loadAnalytics() {
+      // GTM
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
+
+      // GA4
+      var gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      document.head.appendChild(gaScript);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+      gtag('config', 'G-NGR43J81FE');
+    }
+
     const cookieChoice = localStorage.getItem("cookiesAccepted");
 
     if (cookieChoice === "true") {
-      // ✅ L'utilisateur a déjà accepté → on active Google Analytics
-      gtag('js', new Date());
-      gtag('config', 'G-NGR43J81FE');
+      loadAnalytics();
       cookieBanner.style.display = "none";
     } else if (cookieChoice === "false") {
-      // ❌ L'utilisateur a déjà refusé → on cache le bandeau
       cookieBanner.style.display = "none";
     } else {
-      // ℹ️ L'utilisateur n'a pas encore choisi → on affiche le bandeau
       cookieBanner.style.display = "block";
     }
 
     acceptBtn.addEventListener("click", () => {
       localStorage.setItem("cookiesAccepted", "true");
-      gtag('js', new Date());
-      gtag('config', 'G-NGR43J81FE');
+      loadAnalytics();
       cookieBanner.style.display = "none";
     });
 
