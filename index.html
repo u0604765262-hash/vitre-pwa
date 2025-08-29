@@ -296,7 +296,9 @@
       window.gtag = gtag;
 
       gtag('js', new Date());
-      gtag('config', 'G-NGR43J81FE');
+
+      // ✅ Activation anonymisation IP
+      gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
     }
 
     const cookieChoice = localStorage.getItem("cookiesAccepted");
