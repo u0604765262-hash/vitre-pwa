@@ -177,7 +177,7 @@
       { nom: "Grand miroir (> 2m²)", prix: 5.00, supplement: 6.00, unite: "piece" },
       { nom: "Paroi de douche", prix: 5.00, supplement: 6.00, unite: "piece" },
       { nom: "Vitrine commerciale", prix: 10.00, supplement: 12.00, unite: "m2" },
-      { nom: "Vitres en hauteur (2m à 4m)", prix: 10.00, supplement: 12.00, unite: "m2" }
+      { nom: "Vitres en hauteur (nécessitant une perche téléscopique et/ou un escabeau) ", prix: 10.00, supplement: 12.00, unite: "m2" }
     ];
 
     const vitresContainer = document.getElementById("vitres");
@@ -204,7 +204,7 @@
           ${createCounter("normal-" + i)}
         </div>
         <div class="input-group">
-          <span class="label">Supplément (${v.supplement.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
+          <span class="label">Si très sale ou difficile d'accès (${v.supplement.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
           ${createCounter("supp-" + i)}
         </div>
       `;
