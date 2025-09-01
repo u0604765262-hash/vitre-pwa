@@ -63,6 +63,12 @@
       color: #555;
       font-style: italic;
     }
+    .warning-msg {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #b02a37;
+      font-style: normal;
+    }
     form input, form textarea {
       width: 100%;
       padding: 10px;
@@ -176,6 +182,10 @@
     <p class="info-msg">
       Le prix vous convient et vous souhaitez prendre contact avec nous ? Merci de remplir le formulaire ci-dessous et nous reviendrons vers vous dans moins de 48h.
     </p>
+    <p class="warning-msg">
+      ⚠️ Le prix indiqué est une estimation basée sur les informations fournies par le client. 
+      Le montant final pourra être ajusté en fonction de la surface réelle des vitres et des conditions d’accès constatées sur place.
+    </p>
   </div>
 
   <div class="container card">
@@ -255,7 +265,6 @@
 
     // ✅ Gestion consentement cookies + injection GA/GTM
     function loadAnalytics() {
-      // Google Tag Manager
       (function(w,d,s,l,i){
         w[l]=w[l]||[];
         w[l].push({'gtm.start': new Date().getTime(), event:'gtm.js'});
@@ -267,7 +276,6 @@
         f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-PC3K8HGL');
 
-      // Google Analytics 4
       var gaScript = document.createElement("script");
       gaScript.async = true;
       gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
@@ -277,7 +285,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        // ✅ IP anonymisée
         gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
       }
     }
