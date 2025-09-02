@@ -24,13 +24,15 @@
     }
     header img { height: 60px; }
     .intro {
-      background: #ffffff;
-      margin: 0;
-      padding: 20px;
-      font-size: 17px;
-      color: #333;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: #ffffff;
+  margin: 0;
+  padding: 20px;
+  font-size: 20px;  /* ✅ Agrandi */
+  line-height: 1.6; /* ✅ Améliore l’espacement */
+  color: #333;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
     }
     .info-minimum {
       margin-top: 10px;
@@ -60,6 +62,13 @@
       margin: 0 0 10px 0; 
       font-size: 18px; 
       color: #007bff;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: #343a40;
+      margin: 25px 0 10px 0;
+      padding-bottom: 5px;
     }
     .input-group { display: flex; align-items: center; margin: 5px 0; }
     .label { flex: 1; }
@@ -180,25 +189,38 @@
   <script>
    /* ---------- LOGIQUE DES VITRES ---------- */
     const vitres = [
-      // Fenêtres standards
-      { nom: "Vitre classique (≤ 1m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { nom: "Porte-fenêtre", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { nom: "Baie vitrée (particulier)", prix: 5.00, supplement: 6.00, unite: "m2" },
-      { nom: "Velux", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { nom: "Verrière", prix: 6.00, supplement: 7.20, unite: "m2" },
-      { nom: "Véranda", prix: 8.00, supplement: 9.60, unite: "m2" },
+      { section: "🔹 Fenêtres et ouvertures classiques" },
+      { nom: "Fenêtre simple 1 vantail (≈60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Fenêtre simple 2 vantaux (≈120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Porte-fenêtre 1 vantail (≈75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Porte-fenêtre 2 vantaux (≈150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { nom: "Fenêtre de toit Velux (≈78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Baie vitrée 2 vantaux (≈215×215 cm)", prix: 12.00, supplement: 14.00, unite: "piece" },
+      { nom: "Baie vitrée 3 vantaux (≈320×215 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
+      { nom: "Baie vitrée 4 vantaux (≈420×215 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
+      { nom: "Verrière intérieure (≈60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Véranda vitrée (≈80×150 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
 
-      // Vitres particulières
-      { nom: "Vitre avec séparation", prix: 2.00, supplement: 2.40, unite: "piece" },
-      { nom: "Petit carreau (≤ 15x15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { section: "🔹 Vitres particulières" },
+      { nom: "Vitre avec séparation (prix par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { nom: "Petit carreau (≈15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { nom: "Imposte de porte (≈80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
 
-      // Autres surfaces vitrées
-      { nom: "Miroir classique (≤ 2m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { nom: "Grand miroir (> 2m²)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { nom: "Paroi de douche", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { nom: "Garde-corps vitré / Balustrade en verre", prix: 8.00, supplement: 9.60, unite: "m2" },
-      { nom: "Vitres en hauteur (entre 2m et 4m, avec escabeau et/ou perche)", prix: 10.00, supplement: 12.00, unite: "m2" },
-      { nom: "Vitrine commerciale", prix: 10.00, supplement: 12.00, unite: "m2" }
+      { section: "🔹 Surfaces vitrées spéciales" },
+      { nom: "Miroir standard (≈100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Grand miroir (≈200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Paroi de douche (≈80×200 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Garde-corps vitré (≈90×120 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
+      { nom: "Table en verre (≈100×60 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+
+      { section: "🔹 Commerces et grandes surfaces vitrées" },
+      { nom: "Vitrine commerciale 1 panneau (≈150×250 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { nom: "Vitrine commerciale 2 panneaux (≈300×250 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
+      { nom: "Grande vitrine (≈450×250 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
+      { nom: "Porte automatique vitrée (≈100×220 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
+
+      { section: "🔹 Situations particulières" },
+      { nom: "Vitres en hauteur (2m à 4m)", prix: 10.00, supplement: 12.00, unite: "piece" }
     ];
 
     const vitresContainer = document.getElementById("vitres");
@@ -216,16 +238,24 @@
     }
 
     vitres.forEach((v, i) => {
+      if (v.section) {
+        const sectionDiv = document.createElement("div");
+        sectionDiv.className = "section-title";
+        sectionDiv.textContent = v.section;
+        vitresContainer.appendChild(sectionDiv);
+        return;
+      }
+
       const div = document.createElement("div");
       div.className = "card";
       div.innerHTML = `
         <h2>${v.nom}</h2>
         <div class="input-group">
-          <span class="label">Normal (${v.prix.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
+          <span class="label">Normal (${v.prix.toFixed(2)} €)</span>
           ${createCounter("normal-" + i)}
         </div>
         <div class="input-group">
-          <span class="label">Très sale ou difficile d'accès (${v.supplement.toFixed(2)} €${v.unite === "m2" ? "/m²" : ""})</span>
+          <span class="label">Très sale ou difficile d'accès (${v.supplement.toFixed(2)} €)</span>
           ${createCounter("supp-" + i)}
         </div>
       `;
@@ -243,6 +273,7 @@
     function calculerTotal() {
       totalGlobal = 0;
       vitres.forEach((v, i) => {
+        if (!v.nom) return;
         const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
         const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
         totalGlobal += qteNormal * v.prix + qteSupp * v.supplement;
@@ -265,6 +296,7 @@
 
       const selections = [];
       vitres.forEach((v, i) => {
+        if (!v.nom) return;
         const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
         if (qteNormal > 0) {
           selections.push({
@@ -294,67 +326,6 @@
     });
 
     calculerTotal();
-
-
-    /* ---------- COOKIES ---------- */
-    const cookieBanner = document.getElementById("cookie-banner");
-    const acceptBtn = document.getElementById("cookie-accept");
-    const rejectBtn = document.getElementById("cookie-reject");
-
-    function loadAnalytics() {
-      // GTM
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
-
-      // GA4
-      var gaScript = document.createElement("script");
-      gaScript.async = true;
-      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
-      document.head.appendChild(gaScript);
-
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      window.gtag = gtag;
-
-      gtag('js', new Date());
-
-      // ✅ Activation anonymisation IP
-      gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
-    }
-
-    const cookieChoice = localStorage.getItem("cookiesAccepted");
-
-    if (cookieChoice === "true") {
-      loadAnalytics();
-      cookieBanner.style.display = "none";
-    } else if (cookieChoice === "false") {
-      cookieBanner.style.display = "none";
-    } else {
-      cookieBanner.style.display = "block";
-    }
-
-    acceptBtn.addEventListener("click", () => {
-      localStorage.setItem("cookiesAccepted", "true");
-      loadAnalytics();
-      cookieBanner.style.display = "none";
-    });
-
-    rejectBtn.addEventListener("click", () => {
-      localStorage.setItem("cookiesAccepted", "false");
-      cookieBanner.style.display = "none";
-    });
-  </script>
-
-  <!-- Service Worker -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("vitre-pwa/service-worker.js")
-        .then(reg => console.log("✅ Service Worker enregistré :", reg))
-        .catch(err => console.error("❌ Erreur Service Worker :", err));
-    }
   </script>
 </body>
 </html>
