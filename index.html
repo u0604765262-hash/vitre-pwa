@@ -178,13 +178,27 @@
   </footer>
 
   <script>
-    /* ---------- LOGIQUE DES VITRES ---------- */
+   /* ---------- LOGIQUE DES VITRES ---------- */
     const vitres = [
       // Fenêtres standards
-      { nom: "Vitre d'intérieur (verrière, miroir, paroi de douche, etc.)", prix: 6.00, supplement: 7.20, unite: "m2" },
-      { nom: "Vitre d'extérieur (fenêtre, baie vitrée, vélux, etc.)", prix: 7.00, supplement: 8.40, unite: "m2" },
-      { nom: "Vitre en hauteur jusqu'à 4m (nécessitant l'utilisation d'une perche télescoptique et/ou d'un escabeau)", prix: 10.00, supplement: 12.00, unite: "m2" },
-      { nom: "Vitrine commerciale", prix: 10.00, supplement: 12.00, unite: "m2" },
+      { nom: "Vitre classique (≤ 1m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Porte-fenêtre", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Baie vitrée (particulier)", prix: 5.00, supplement: 6.00, unite: "m2" },
+      { nom: "Velux", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { nom: "Verrière", prix: 6.00, supplement: 7.20, unite: "m2" },
+      { nom: "Véranda", prix: 8.00, supplement: 9.60, unite: "m2" },
+
+      // Vitres particulières
+      { nom: "Vitre avec séparation", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { nom: "Petit carreau (≤ 15x15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+
+      // Autres surfaces vitrées
+      { nom: "Miroir classique (≤ 2m²)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { nom: "Grand miroir (> 2m²)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Paroi de douche", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { nom: "Garde-corps vitré / Balustrade en verre", prix: 8.00, supplement: 9.60, unite: "m2" },
+      { nom: "Vitres en hauteur (entre 2m et 4m, avec escabeau et/ou perche)", prix: 10.00, supplement: 12.00, unite: "m2" },
+      { nom: "Vitrine commerciale", prix: 10.00, supplement: 12.00, unite: "m2" }
     ];
 
     const vitresContainer = document.getElementById("vitres");
