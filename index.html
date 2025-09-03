@@ -33,6 +33,7 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
+    /* 🎯 Première phrase plus grande */
     .intro-title {
       font-size: 26px;
       font-weight: bold;
@@ -58,7 +59,7 @@
       font-size: 19px;
     }
 
-    /* Onglets */
+    /* 🔹 Onglets */
     .tabs {
       display: flex;
       justify-content: center;
@@ -152,7 +153,7 @@
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* Bannière cookies */
+    /* ✅ Bannière cookies */
     #cookie-banner {
       position: fixed;
       bottom: 20px;
@@ -202,7 +203,7 @@
     </div>
   </div>
 
-  <!-- Onglets -->
+  <!-- ✅ Onglets -->
   <div class="tabs">
     <div class="tab active" onclick="switchMode('particuliers')">👤 Particuliers</div>
     <div class="tab" onclick="switchMode('professionnels')">🏢 Professionnels</div>
@@ -210,7 +211,7 @@
 
   <div class="container" id="vitres"></div>
 
-  <!-- Bannière cookies -->
+  <!-- ✅ Bannière cookies -->
   <div id="cookie-banner">
    🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
     <div class="cookie-buttons">
@@ -232,45 +233,52 @@
   <script>
     /* ---------- LISTES DIFFÉRENTES ---------- */
     const vitresParticuliers = [
-      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Velux (78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 2 vantaux (215×215 cm)", prix: 12.00, supplement: 14.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 3 vantaux (320×215 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 4 vantaux (420×215 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Verrière intérieure (60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Véranda (80×150 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Vitre avec séparation (30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Petit carreau (15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Imposte vitrée (80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Paroi de douche (80×200 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
+      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (≈60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (≈120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (≈120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (≈75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (≈150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Velux (≈78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Baie vitrée 2 vantaux (≈215×215 cm)", prix: 12.00, supplement: 14.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Baie vitrée 3 vantaux (≈320×215 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Baie vitrée 4 vantaux (≈420×215 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Verrière intérieure (≈60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Véranda (≈80×150 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Vitre avec séparation (≈30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Petit carreau (≈15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Imposte vitrée (≈80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (≈100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (≈200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Paroi de douche (≈80×200 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
     ];
 
     const vitresProfessionnels = [
-      { categorie: "Commerces", nom: "Vitrine commerciale 1 panneau (150×250 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Vitrine commerciale 2 panneaux (300×250 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Grande vitrine (450×250 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Porte automatique vitrée (100×220 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Velux (78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Verrière intérieure (60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Vitre avec séparation (30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Petit carreau (15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Imposte vitrée (80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
+      { categorie: "Commerces", nom: "Vitrine commerciale 1 panneau (≈150×250 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { categorie: "Commerces", nom: "Vitrine commerciale 2 panneaux (≈300×250 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
+      { categorie: "Commerces", nom: "Grande vitrine (≈450×250 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
+      { categorie: "Commerces", nom: "Porte automatique vitrée (≈100×220 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (≈60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (≈120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (≈120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (≈75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (≈150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Velux (≈78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Verrière intérieure (≈60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Vitre avec séparation (≈30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Petit carreau (≈15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Imposte vitrée (≈80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (≈100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (≈200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
     ];
+
+    // ⚡ Augmenter les prix professionnels de 20%
+    vitresProfessionnels.forEach(v => {
+      v.prix = +(v.prix * 1.2).toFixed(2);
+      v.supplement = +(v.supplement * 1.2).toFixed(2);
+    });
 
     let vitres = vitresParticuliers;
     const vitresContainer = document.getElementById("vitres");
@@ -295,8 +303,8 @@
         categories[v.categorie].push(v);
       });
 
-      // Tri des catégories dans l'ordre : Fenêtres, Vitres particulières, Autres surfaces
-      const order = ["Fenêtres standards", "Vitres particulières", "Autres surfaces vitrées", "Commerces"];
+      // Tri des catégories dans l'ordre : Commerces, Fenêtres, Vitres particulières, Autres surfaces,
+      const order = ["Commerces","Fenêtres standards", "Vitres particulières", "Autres surfaces vitrées"];
       order.forEach(cat => {
         if (categories[cat]) {
           const section = document.createElement("div");
