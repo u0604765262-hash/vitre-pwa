@@ -33,12 +33,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    /* 🎯 Première phrase plus grande */
     .intro-title {
-  font-size: 26px; /* taille déjà augmentée */
-  font-weight: bold;
-  color: rgb(16, 139, 203); /* couleur issue de ton image */
-  margin-bottom: 10px;
+      font-size: 26px;
+      font-weight: bold;
+      color: rgb(16, 139, 203);
+      margin-bottom: 10px;
     }
     .info-minimum {
       margin-top: 10px;
@@ -55,9 +54,36 @@
       padding: 10px;
       font-weight: bold;
     }
-    /* 🔹 Réduction taille du texte 10% de remise */
     .nouveau-client strong {
       font-size: 19px;
+    }
+
+    /* Onglets */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin: 20px auto;
+      gap: 10px;
+    }
+    .tab {
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #e9ecef;
+      transition: all 0.3s ease;
+    }
+    .tab.active {
+      background: rgb(16, 139, 203);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .fade {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .container { padding: 20px; }
@@ -126,7 +152,7 @@
     footer a { color: #007bff; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
-    /* ✅ Bannière cookies */
+    /* Bannière cookies */
     #cookie-banner {
       position: fixed;
       bottom: 20px;
@@ -176,9 +202,15 @@
     </div>
   </div>
 
+  <!-- Onglets -->
+  <div class="tabs">
+    <div class="tab active" onclick="switchMode('particuliers')">👤 Particuliers</div>
+    <div class="tab" onclick="switchMode('professionnels')">🏢 Professionnels</div>
+  </div>
+
   <div class="container" id="vitres"></div>
 
-  <!-- ✅ Bannière cookies -->
+  <!-- Bannière cookies -->
   <div id="cookie-banner">
    🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
     <div class="cookie-buttons">
@@ -198,8 +230,8 @@
   </footer>
 
   <script>
-    /* ---------- LOGIQUE DES VITRES ---------- */
-    const vitres = [
+    /* ---------- LISTES DIFFÉRENTES ---------- */
+    const vitresParticuliers = [
       { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
       { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
       { categorie: "Fenêtres standards", nom: "Fenêtre double battant (120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
@@ -211,26 +243,36 @@
       { categorie: "Fenêtres standards", nom: "Baie vitrée 4 vantaux (420×215 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
       { categorie: "Fenêtres standards", nom: "Verrière intérieure (60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
       { categorie: "Fenêtres standards", nom: "Véranda (80×150 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
-
       { categorie: "Vitres particulières", nom: "Vitre avec séparation (30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
       { categorie: "Vitres particulières", nom: "Petit carreau (15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Oculus rond (diamètre 40–50 cm)", prix: 4.00, supplement: 4.80, unite: "piece" },
       { categorie: "Vitres particulières", nom: "Imposte vitrée (80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-
       { categorie: "Autres surfaces vitrées", nom: "Miroir classique (100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
       { categorie: "Autres surfaces vitrées", nom: "Grand miroir (200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
       { categorie: "Autres surfaces vitrées", nom: "Paroi de douche (80×200 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Table en verre (100×60 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
+    ];
 
+    const vitresProfessionnels = [
       { categorie: "Commerces", nom: "Vitrine commerciale 1 panneau (150×250 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
       { categorie: "Commerces", nom: "Vitrine commerciale 2 panneaux (300×250 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
       { categorie: "Commerces", nom: "Grande vitrine (450×250 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
       { categorie: "Commerces", nom: "Porte automatique vitrée (100×220 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
-
-      { categorie: "Situations particulières", nom: "Vitres en hauteur (2m à 4m, +5€ par vitre)", prix: 5.00, supplement: 6.00, unite: "piece" }
+      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Velux (78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Fenêtres standards", nom: "Verrière intérieure (60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Vitre avec séparation (30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Petit carreau (15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
+      { categorie: "Vitres particulières", nom: "Imposte vitrée (80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
+      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
     ];
 
+    let vitres = vitresParticuliers;
     const vitresContainer = document.getElementById("vitres");
     const totalDiv = document.getElementById("total");
     let totalGlobal = 0;
@@ -245,38 +287,57 @@
       `;
     }
 
-    // Regrouper les vitres par catégorie
-    const categories = {};
-    vitres.forEach(v => {
-      if (!categories[v.categorie]) categories[v.categorie] = [];
-      categories[v.categorie].push(v);
-    });
-
-    // Affichage avec titres
-    Object.keys(categories).forEach(cat => {
-      const section = document.createElement("div");
-      section.innerHTML = `<div class="category-title">• ${cat}</div>`;
-      
-      categories[cat].forEach((v, i) => {
-        const index = vitres.indexOf(v);
-        const div = document.createElement("div");
-        div.className = "card";
-        div.innerHTML = `
-          <h2>${v.nom}</h2>
-          <div class="input-group">
-            <span class="label">Normal (${v.prix.toFixed(2)} €)</span>
-            ${createCounter("normal-" + index)}
-          </div>
-          <div class="input-group">
-            <span class="label">Très sale ou difficile d'accès (${v.supplement.toFixed(2)} €)</span>
-            ${createCounter("supp-" + index)}
-          </div>
-        `;
-        section.appendChild(div);
+    function renderVitres() {
+      vitresContainer.innerHTML = "";
+      const categories = {};
+      vitres.forEach(v => {
+        if (!categories[v.categorie]) categories[v.categorie] = [];
+        categories[v.categorie].push(v);
       });
 
-      vitresContainer.appendChild(section);
-    });
+      // Tri des catégories dans l'ordre : Fenêtres, Vitres particulières, Autres surfaces
+      const order = ["Fenêtres standards", "Vitres particulières", "Autres surfaces vitrées", "Commerces"];
+      order.forEach(cat => {
+        if (categories[cat]) {
+          const section = document.createElement("div");
+          section.classList.add("fade");
+          section.innerHTML = `<div class="category-title">• ${cat}</div>`;
+          
+          categories[cat].forEach((v, i) => {
+            const index = vitres.indexOf(v);
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `
+              <h2>${v.nom}</h2>
+              <div class="input-group">
+                <span class="label">Normal (${v.prix.toFixed(2)} €)</span>
+                ${createCounter("normal-" + index)}
+              </div>
+              <div class="input-group">
+                <span class="label">Très sale ou difficile d'accès (${v.supplement.toFixed(2)} €)</span>
+                ${createCounter("supp-" + index)}
+              </div>
+            `;
+            section.appendChild(div);
+          });
+
+          vitresContainer.appendChild(section);
+        }
+      });
+    }
+
+    function switchMode(mode) {
+      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+      if (mode === "particuliers") {
+        vitres = vitresParticuliers;
+        document.querySelector(".tab:nth-child(1)").classList.add("active");
+      } else {
+        vitres = vitresProfessionnels;
+        document.querySelector(".tab:nth-child(2)").classList.add("active");
+      }
+      renderVitres();
+      calculerTotal();
+    }
 
     function updateValue(id, delta) {
       const input = document.getElementById(id);
@@ -289,8 +350,8 @@
     function calculerTotal() {
       totalGlobal = 0;
       vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`)?.value) || 0;
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`)?.value) || 0;
         totalGlobal += qteNormal * v.prix + qteSupp * v.supplement;
       });
 
@@ -311,7 +372,7 @@
 
       const selections = [];
       vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`).value) || 0;
+        const qteNormal = parseInt(document.getElementById(`normal-${i}`)?.value) || 0;
         if (qteNormal > 0) {
           selections.push({
             nom: v.nom,
@@ -322,7 +383,7 @@
             sousTotal: qteNormal * v.prix
           });
         }
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`).value) || 0;
+        const qteSupp = parseInt(document.getElementById(`supp-${i}`)?.value) || 0;
         if (qteSupp > 0) {
           selections.push({
             nom: v.nom,
@@ -339,6 +400,7 @@
       window.location.href = "resume.html";
     });
 
+    renderVitres();
     calculerTotal();
 
     /* ---------- COOKIES ---------- */
