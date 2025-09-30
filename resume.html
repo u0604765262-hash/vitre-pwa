@@ -358,7 +358,7 @@
     // Form handling
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
-    const FORM_ENDPOINT = '';
+    const FORM_ENDPOINT = '';         // pas de backend ici
     let FORCE_EMAILJS = false;
 
     // Bouton d'envoi direct via EmailJS
@@ -374,6 +374,9 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         statusEl.textContent = '';
+
+        // ✅ Forcer EmailJS par défaut pour le bouton principal
+        FORCE_EMAILJS = true;
 
         // Anti-spam
         if (document.getElementById('company').value.trim() !== '') return;
@@ -393,80 +396,62 @@
           }
         }
 
+        // Vérifie que EmailJS est bien chargé
+        if (!window.emailjs) {
+          statusEl.textContent = "Le module d'envoi (EmailJS) ne s'est pas chargé. Réessayez ou utilisez l'email direct.";
+          statusEl.style.color = '#ef4444';
+          return;
+        }
+
         const data = new FormData(form);
 
-        if (FORM_ENDPOINT && !FORCE_EMAILJS) {
-          // Envoi vers un endpoint serveur si défini (inchangé)
+        // Prépare le payload commun (noms alignés avec le template EmailJS)
+        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+        const payload = {
+          to_email: 'contact@bulle-de-savon.fr',
+          from_name: data.get('fullname'),
+          from_email: data.get('email') || '',
+          phone: data.get('phone'),
+          clientType: data.get('clientType'),
+          address: data.get('address'),
+          slot: data.get('slot') || '',
+          frequency: data.get('frequency') || 'Ponctuel',
+          services: services || '—',
+          message: data.get('message') || '—'
+        };
+
+        try {
+          // ✅ Envoi via EmailJS (par défaut)
+          statusEl.textContent = 'Envoi via EmailJS…';
+          statusEl.style.color = '#64748b';
+          await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
+          form.reset();
+          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+          statusEl.style.color = '#16a34a';
+        } catch (err) {
+          // 🔁 Repli mailto si EmailJS échoue
+          const subject = encodeURIComponent('Demande de prestation vitres');
+          const body = encodeURIComponent(
+`Nom: ${payload.from_name}
+Téléphone: ${payload.phone}
+Email: ${payload.from_email}
+Type: ${payload.clientType}
+Adresse: ${payload.address}
+Créneau souhaité: ${payload.slot}
+Fréquence: ${payload.frequency}
+Prestations: ${payload.services}
+Message: ${payload.message}`
+          );
           try {
-            const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            form.reset();
-            statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-            statusEl.style.color = '#16a34a';
-          } catch (err) {
+            window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
+            statusEl.textContent = "Si rien ne s'ouvre, aucun client mail n'est configuré sur cet appareil.";
+            statusEl.style.color = '#64748b';
+          } catch {
             statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
             statusEl.style.color = '#ef4444';
           }
-        } else {
-          // Prépare le payload commun
-          const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
-          const payload = {
-            to_email: 'contact@bulle-de-savon.fr',
-            // Harmonisé pour EmailJS (comme ton ancien fichier)
-            from_name: data.get('fullname'),
-            from_email: data.get('email') || '',
-            phone: data.get('phone'),
-            clientType: data.get('clientType'),
-            address: data.get('address'),
-            slot: data.get('slot') || '',
-            frequency: data.get('frequency') || 'Ponctuel',
-            services: services || '—',
-            message: data.get('message') || '—'
-          };
-
-          if (FORCE_EMAILJS) {
-            // ✅ Envoi via EmailJS
-            try {
-              statusEl.textContent = 'Envoi via EmailJS…';
-              statusEl.style.color = '#64748b';
-              await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
-              form.reset();
-              statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-              statusEl.style.color = '#16a34a';
-            } catch (err) {
-              // Repli mailto si EmailJS échoue
-              const subject = encodeURIComponent('Demande de prestation vitres');
-              const body = encodeURIComponent(
-`Nom: ${payload.from_name}
-Téléphone: ${payload.phone}
-Email: ${payload.from_email}
-Type: ${payload.clientType}
-Adresse: ${payload.address}
-Créneau souhaité: ${payload.slot}
-Fréquence: ${payload.frequency}
-Prestations: ${payload.services}
-Message: ${payload.message}`
-              );
-              window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
-            } finally {
-              FORCE_EMAILJS = false;
-            }
-          } else {
-            // Comportement existant : mailto:
-            const subject = encodeURIComponent('Demande de prestation vitres');
-            const body = encodeURIComponent(
-`Nom: ${payload.from_name}
-Téléphone: ${payload.phone}
-Email: ${payload.from_email}
-Type: ${payload.clientType}
-Adresse: ${payload.address}
-Créneau souhaité: ${payload.slot}
-Fréquence: ${payload.frequency}
-Prestations: ${payload.services}
-Message: ${payload.message}`
-            );
-            window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
-          }
+        } finally {
+          FORCE_EMAILJS = false;
         }
       });
     }
@@ -497,7 +482,7 @@ Message: ${payload.message}`
       const nameOk = norm(result.name) === norm(GOOGLE_PLACES.TARGET_NAME);
       const addr = norm(result.formatted_address || result.vicinity || '');
       const cityOk = GOOGLE_PLACES.CITY_FILTER && addr.includes(norm(GOOGLE_PLACES.CITY_FILTER));
-      const zipOk = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER);
+      const zipOk = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER));
       const types = (result.types || []).map(norm);
       const bad = GOOGLE_PLACES.TYPES_EXCLUDE.some(t => types.includes(norm(t)));
       return nameOk && (cityOk || zipOk) && !bad;
