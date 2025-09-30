@@ -411,12 +411,8 @@
 
 const payload = {
   // tes variables "simples"
-  fullname: data.get('fullname'),              // ← doublon clair
-  email: data.get('email') || '',              // ← doublon clair
-
-  // tes variables existantes (on les garde)
-  from_name: data.get('fullname'),
-  from_email: data.get('email') || '',
+  fullname: data.get('fullname'),
+  email: data.get('email') || '',
   phone: data.get('phone'),
   clientType: data.get('clientType'),
   address: data.get('address'),
