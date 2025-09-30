@@ -309,16 +309,6 @@
           <textarea id="message" name="message" placeholder="Surface approximative, accès, hauteur, traces spécifiques, etc."></textarea>
         </div>
 
-        <div>
-          <label>Photos (facultatif)</label>
-          <div id="dropzone" class="dropzone">
-            Glissez-déposez des images ici ou <strong>cliquez</strong> pour sélectionner.
-            <input id="photos" name="photos" type="file" accept="image/*" multiple style="display:none">
-          </div>
-          <div class="hint">Si votre endpoint le permet, les pièces jointes seront envoyées. Sinon, on vous proposera d’y répondre par email.</div>
-          <div id="preview" class="preview"></div>
-        </div>
-
         <!-- Anti-spam honeypot -->
         <input type="text" id="company" name="company" style="position:absolute; left:-9999px; top:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
 
@@ -393,7 +383,7 @@
       });
     });
 
-    // Dropzone
+    // Dropzone (sans bloc HTML, mais laissé intact : ne fait rien si absent)
     const dz = document.getElementById('dropzone');
     const fileInput = document.getElementById('photos');
     const preview = document.getElementById('preview');
@@ -471,7 +461,8 @@
           try {
             const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
             if (!res.ok) throw new Error('HTTP ' + res.status);
-            form.reset(); preview.innerHTML = '';
+            form.reset();
+            if (preview) preview.innerHTML = '';
             statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
             statusEl.style.color = '#16a34a';
           } catch (err) {
@@ -506,7 +497,8 @@
               'template_wxnjg9e',     // ID template EmailJS
               payload
             );
-            form.reset(); preview.innerHTML = '';
+            form.reset();
+            if (preview) preview.innerHTML = '';
             statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
             statusEl.style.color = '#16a34a';
           } catch (err) {
@@ -526,9 +518,7 @@ Fréquence: ${payload.frequency}
 Prestations: ${payload.services}
 
 Message:
-${payload.message}
-
-(Photos à envoyer en réponse à l’email si besoin)`);
+${payload.message}`);
             window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
           } finally {
             FORCE_EMAILJS = false;
