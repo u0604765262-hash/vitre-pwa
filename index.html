@@ -5,181 +5,118 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulle de Savon - Nettoyage Vitres</title>
 
-  <!-- ✅ Favicon -->
+  <!-- ✅ Favicon (conservé) -->
   <link rel="icon" href="logo1.png" type="image/png">
+  <meta name="theme-color" content="#0F384D">
+
+  <!-- ✅ Police Antic Slab -->
+  <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
+
   <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      margin: 0; 
-      background: #f4f6f8; 
-      padding-bottom: 120px;
+    :root {
+      --primary: #0F384D;         /* Couleur de marque */
+      --primary-600: #0C2C3A;     /* Hover */
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --radius: 14px;
     }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      background: #ffffff;
-      padding: 10px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    header img { height: 60px; }
-    .intro {
-      background: #ffffff;
+
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Antic Slab', serif;
       margin: 0;
-      padding: 20px;
-      font-size: 17px;
-      color: #333;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
     }
 
-    /* 🎯 Première phrase plus grande */
-    .intro-title {
-      font-size: 26px;
-      font-weight: bold;
-      color: rgb(16, 139, 203);
-      margin-bottom: 10px;
-    }
-    .info-minimum {
-      margin-top: 10px;
-      font-size: 15px;
-      font-weight: bold;
-    }
-    .nouveau-client {
-      margin-top: 12px;
-      font-size: 16px;
-      color: #155724;
-      background: #d4edda;
-      border: 1px solid #c3e6cb;
-      border-radius: 8px;
-      padding: 10px;
-      font-weight: bold;
-    }
-    .nouveau-client strong {
-      font-size: 19px;
-    }
+    a { color: var(--primary); text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
 
-    /* 🔹 Onglets */
-    .tabs {
-      display: flex;
-      justify-content: center;
-      margin: 20px auto;
-      gap: 10px;
-    }
-    .tab {
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      background: #e9ecef;
-      transition: all 0.3s ease;
-    }
-    .tab.active {
-      background: rgb(16, 139, 203);
-      color: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-    .fade {
-      animation: fadeIn 0.4s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    /* Header */
+    header { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: var(--shadow); }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:10px 0; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { height: 56px; }
+    .brand h1 { font-size: 20px; margin: 0; color: var(--primary); letter-spacing: .2px; }
+    .cta-header { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius: 999px; font-weight: 700; border: 0; cursor:pointer; transition: .2s transform ease, .25s box-shadow ease; box-shadow: var(--shadow); font-family:'Antic Slab', serif; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-600); }
+    .btn-ghost { background: #fff; color: var(--primary); border:2px solid rgba(15,56,77,.2); }
 
-    .container { padding: 20px; }
-    .category-title {
-      margin-top: 25px;
-      margin-bottom: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: rgb(16, 139, 203);
-      padding-bottom: 5px;
-    }
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    .card h2 { 
-      margin: 0 0 10px 0; 
-      font-size: 18px; 
-      color: rgb(16, 139, 203);
-    }
-    .input-group { display: flex; align-items: center; margin: 5px 0; }
-    .label { flex: 1; }
-    .counter {
-      display: flex; align-items: center;
-      border: 1px solid #ccc; border-radius: 6px;
-      overflow: hidden;
-    }
-    .counter button {
-      background: #007bff; color: white;
-      border: none; width: 30px; height: 30px;
-      font-size: 18px; cursor: pointer;
-    }
-    .counter input {
-      width: 50px; text-align: center;
-      border: none; outline: none;
-    }
-    .total {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #28a745;
-      color: white;
-      text-align: center;
-      padding: 15px;
-      font-size: 20px;
-      cursor: pointer;
-      font-weight: bold;
-      z-index: 999;
-      transition: background 0.3s ease;
-    }
-    .total.disabled { background: #aaa; cursor: not-allowed; }
-    .total:hover:not(.disabled) { background: #218838; }
-    .total:active:not(.disabled) { background: #1e7e34; }
+    /* Hero */
+    .hero { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); padding: 36px 0 24px; border-bottom: 1px solid #eef2f7; }
+    .hero-grid { display:grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items:center; }
+    .hero h2 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; color: var(--primary); }
+    .hero p.lead { font-size: clamp(16px, 2vw, 18px); color:#475569; margin: 0 0 18px; }
+    .hero .badges { display:flex; gap:10px; flex-wrap:wrap; margin: 12px 0 16px; }
+    .badge { background:#eaf1f5; color:#0F384D; border:1px solid #d3e0e8; padding:8px 12px; border-radius:999px; font-weight:600; font-size:14px; font-family:'Antic Slab', serif; }
+    .hero-card { background: var(--card); padding:18px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .usp { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .usp .item { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:12px; border-radius:12px; }
+    .usp .item .icon { font-size:20px; }
 
-    footer {
-      background: transparent;
-      color: #666;
-      font-size: 12px;
-      text-align: center;
-      padding: 14px 12px 24px;
-    }
-    footer a { color: #007bff; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    /* Sections */
+    section { padding: 28px 0; }
+    .section-title { font-size: 22px; color:#0f172a; margin: 0 0 8px; }
+    .section-sub { color:#64748b; margin: 0 0 18px; }
 
-    /* ✅ Bannière cookies */
-    #cookie-banner {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      max-width: 280px;
-      background: #222;
-      color: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 10000;
-      font-size: 14px;
-      display: none;
-    }
-    #cookie-banner .cookie-buttons {
-      margin-top: 10px;
-      text-align: right;
-    }
-    #cookie-banner button {
-      margin-left: 5px;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    /* Services */
+    .cards { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .card { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .card h3 { margin:0 0 6px; font-size:18px; color:#0f172a; }
+    .card p { margin:0; color:#616e7c; font-size:15px; }
+
+    /* Galerie */
+    .masonry { columns: 1; column-gap: 12px; }
+    @media (min-width: 640px) { .masonry { columns: 2; } }
+    @media (min-width: 960px) { .masonry { columns: 3; } }
+    .masonry figure { break-inside: avoid; background:#fff; margin:0 0 12px; border-radius: 12px; overflow:hidden; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .masonry figcaption { padding:10px 12px; font-size:14px; color:#475569; }
+
+    /* Étapes */
+    .steps { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
+    .step { background:#fff; border:1px solid #eef2f7; border-radius: 12px; padding:14px; box-shadow: var(--shadow); }
+    .step .num { font-weight:800; color:#0ea5e9; font-size:14px; }
+    .step h4 { margin:6px 0 6px; font-size:16px; }
+    .step p { margin:0; color:#64748b; font-size:14px; }
+
+    /* Avis Google */
+    .reviews { display:grid; gap:16px; margin-top:20px; }
+    .review { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .review-name { font-weight:700; color:#0F384D; }
+    .stars { color:#f59e0b; }
+
+    /* Formulaire */
+    .form-wrap { background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); border:1px solid #eef2f7; padding: 18px; }
+    form .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width: 720px) { form .grid.two { grid-template-columns: 1fr 1fr; } }
+    label { display:block; font-weight:700; font-size:14px; color:#0f172a; margin-bottom:6px; }
+    .hint { font-size:12px; color:#6b7280; margin-top:4px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], textarea, select { width:100%; padding:12px 12px; border-radius:10px; border:1px solid #d7dee6; outline: none; background:#fbfdff; font-size:15px; font-family:'Antic Slab', serif; }
+    textarea { min-height: 110px; resize: vertical; }
+    .check-group { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
+    .checkbox { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:10px 12px; border-radius:10px; }
+
+    /* Footer */
+    footer { color:#64748b; font-size: 13px; text-align:center; padding: 18px 12px 28px; }
+    footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+
+    /* Cookies (conservé) */
+    #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none; }
+    #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
+    #cookie-banner button { margin-left: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     #cookie-accept { background: #28a745; color: #fff; }
     #cookie-reject { background: #dc3545; color: #fff; }
     #cookie-accept:hover { background: #218838; }
@@ -187,225 +124,457 @@
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <img src="logo.png" alt="Logo Bulle de Savon">
+    <div class="container nav">
+      <div class="brand">
+        <img src="logo.png" alt="Logo Bulle de Savon" />
+        <h1>Bulle de Savon</h1>
+      </div>
+      <div class="cta-header">
+        <a class="btn btn-ghost" href="tel:+33618100807">📞 06 18 10 08 07</a>
+        <a class="btn btn-primary" href="#devis">Demander une visite & devis</a>
+      </div>
+    </div>
   </header>
 
-  <div class="intro">
-    <span class="intro-title">Bienvenue chez <strong>Bulle de Savon</strong> !<BR></span>
-    Sélectionnez vos vitres et quantités, puis découvrez une estimation immédiate.<br>
-    Cliquez ensuite sur <em>Suivant</em> pour nous envoyer votre demande de devis.
-    <div class="info-minimum">
-      ⚠️ Le total doit être au minimum de 30 € afin de valider la prestation.
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h2>Nettoyage de vitres impeccable pour <em>particuliers</em> & <em>professionnels</em></h2>
+        <p class="lead">Fini le calcul automatique. Ici, on vient voir, on conseille, et on fixe un <strong>prix juste</strong> sur place — sans mauvaise surprise.</p>
+        <div class="badges">
+          <span class="badge">✅ Intervention locale</span>
+          <span class="badge">🧼 Matériel pro</span>
+          <span class="badge">💬 Devis gratuit & rapide</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+          <a class="btn btn-primary" href="#devis">Je veux un devis sur place</a>
+          <a class="btn btn-ghost" href="#galerie">Voir des résultats</a>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="usp">
+          <div class="item"><div class="icon">🏠</div><div>
+            <strong>Particuliers</strong><br><span class="muted">Fenêtres, baies vitrées, vérandas, velux…</span>
+          </div></div>
+          <div class="item"><div class="icon">🏪</div><div>
+            <strong>Commerces</strong><br><span class="muted">Vitrines, portes automatiques, garde-corps…</span>
+          </div></div>
+          <div class="item"><div class="icon">🧽</div><div>
+            <strong>Finition soignée</strong><br><span class="muted">Angles, encadrements, traces difficiles</span>
+          </div></div>
+          <div class="item"><div class="icon">🕑</div><div>
+            <strong>Créneaux flexibles</strong><br><span class="muted">Nous nous adaptons à vos horaires</span>
+          </div></div>
+        </div>
+      </div>
     </div>
-    <div class="nouveau-client">
-      🌟 Vous êtes nouveau client ? Profitez de <strong>10% de remise</strong> sur le devis final !
+  </section>
+
+  <!-- Services -->
+  <section class="container" id="services">
+    <h3 class="section-title">Prestations principales</h3>
+    <p class="section-sub">Dites-nous ce dont vous avez besoin : nous passons, évaluons sur place, puis nous vous donnons le prix exact.</p>
+    <div class="cards">
+      <article class="card"><h3>Vitres & fenêtres</h3><p>Intérieur / extérieur, encadrements et finitions incluses.</p></article>
+      <article class="card"><h3>Baies vitrées & vérandas</h3><p>Grands formats, accès difficile, perches télescopiques.</p></article>
+      <article class="card"><h3>Vitrines de commerces</h3><p>Entretien régulier ou passage ponctuel avant événement.</p></article>
     </div>
-  </div>
+  </section>
 
-  <!-- ✅ Onglets -->
-  <div class="tabs">
-    <div class="tab active" onclick="switchMode('particuliers')">👤 Particuliers</div>
-    <div class="tab" onclick="switchMode('professionnels')">🏢 Professionnels</div>
-  </div>
+  <!-- Galerie -->
+  <section class="container" id="galerie">
+    <h3 class="section-title">Avant / Après</h3>
+    <p class="section-sub">Quelques réalisations récentes. Remplacez ces images par vos photos.</p>
+    <div class="masonry">
+      <figure>
+        <img src="photos/apres-1.jpg" alt="Résultat nettoyage 1" loading="lazy">
+        <figcaption>Vitrine – centre-ville</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-2.jpg" alt="Résultat nettoyage 2" loading="lazy">
+        <figcaption>Véranda – particulier</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-3.jpg" alt="Résultat nettoyage 3" loading="lazy">
+        <figcaption>Baie vitrée – maison</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-4.jpg" alt="Résultat nettoyage 4" loading="lazy">
+        <figcaption>Vitres d’angle – commerce</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-5.jpg" alt="Résultat nettoyage 5" loading="lazy">
+        <figcaption>Velux – étage</figcaption>
+      </figure>
+    </div>
+  </section>
 
-  <div class="container" id="vitres"></div>
+  <!-- Étapes -->
+  <section class="container" id="etapes">
+    <h3 class="section-title">Comment ça se passe ?</h3>
+    <div class="steps">
+      <div class="step"><div class="num">1/4</div><h4>Vous décrivez votre besoin</h4><p>Un petit formulaire, quelques photos si besoin.</p></div>
+      <div class="step"><div class="num">2/4</div><h4>Visite rapide</h4><p>On passe sur place pour valider l’accès et la surface.</p></div>
+      <div class="step"><div class="num">3/4</div><h4>Prix clair</h4><p>Le tarif est fixé avec vous, sans surprise.</p></div>
+      <div class="step"><div class="num">4/4</div><h4>Intervention</h4><p>On intervient au créneau qui vous arrange.</p></div>
+    </div>
+  </section>
 
-  <!-- ✅ Bannière cookies -->
+  <!-- Avis clients (dynamique Google) -->
+  <section class="container" id="avis">
+    <h3 class="section-title">Avis clients</h3>
+    <p class="section-sub">Avis vérifiés Google. (Dynamique — renseignez votre clé API et soit votre <strong>Place ID</strong>, soit simplement <strong>nom + ville</strong>.)</p>
+
+    <div id="googleReviews" class="reviews"></div>
+
+    <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <a id="gmapsLink" class="btn btn-primary" target="_blank" rel="noopener">Voir plus d’avis sur Google</a>
+      <span class="hint">Si rien ne s’affiche, ajoutez votre <strong>API key</strong> et <strong>Place ID</strong> Google dans le script.</span>
+    </div>
+  </section>
+
+  <!-- Formulaire Devis / Demande de prestation -->
+  <section class="container" id="devis">
+    <h3 class="section-title">Demande de prestation / devis</h3>
+    <p class="section-sub">Gratuit et sans engagement. Nous revenons vers vous très vite pour planifier une visite et vous donner le prix exact.</p>
+
+    <div class="form-wrap">
+      <form id="requestForm" novalidate>
+        <div class="grid two">
+          <div>
+            <label for="fullname">Nom & prénom *</label>
+            <input id="fullname" name="fullname" type="text" autocomplete="name" required>
+          </div>
+          <div>
+            <label for="phone">Téléphone *</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="06…" required>
+            <div class="hint">On vous appelle seulement pour fixer un créneau.</div>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="contact@exemple.fr">
+          </div>
+          <div>
+            <label for="clientType">Vous êtes *</label>
+            <select id="clientType" name="clientType" required>
+              <option value="">Sélectionner…</option>
+              <option>Particulier</option>
+              <option>Professionnel</option>
+              <option>Association / Copropriété</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="address">Adresse d’intervention *</label>
+          <input id="address" name="address" type="text" placeholder="N°, rue, ville" required>
+          <div class="hint">Précisez l’étage et les informations d’accès si utile.</div>
+        </div>
+
+        <div>
+          <label>Type de prestation souhaitée (cochez ce qui s’applique)</label>
+          <div class="check-group">
+            <label class="checkbox"><input type="checkbox" name="services" value="Fenêtres"> Fenêtres / châssis</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Baies"> Baies vitrées</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Véranda"> Véranda</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Vitrine"> Vitrine commerce</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Velux"> Velux</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="slot">Créneau souhaité</label>
+            <input id="slot" name="slot" type="datetime-local">
+          </div>
+          <div>
+            <label for="frequency">Fréquence</label>
+            <select id="frequency" name="frequency">
+              <option value="Ponctuel">Ponctuel</option>
+              <option value="Mensuel">Mensuel</option>
+              <option value="Trimestriel">Trimestriel</option>
+              <option value="Semestriel">Semestriel</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="message">Précisions utiles</label>
+          <textarea id="message" name="message" placeholder="Surface approximative, accès, hauteur, traces spécifiques, etc."></textarea>
+        </div>
+
+        <div>
+          <label>Photos (facultatif)</label>
+          <div id="dropzone" class="dropzone">
+            Glissez-déposez des images ici ou <strong>cliquez</strong> pour sélectionner.
+            <input id="photos" name="photos" type="file" accept="image/*" multiple style="display:none">
+          </div>
+          <div class="hint">Les pièces jointes seront envoyées si votre point de terminaison le permet. Sinon, on vous proposera de répondre à l’email avec les photos.</div>
+          <div id="preview" class="preview"></div>
+        </div>
+
+        <!-- Anti-spam honeypot -->
+        <input type="text" id="company" name="company" style="position:absolute; left:-9999px; top:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="consent">
+          <input id="consent" type="checkbox" required>
+          <label for="consent">J’accepte d’être contacté par Bulle de Savon pour ma demande. Mes données ne seront pas partagées à des tiers. (<a href="mentions-legales.html">Confidentialité</a>)</label>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;">
+          <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
+          <a class="btn btn-ghost" href="mailto:contact@bulle-de-savon.fr?subject=Demande%20de%20prestation%20vitres">Ou par email</a>
+          <span id="formStatus" class="hint"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="container" id="faq">
+    <h3 class="section-title">Questions fréquentes</h3>
+    <details>
+      <summary>Comment calculez-vous le tarif ?</summary>
+      <p>Nous venons sur place pour évaluer l’accès, la surface et l’état des vitres. Le prix est fixé et validé avec vous avant toute intervention.</p>
+    </details>
+    <details>
+      <summary>Faut-il être présent ?</summary>
+      <p>Idéalement pour la première visite, oui. Ensuite, nous pouvons convenir d’un mode d’accès sécurisé.</p>
+    </details>
+    <details>
+      <summary>Intervenez-vous le samedi ou tôt le matin ?</summary>
+      <p>Oui, nous nous adaptons à vos contraintes horaires (commerces notamment).</p>
+    </details>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="links">
+      <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
+      <span>•</span>
+      <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>
+      <span>•</span>
+      <a href="tel:+33618100807">06 18 10 08 07</a>
+      <span>•</span>
+      <a href="#devis">Demander un devis</a>
+    </div>
+  </footer>
+
+  <!-- ✅ Bannière cookies (conservée) -->
   <div id="cookie-banner">
-   🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
+    🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
     <div class="cookie-buttons">
       <button id="cookie-accept">Accepter</button>
       <button id="cookie-reject">Refuser</button>
     </div>
   </div>
 
-  <!-- Barre Total -->
-  <div class="total disabled" id="total">Total : 0,00 € — Suivant</div>
-
-  <!-- Footer -->
-  <footer>
-    <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
-    &nbsp;•&nbsp;
-    <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
-  </footer>
-
   <script>
-    /* ---------- LISTES DIFFÉRENTES ---------- */
-    const vitresParticuliers = [
-      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (≈60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (≈120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (≈120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (≈75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (≈150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Velux (≈78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 2 vantaux (≈215×215 cm)", prix: 12.00, supplement: 14.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 3 vantaux (≈320×215 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Baie vitrée 4 vantaux (≈420×215 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Verrière intérieure (≈60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Véranda (≈80×150 cm par panneau)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Vitre avec séparation (≈30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Petit carreau (≈15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Imposte vitrée (≈80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (≈100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (≈200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Paroi de douche (≈80×200 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
-    ];
-
-    const vitresProfessionnels = [
-      { categorie: "Commerces", nom: "Vitrine commerciale 1 panneau (≈150×250 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Vitrine commerciale 2 panneaux (≈300×250 cm)", prix: 18.00, supplement: 21.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Grande vitrine (≈450×250 cm)", prix: 24.00, supplement: 28.00, unite: "piece" },
-      { categorie: "Commerces", nom: "Porte automatique vitrée (≈100×220 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 1 vantail (≈60×100 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Vitre classique 2 vantaux (≈120×100 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Fenêtre double battant (≈120×120 cm)", prix: 5.00, supplement: 6.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 1 vantail (≈75×215 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Porte-fenêtre 2 vantaux (≈150×215 cm)", prix: 10.00, supplement: 12.00, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Velux (≈78×98 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Fenêtres standards", nom: "Verrière intérieure (≈60×120 cm par panneau)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Vitre avec séparation (≈30×40 cm par carreau)", prix: 2.00, supplement: 2.40, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Petit carreau (≈15×15 cm)", prix: 1.00, supplement: 1.20, unite: "piece" },
-      { categorie: "Vitres particulières", nom: "Imposte vitrée (≈80×40 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Miroir classique (≈100×80 cm)", prix: 3.00, supplement: 3.60, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Grand miroir (≈200×100 cm)", prix: 6.00, supplement: 7.20, unite: "piece" },
-      { categorie: "Autres surfaces vitrées", nom: "Garde-corps vitré / Balustrade (≈90×120 cm)", prix: 8.00, supplement: 9.60, unite: "piece" }
-    ];
-
-    let vitres = vitresParticuliers;
-    const vitresContainer = document.getElementById("vitres");
-    const totalDiv = document.getElementById("total");
-    let totalGlobal = 0;
-
-    function createCounter(id) {
-      return `
-        <div class="counter">
-          <button type="button" onclick="updateValue('${id}', -1)">-</button>
-          <input type="number" id="${id}" value="0" min="0" step="1" readonly>
-          <button type="button" onclick="updateValue('${id}', 1)">+</button>
-        </div>
-      `;
-    }
-
-    function renderVitres() {
-      vitresContainer.innerHTML = "";
-      const categories = {};
-      vitres.forEach(v => {
-        if (!categories[v.categorie]) categories[v.categorie] = [];
-        categories[v.categorie].push(v);
-      });
-
-      // Tri des catégories dans l'ordre : Commerces, Fenêtres, Vitres particulières, Autres surfaces,
-      const order = ["Commerces","Fenêtres standards", "Vitres particulières", "Autres surfaces vitrées"];
-      order.forEach(cat => {
-        if (categories[cat]) {
-          const section = document.createElement("div");
-          section.classList.add("fade");
-          section.innerHTML = `<div class="category-title">• ${cat}</div>`;
-          
-          categories[cat].forEach((v, i) => {
-            const index = vitres.indexOf(v);
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-              <h2>${v.nom}</h2>
-              <div class="input-group">
-                <span class="label">Normal (${v.prix.toFixed(2)} €)</span>
-                ${createCounter("normal-" + index)}
-              </div>
-              <div class="input-group">
-                <span class="label">Très sale ou difficile d'accès (${v.supplement.toFixed(2)} €)</span>
-                ${createCounter("supp-" + index)}
-              </div>
-            `;
-            section.appendChild(div);
-          });
-
-          vitresContainer.appendChild(section);
+    /* ======== JS page ======== */
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
       });
-    }
-
-    function switchMode(mode) {
-      document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
-      if (mode === "particuliers") {
-        vitres = vitresParticuliers;
-        document.querySelector(".tab:nth-child(1)").classList.add("active");
-      } else {
-        vitres = vitresProfessionnels;
-        document.querySelector(".tab:nth-child(2)").classList.add("active");
-      }
-      renderVitres();
-      calculerTotal();
-    }
-
-    function updateValue(id, delta) {
-      const input = document.getElementById(id);
-      let val = parseInt(input.value) || 0;
-      val = Math.max(0, val + delta);
-      input.value = val;
-      calculerTotal();
-    }
-
-    function calculerTotal() {
-      totalGlobal = 0;
-      vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`)?.value) || 0;
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`)?.value) || 0;
-        totalGlobal += qteNormal * v.prix + qteSupp * v.supplement;
-      });
-
-      totalDiv.textContent = "Total : " + totalGlobal.toFixed(2) + " € — Suivant";
-
-      if (totalGlobal >= 30) {
-        totalDiv.classList.remove("disabled");
-      } else {
-        totalDiv.classList.add("disabled");
-      }
-    }
-
-    totalDiv.addEventListener("click", () => {
-      if (totalGlobal < 30) {
-        alert("Le montant minimum pour valider est de 30 €.");
-        return;
-      }
-
-      const selections = [];
-      vitres.forEach((v, i) => {
-        const qteNormal = parseInt(document.getElementById(`normal-${i}`)?.value) || 0;
-        if (qteNormal > 0) {
-          selections.push({
-            nom: v.nom,
-            quantite: qteNormal,
-            unite: v.unite,
-            type: "normal",
-            prix: v.prix,
-            sousTotal: qteNormal * v.prix
-          });
-        }
-        const qteSupp = parseInt(document.getElementById(`supp-${i}`)?.value) || 0;
-        if (qteSupp > 0) {
-          selections.push({
-            nom: v.nom,
-            quantite: qteSupp,
-            unite: v.unite,
-            type: "supplement",
-            prix: v.supplement,
-            sousTotal: qteSupp * v.supplement
-          });
-        }
-      });
-
-      localStorage.setItem("commande", JSON.stringify(selections));
-      window.location.href = "resume.html";
     });
 
-    renderVitres();
-    calculerTotal();
+    // Dropzone
+    const dz = document.getElementById('dropzone');
+    const fileInput = document.getElementById('photos');
+    const preview = document.getElementById('preview');
 
-    /* ---------- COOKIES ---------- */
+    dz.addEventListener('click', () => fileInput.click());
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault(); dz.classList.remove('drag');
+      fileInput.files = e.dataTransfer.files;
+      renderPreviews();
+    });
+    fileInput.addEventListener('change', renderPreviews);
+
+    function renderPreviews(){
+      preview.innerHTML = '';
+      const files = Array.from(fileInput.files || []);
+      files.slice(0,8).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const img = document.createElement('img');
+        img.src = url; img.alt = file.name; img.loading = 'lazy';
+        preview.appendChild(img);
+      });
+    }
+
+    // Form handling
+    const form = document.getElementById('requestForm');
+    const statusEl = document.getElementById('formStatus');
+
+    // ⚙️ Configurez ceci si vous avez un endpoint (ex: Formspree, Make, Zapier, Netlify forms, serveur perso)
+    const FORM_ENDPOINT = '';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+
+      // Honeypot
+      if (document.getElementById('company').value.trim() !== '') return;
+
+      // Validation simple
+      const requiredIds = ['fullname','phone','clientType','address','consent'];
+      for (const id of requiredIds) {
+        const el = document.getElementById(id);
+        if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
+          el.focus();
+          statusEl.textContent = 'Merci de compléter les champs marqués *.';
+          statusEl.style.color = '#ef4444';
+          return;
+        }
+      }
+
+      const data = new FormData(form);
+
+      if (FORM_ENDPOINT) {
+        try {
+          const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          form.reset(); preview.innerHTML = '';
+          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+          statusEl.style.color = '#16a34a';
+        } catch (err) {
+          statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
+          statusEl.style.color = '#ef4444';
+        }
+      } else {
+        // Fallback mailto : corps pré-rempli (les pièces jointes ne sont pas prises en charge en mailto)
+        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+        const subject = encodeURIComponent('Demande de prestation vitres');
+        const body = encodeURIComponent(
+`Nom: ${data.get('fullname')}
+Téléphone: ${data.get('phone')}
+Email: ${data.get('email') || ''}
+Type: ${data.get('clientType')}
+Adresse: ${data.get('address')}
+Créneau souhaité: ${data.get('slot') || ''}
+Fréquence: ${data.get('frequency') || 'Ponctuel'}
+Prestations: ${services || '—'}
+\nMessage:\n${data.get('message') || '—'}\n\n(Photos à envoyer en réponse à l’email si besoin)`);
+        window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
+      }
+    });
+  </script>
+
+  <script>
+  /* === Avis Google dynamiques (Places API) — support PLACE_ID ou fallback QUERY (nom+ville) === */
+  const GOOGLE_PLACES = {
+    API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',
+    PLACE_ID: 'ChIJF0ylJdEM5kcRHHCkzfAYqcs',
+    QUERY: 'Bulle de Savon Maisons-Alfort 94700',
+    MAX_REVIEWS: 6
+  };
+
+  function initGoogleReviews(){
+    const reviewsEl = document.getElementById('googleReviews');
+    const linkEl    = document.getElementById('gmapsLink');
+
+    function renderPlace(place){
+      if (!place) {
+        reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+        return;
+      }
+      const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
+      reviewsEl.innerHTML = '';
+      list.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'review';
+        el.innerHTML = `
+          <div class="review-header">
+            <span class="review-name">${r.author_name || 'Client Google'}</span>
+            <span class="stars" aria-label="${r.rating} étoiles">
+              ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}
+            </span>
+          </div>
+          <p>${r.text || ''}</p>
+          <div class="hint">${new Date(r.time * 1000).toLocaleDateString('fr-FR')}</div>
+        `;
+        reviewsEl.appendChild(el);
+      });
+      linkEl.href = place.url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon'));
+      linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
+    }
+
+    // Service Places (sans carte visible)
+    const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+    function fetchDetailsByPlaceId(placeId){
+      service.getDetails({
+        placeId,
+        fields: ['name','rating','user_ratings_total','url','reviews']
+      }, (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          renderPlace(place);
+        } else {
+          reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis (Place Details).</div>';
+          linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+        }
+      });
+    }
+
+    // 1) Si on a un PLACE_ID → direct
+    if (GOOGLE_PLACES.PLACE_ID && !GOOGLE_PLACES.PLACE_ID.includes('ICI')) {
+      fetchDetailsByPlaceId(GOOGLE_PLACES.PLACE_ID);
+      return;
+    }
+
+    // 2) Sinon → recherche par nom + ville (Find Place from Query)
+    if (GOOGLE_PLACES.QUERY) {
+      service.findPlaceFromQuery({
+        query: GOOGLE_PLACES.QUERY,
+        fields: ['place_id','name','formatted_address']
+      }, (res, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && res && res[0]) {
+          fetchDetailsByPlaceId(res[0].place_id);
+        } else {
+          reviewsEl.innerHTML = '<div class="review">Fiche introuvable avec le nom donné. Vérifiez l’orthographe.</div>';
+          linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY);
+        }
+      });
+    } else {
+      reviewsEl.innerHTML = '<div class="review">Configurez au choix : PLACE_ID ou QUERY (nom + ville).</div>';
+      linkEl.href = 'https://www.google.com/maps';
+    }
+  }
+
+  // Charge Maps JS et lance init
+  (function loadMaps(){
+    const s = document.createElement('script');
+    const key = GOOGLE_PLACES.API_KEY && !GOOGLE_PLACES.API_KEY.includes('ICI') ? GOOGLE_PLACES.API_KEY : '';
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&language=fr`;
+    s.async = true;
+    s.defer = true;
+    s.onload = initGoogleReviews;
+    s.onerror = () => {
+      const reviewsEl = document.getElementById('googleReviews');
+      const linkEl = document.getElementById('gmapsLink');
+      if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n’a pas pu être chargé (clé API ?).</div>';
+      if (linkEl) linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+    };
+    document.head.appendChild(s);
+  })();
+</script>
+
+  <script>
+    /* ---------- COOKIES (conservé de votre code) ---------- */
     const cookieBanner = document.getElementById("cookie-banner");
     const acceptBtn = document.getElementById("cookie-accept");
     const rejectBtn = document.getElementById("cookie-reject");
@@ -423,7 +592,7 @@
       document.head.appendChild(gaScript);
 
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){dataLayer.push(arguments);} 
       window.gtag = gtag;
 
       gtag('js', new Date());
@@ -453,7 +622,7 @@
     });
   </script>
 
-  <!-- Service Worker -->
+  <!-- Service Worker (conservé) -->
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("vitre-pwa/service-worker.js")
