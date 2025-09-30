@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bulle de Savon - Nettoyage Vitres</title>
 
   <!-- ✅ Favicon (conservé) -->
@@ -13,101 +13,114 @@
   <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --primary:#0F384D; --primary-600:#0C2C3A; --bg:#f4f6f8; --card:#ffffff; --text:#2b2b2b;
-      --muted:#6b7280; --success:#22c55e; --danger:#ef4444; --shadow:0 6px 18px rgba(0,0,0,.08); --radius:14px;
+    :root {
+      --primary: #0F384D;         /* Couleur de marque */
+      --primary-600: #0C2C3A;     /* Hover */
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --muted: #6b7280;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --radius: 14px;
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{font-family:'Antic Slab',serif;margin:0;background:var(--bg);color:var(--text);line-height:1.5}
-    a{color:var(--primary);text-decoration:none}
-    img{max-width:100%;display:block}
-    .container{width:min(1100px,92%);margin:0 auto}
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Antic Slab', serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a { color: var(--primary); text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1100px, 92%); margin: 0 auto; }
 
     /* Header */
-    header{position:sticky;top:0;z-index:50;background:#fff;box-shadow:var(--shadow)}
-    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand img{height:56px}
-    .brand h1{font-size:20px;margin:0;color:var(--primary)}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 18px;border-radius:999px;font-weight:700;border:0;cursor:pointer;transition:.2s transform,.25s box-shadow;box-shadow:var(--shadow);font-family:'Antic Slab',serif}
-    .btn:hover{transform:translateY(-1px)}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-primary:hover{background:var(--primary-600)}
-    .btn-ghost{background:#fff;color:var(--primary);border:2px solid rgba(15,56,77,.2)}
+    header { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: var(--shadow); }
+    .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:10px 0; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .brand img { height: 56px; }
+    .brand h1 { font-size: 20px; margin: 0; color: var(--primary); letter-spacing: .2px; }
+    .cta-header { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius: 999px; font-weight: 700; border: 0; cursor:pointer; transition: .2s transform ease, .25s box-shadow ease; box-shadow: var(--shadow); font-family:'Antic Slab', serif; }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-600); }
+    .btn-ghost { background: #fff; color: var(--primary); border:2px solid rgba(15,56,77,.2); }
 
     /* Hero */
-    .hero{background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);padding:36px 0 24px;border-bottom:1px solid #eef2f7}
-    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
-    .hero h2{font-size:clamp(28px,4vw,40px);margin:0 0 8px;color:var(--primary)}
-    .hero p.lead{font-size:clamp(16px,2vw,18px);color:#475569;margin:0 0 18px}
-    .badges{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 16px}
-    .badge{background:#eaf1f5;color:#0F384D;border:1px solid #d3e0e8;padding:8px 12px;border-radius:999px;font-weight:600;font-size:14px}
-    .hero-card{background:var(--card);padding:18px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .usp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .usp .item{display:flex;align-items:flex-start;gap:10px;background:#f9fbfd;border:1px solid #e6eef5;padding:12px;border-radius:12px}
-    .usp .icon{font-size:20px}
+    .hero { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); padding: 36px 0 24px; border-bottom: 1px solid #eef2f7; }
+    .hero-grid { display:grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items:center; }
+    .hero h2 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; color: var(--primary); }
+    .hero p.lead { font-size: clamp(16px, 2vw, 18px); color:#475569; margin: 0 0 18px; }
+    .hero .badges { display:flex; gap:10px; flex-wrap:wrap; margin: 12px 0 16px; }
+    .badge { background:#eaf1f5; color:#0F384D; border:1px solid #d3e0e8; padding:8px 12px; border-radius:999px; font-weight:600; font-size:14px; font-family:'Antic Slab', serif; }
+    .hero-card { background: var(--card); padding:18px; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .usp { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    .usp .item { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:12px; border-radius:12px; }
+    .usp .item .icon { font-size:20px; }
 
     /* Sections */
-    section{padding:28px 0}
-    .section-title{font-size:22px;color:#0f172a;margin:0 0 8px}
-    .section-sub{color:#64748b;margin:0 0 18px}
+    section { padding: 28px 0; }
+    .section-title { font-size: 22px; color:#0f172a; margin: 0 0 8px; }
+    .section-sub { color:#64748b; margin: 0 0 18px; }
 
     /* Services */
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-    .card{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid #eef2f7}
-    .card h3{margin:0 0 6px;font-size:18px;color:#0f172a}
-    .card p{margin:0;color:#616e7c;font-size:15px}
+    .cards { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
+    .card { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .card h3 { margin:0 0 6px; font-size:18px; color:#0f172a; }
+    .card p { margin:0; color:#616e7c; font-size:15px; }
 
     /* Galerie */
-    .masonry{columns:1;column-gap:12px}
-    @media (min-width:640px){.masonry{columns:2}}
-    @media (min-width:960px){.masonry{columns:3}}
-    .masonry figure{break-inside:avoid;background:#fff;margin:0 0 12px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);border:1px solid #eef2f7}
-    .masonry figcaption{padding:10px 12px;font-size:14px;color:#475569}
+    .masonry { columns: 1; column-gap: 12px; }
+    @media (min-width: 640px) { .masonry { columns: 2; } }
+    @media (min-width: 960px) { .masonry { columns: 3; } }
+    .masonry figure { break-inside: avoid; background:#fff; margin:0 0 12px; border-radius: 12px; overflow:hidden; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .masonry figcaption { padding:10px 12px; font-size:14px; color:#475569; }
 
     /* Étapes */
-    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .step{background:#fff;border:1px solid #eef2f7;border-radius:12px;padding:14px;box-shadow:var(--shadow)}
-    .step .num{font-weight:800;color:#0ea5e9;font-size:14px}
-    .step h4{margin:6px 0 6px;font-size:16px}
-    .step p{margin:0;color:#64748b;font-size:14px}
+    .steps { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
+    .step { background:#fff; border:1px solid #eef2f7; border-radius: 12px; padding:14px; box-shadow: var(--shadow); }
+    .step .num { font-weight:800; color:#0ea5e9; font-size:14px; }
+    .step h4 { margin:6px 0 6px; font-size:16px; }
+    .step p { margin:0; color:#64748b; font-size:14px; }
 
     /* Avis Google */
-    .reviews{display:grid;gap:16px;margin-top:20px}
-    .review{background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);border:1px solid #eef2f7}
-    .review-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .review-name{font-weight:700;color:#0F384D}
-    .stars{color:#f59e0b}
+    .reviews { display:grid; gap:16px; margin-top:20px; }
+    .review { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
+    .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .review-name { font-weight:700; color:#0F384D; }
+    .stars { color:#f59e0b; }
 
     /* Formulaire */
-    .form-wrap{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid #eef2f7;padding:18px}
-    form .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    @media (min-width:720px){form .grid.two{grid-template-columns:1fr 1fr}}
-    label{display:block;font-weight:700;font-size:14px;color:#0f172a;margin-bottom:6px}
-    .hint{font-size:12px;color:#6b7280;margin-top:4px}
-    input[type="text"],input[type="email"],input[type="tel"],input[type="datetime-local"],textarea,select{width:100%;padding:12px 12px;border-radius:10px;border:1px solid #d7dee6;outline:none;background:#fbfdff;font-size:15px;font-family:'Antic Slab',serif}
-    textarea{min-height:110px;resize:vertical}
-    .check-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .checkbox{display:flex;align-items:flex-start;gap:10px;background:#f9fbfd;border:1px solid #e6eef5;padding:10px 12px;border-radius:10px}
-    .dropzone{border:2px dashed #cfe6f5;background:#f3f9fe;border-radius:12px;padding:14px;text-align:center}
-    .dropzone.drag{background:#e8f4fd;border-color:#78c7f1}
-    .preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-    .preview img{width:88px;height:88px;object-fit:cover;border-radius:10px;border:1px solid #e5eef6}
-    .consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#334155}
-    .consent input{margin-top:2px}
+    .form-wrap { background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); border:1px solid #eef2f7; padding: 18px; }
+    form .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width: 720px) { form .grid.two { grid-template-columns: 1fr 1fr; } }
+    label { display:block; font-weight:700; font-size:14px; color:#0f172a; margin-bottom:6px; }
+    .hint { font-size:12px; color:#6b7280; margin-top:4px; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], textarea, select { width:100%; padding:12px 12px; border-radius:10px; border:1px solid #d7dee6; outline: none; background:#fbfdff; font-size:15px; font-family:'Antic Slab', serif; }
+    textarea { min-height: 110px; resize: vertical; }
+    .check-group { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
+    .checkbox { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:10px 12px; border-radius:10px; }
 
     /* Footer */
-    footer{color:#64748b;font-size:13px;text-align:center;padding:18px 12px 28px}
-    footer .links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+    footer { color:#64748b; font-size: 13px; text-align:center; padding: 18px 12px 28px; }
+    footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
 
-    /* Cookies */
-    #cookie-banner{position:fixed;bottom:20px;right:20px;max-width:280px;background:#222;color:#fff;padding:15px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:10000;font-size:14px;display:none}
-    #cookie-banner .cookie-buttons{margin-top:10px;text-align:right}
-    #cookie-banner button{margin-left:5px;padding:5px 10px;border:none;border-radius:5px;cursor:pointer;font-weight:bold}
-    #cookie-accept{background:#28a745;color:#fff}
-    #cookie-reject{background:#dc3545;color:#fff}
+    /* Cookies (conservé) */
+    #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none; }
+    #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
+    #cookie-banner button { margin-left: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    #cookie-accept { background: #28a745; color: #fff; }
+    #cookie-reject { background: #dc3545; color: #fff; }
+    #cookie-accept:hover { background: #218838; }
+    #cookie-reject:hover { background: #b02a37; }
   </style>
 </head>
 <body>
@@ -136,17 +149,25 @@
           <span class="badge">🧼 Matériel pro</span>
           <span class="badge">💬 Devis gratuit & rapide</span>
         </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
           <a class="btn btn-primary" href="#devis">Je veux un devis sur place</a>
           <a class="btn btn-ghost" href="#galerie">Voir des résultats</a>
         </div>
       </div>
       <div class="hero-card">
         <div class="usp">
-          <div class="item"><div class="icon">🏠</div><div><strong>Particuliers</strong><br><span class="muted">Fenêtres, baies vitrées, vérandas, velux…</span></div></div>
-          <div class="item"><div class="icon">🏪</div><div><strong>Commerces</strong><br><span class="muted">Vitrines, portes automatiques, garde-corps…</span></div></div>
-          <div class="item"><div class="icon">🧽</div><div><strong>Finition soignée</strong><br><span class="muted">Angles, encadrements, traces difficiles</span></div></div>
-          <div class="item"><div class="icon">🕑</div><div><strong>Créneaux flexibles</strong><br><span class="muted">Nous nous adaptons à vos horaires</span></div></div>
+          <div class="item"><div class="icon">🏠</div><div>
+            <strong>Particuliers</strong><br><span class="muted">Fenêtres, baies vitrées, vérandas, velux…</span>
+          </div></div>
+          <div class="item"><div class="icon">🏪</div><div>
+            <strong>Commerces</strong><br><span class="muted">Vitrines, portes automatiques, garde-corps…</span>
+          </div></div>
+          <div class="item"><div class="icon">🧽</div><div>
+            <strong>Finition soignée</strong><br><span class="muted">Angles, encadrements, traces difficiles</span>
+          </div></div>
+          <div class="item"><div class="icon">🕑</div><div>
+            <strong>Créneaux flexibles</strong><br><span class="muted">Nous nous adaptons à vos horaires</span>
+          </div></div>
         </div>
       </div>
     </div>
@@ -168,11 +189,26 @@
     <h3 class="section-title">Avant / Après</h3>
     <p class="section-sub">Quelques réalisations récentes. Remplacez ces images par vos photos.</p>
     <div class="masonry">
-      <figure><img src="photos/apres-1.jpg" alt="Résultat nettoyage 1" loading="lazy"><figcaption>Vitrine – centre-ville</figcaption></figure>
-      <figure><img src="photos/apres-2.jpg" alt="Résultat nettoyage 2" loading="lazy"><figcaption>Véranda – particulier</figcaption></figure>
-      <figure><img src="photos/apres-3.jpg" alt="Résultat nettoyage 3" loading="lazy"><figcaption>Baie vitrée – maison</figcaption></figure>
-      <figure><img src="photos/apres-4.jpg" alt="Résultat nettoyage 4" loading="lazy"><figcaption>Vitres d’angle – commerce</figcaption></figure>
-      <figure><img src="photos/apres-5.jpg" alt="Résultat nettoyage 5" loading="lazy"><figcaption>Velux – étage</figcaption></figure>
+      <figure>
+        <img src="photos/apres-1.jpg" alt="Résultat nettoyage 1" loading="lazy">
+        <figcaption>Vitrine – centre-ville</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-2.jpg" alt="Résultat nettoyage 2" loading="lazy">
+        <figcaption>Véranda – particulier</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-3.jpg" alt="Résultat nettoyage 3" loading="lazy">
+        <figcaption>Baie vitrée – maison</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-4.jpg" alt="Résultat nettoyage 4" loading="lazy">
+        <figcaption>Vitres d’angle – commerce</figcaption>
+      </figure>
+      <figure>
+        <img src="photos/apres-5.jpg" alt="Résultat nettoyage 5" loading="lazy">
+        <figcaption>Velux – étage</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -190,10 +226,15 @@
   <!-- Avis clients (dynamique Google) -->
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
-    <p class="section-sub">Avis vérifiés Google (chargés via l’API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions et la facturation.</p>
+    <p class="section-sub">
+      Avis vérifiés Google (chargés via l’API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions de domaine et la facturation.
+    </p>
+
     <div id="googleReviews" class="reviews"></div>
-    <div style="margin-top:16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+
+    <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
       <a id="gmapsLink" class="btn btn-primary" target="_blank" rel="noopener">Voir plus d’avis sur Google</a>
+      <span class="hint">Astuce : ouvre la console (F12) pour voir quelle fiche est trouvée.</span>
     </div>
   </section>
 
@@ -289,7 +330,7 @@
           <label for="consent">J’accepte d’être contacté par Bulle de Savon pour ma demande. Mes données ne seront pas partagées à des tiers. (<a href="mentions-legales.html">Confidentialité</a>)</label>
         </div>
 
-        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px;">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;">
           <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
           <a class="btn btn-ghost" href="mailto:contact@bulle-de-savon.fr?subject=Demande%20de%20prestation%20vitres">Ou par email</a>
           <span id="formStatus" class="hint"></span>
@@ -301,9 +342,18 @@
   <!-- FAQ -->
   <section class="container" id="faq">
     <h3 class="section-title">Questions fréquentes</h3>
-    <details><summary>Comment calculez-vous le tarif ?</summary><p>Nous venons sur place pour évaluer l’accès, la surface et l’état des vitres. Le prix est fixé et validé avec vous avant toute intervention.</p></details>
-    <details><summary>Faut-il être présent ?</summary><p>Idéalement pour la première visite, oui. Ensuite, nous pouvons convenir d’un mode d’accès sécurisé.</p></details>
-    <details><summary>Intervenez-vous le samedi ou tôt le matin ?</summary><p>Oui, nous nous adaptons à vos contraintes horaires (commerces notamment).</p></details>
+    <details>
+      <summary>Comment calculez-vous le tarif ?</summary>
+      <p>Nous venons sur place pour évaluer l’accès, la surface et l’état des vitres. Le prix est fixé et validé avec vous avant toute intervention.</p>
+    </details>
+    <details>
+      <summary>Faut-il être présent ?</summary>
+      <p>Idéalement pour la première visite, oui. Ensuite, nous pouvons convenir d’un mode d’accès sécurisé.</p>
+    </details>
+    <details>
+      <summary>Intervenez-vous le samedi ou tôt le matin ?</summary>
+      <p>Oui, nous nous adaptons à vos contraintes horaires (commerces notamment).</p>
+    </details>
   </section>
 
   <!-- Footer -->
@@ -328,197 +378,290 @@
     </div>
   </div>
 
-  <!-- ======== JS page (scroll, dropzone, formulaire) ======== -->
   <script>
+    /* ======== JS page ======== */
     // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click',e=>{
-        const id=a.getAttribute('href');
-        if(id.length>1){e.preventDefault();document.querySelector(id)?.scrollIntoView({behavior:'smooth',block:'start'});}
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
 
     // Dropzone
-    const dz=document.getElementById('dropzone');
-    const fileInput=document.getElementById('photos');
-    const preview=document.getElementById('preview');
-    if(dz){
-      dz.addEventListener('click',()=>fileInput.click());
-      dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag');});
-      dz.addEventListener('dragleave',()=>dz.classList.remove('drag'));
-      dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('drag');fileInput.files=e.dataTransfer.files;renderPreviews();});
-      fileInput.addEventListener('change',renderPreviews);
-    }
+    const dz = document.getElementById('dropzone');
+    const fileInput = document.getElementById('photos');
+    const preview = document.getElementById('preview');
+
+    dz.addEventListener('click', () => fileInput.click());
+    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+    dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+    dz.addEventListener('drop', e => {
+      e.preventDefault(); dz.classList.remove('drag');
+      fileInput.files = e.dataTransfer.files;
+      renderPreviews();
+    });
+    fileInput.addEventListener('change', renderPreviews);
+
     function renderPreviews(){
-      preview.innerHTML=''; const files=Array.from(fileInput.files||[]); files.slice(0,8).forEach(f=>{const url=URL.createObjectURL(f);const img=document.createElement('img');img.src=url;img.alt=f.name;img.loading='lazy';preview.appendChild(img);});
+      preview.innerHTML = '';
+      const files = Array.from(fileInput.files || []);
+      files.slice(0,8).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const img = document.createElement('img');
+        img.src = url; img.alt = file.name; img.loading = 'lazy';
+        preview.appendChild(img);
+      });
     }
 
     // Form handling
-    const form=document.getElementById('requestForm');
-    const statusEl=document.getElementById('formStatus');
-    const FORM_ENDPOINT=''; // <- si tu utilises Formspree/Zapier/etc.
+    const form = document.getElementById('requestForm');
+    const statusEl = document.getElementById('formStatus');
 
-    form.addEventListener('submit',async (e)=>{
-      e.preventDefault(); statusEl.textContent='';
-      if(document.getElementById('company').value.trim()!=='') return;
-      const requiredIds=['fullname','phone','clientType','address','consent'];
-      for(const id of requiredIds){
-        const el=document.getElementById(id);
-        if((el.type==='checkbox' && !el.checked) || (el.value||'').trim()===''){el.focus();statusEl.textContent='Merci de compléter les champs marqués *.';statusEl.style.color='#ef4444';return;}
+    // ⚙️ Configurez ceci si vous avez un endpoint (Formspree/Make/Zapier/Netlify/serveur)
+    const FORM_ENDPOINT = '';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      statusEl.textContent = '';
+
+      // Honeypot
+      if (document.getElementById('company').value.trim() !== '') return;
+
+      // Validation simple
+      const requiredIds = ['fullname','phone','clientType','address','consent'];
+      for (const id of requiredIds) {
+        const el = document.getElementById(id);
+        if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
+          el.focus();
+          statusEl.textContent = 'Merci de compléter les champs marqués *.';
+          statusEl.style.color = '#ef4444';
+          return;
+        }
       }
-      const data=new FormData(form);
-      if(FORM_ENDPOINT){
-        try{const res=await fetch(FORM_ENDPOINT,{method:'POST',body:data}); if(!res.ok) throw new Error('HTTP '+res.status);
-          form.reset(); preview.innerHTML=''; statusEl.textContent='Merci ! Votre demande a bien été envoyée.'; statusEl.style.color='#16a34a';
-        }catch(err){statusEl.textContent="Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email."; statusEl.style.color='#ef4444';}
-      }else{
-        const services=Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el=>el.value).join(', ');
-        const subject=encodeURIComponent('Demande de prestation vitres');
-        const body=encodeURIComponent(
+
+      const data = new FormData(form);
+
+      if (FORM_ENDPOINT) {
+        try {
+          const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          form.reset(); preview.innerHTML = '';
+          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+          statusEl.style.color = '#16a34a';
+        } catch (err) {
+          statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
+          statusEl.style.color = '#ef4444';
+        }
+      } else {
+        // Fallback mailto (pièces jointes non prises en charge)
+        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+        const subject = encodeURIComponent('Demande de prestation vitres');
+        const body = encodeURIComponent(
 `Nom: ${data.get('fullname')}
 Téléphone: ${data.get('phone')}
-Email: ${data.get('email')||''}
+Email: ${data.get('email') || ''}
 Type: ${data.get('clientType')}
 Adresse: ${data.get('address')}
-Créneau souhaité: ${data.get('slot')||''}
-Fréquence: ${data.get('frequency')||'Ponctuel'}
-Prestations: ${services||'—'}
-
-Message:
-${data.get('message')||'—'}
-
-(Photos à envoyer en réponse à l’email si besoin)`);
-        window.location.href=`mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
+Créneau souhaité: ${data.get('slot') || ''}
+Fréquence: ${data.get('frequency') || 'Ponctuel'}
+Prestations: ${services || '—'}
+\nMessage:\n${data.get('message') || '—'}\n\n(Photos à envoyer en réponse à l’email si besoin)`);
+        window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
       }
     });
   </script>
 
-  <!-- === Avis Google dynamiques (Places API) : Place ID + fallback recherche === -->
+  <!-- === Avis Google dynamiques (robuste) === -->
   <script>
     const GOOGLE_PLACES = {
-      API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',  // ta clé (référents restreints)
-      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',            // Place ID prioritaire
-      QUERY: 'Bulle de Savon, 94700 Maisons-Alfort',      // fallback nom + ville
-      LOCATION: { lat: 48.79, lng: 2.45 },                // biais géographique
+      API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',   // ⚠️ restreins aux référents bulle-de-savon.fr + http://localhost/*
+      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',              // si c’est bien le tien, il sera utilisé en priorité
+      QUERY_VARIANTS: [
+        'Bulle de Savon, 94700 Maisons-Alfort',
+        '"Bulle de Savon" nettoyage de vitres Maisons-Alfort',
+        'Bulle de savon vitres Maisons-Alfort 94700'
+      ],
+      CITY_FILTER: 'Maisons-Alfort',
+      POSTAL_FILTER: '94700',
+      LOCATION: { lat: 48.79, lng: 2.45 },
+      SEARCH_RADIUS: 12000,
       MAX_REVIEWS: 6
     };
 
     function renderPlace(place){
-      const reviewsEl=document.getElementById('googleReviews');
-      const linkEl=document.getElementById('gmapsLink');
-      if(!place){
-        reviewsEl.innerHTML='<div class="review">Impossible de charger les avis pour le moment.</div>';
-        linkEl.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(GOOGLE_PLACES.QUERY);
+      const reviewsEl = document.getElementById('googleReviews');
+      const linkEl    = document.getElementById('gmapsLink');
+      if (!place){
+        reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
         return;
       }
-      const list=(place.reviews||[]).slice(0,GOOGLE_PLACES.MAX_REVIEWS);
-      reviewsEl.innerHTML=list.length?'':'<div class="review">Aucun avis publié pour l’instant.</div>';
-      list.forEach(r=>{
-        const el=document.createElement('div'); el.className='review';
-        el.innerHTML=`
+      const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
+      reviewsEl.innerHTML = list.length ? '' : '<div class="review">Aucun avis publié pour l’instant.</div>';
+      list.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'review';
+        el.innerHTML = `
           <div class="review-header">
-            <span class="review-name">${r.author_name||'Client Google'}</span>
+            <span class="review-name">${r.author_name || 'Client Google'}</span>
             <span class="stars" aria-label="${r.rating} étoiles">
-              ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5-Math.round(r.rating))}
+              ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}
             </span>
           </div>
-          <p>${r.text||''}</p>
+          <p>${r.text || ''}</p>
           <div class="hint">${new Date(r.time*1000).toLocaleDateString('fr-FR')}</div>
         `;
         reviewsEl.appendChild(el);
       });
-      linkEl.href=place.url||('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(GOOGLE_PLACES.QUERY));
-      linkEl.textContent=`Voir ${place.user_ratings_total||''} avis sur Google`;
+      linkEl.href = place.url || ('https://www.google.com/maps/place/?q=place_id:' + (place.place_id || ''));
+      linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
     }
 
     function initGoogleReviews(){
-      const reviewsEl=document.getElementById('googleReviews');
-      const linkEl=document.getElementById('gmapsLink');
-      const svc=new google.maps.places.PlacesService(document.createElement('div'));
+      const reviewsEl = document.getElementById('googleReviews');
+      const linkEl    = document.getElementById('gmapsLink');
+      const svc = new google.maps.places.PlacesService(document.createElement('div'));
 
       function getDetails(placeId){
-        svc.getDetails({placeId,fields:['name','rating','user_ratings_total','url','reviews','place_id']},
-          (place,status)=>{
-            console.log('[getDetails]',status,place);
-            if(status===google.maps.places.PlacesServiceStatus.OK){ renderPlace(place); }
-            else if(status===google.maps.places.PlacesServiceStatus.NOT_FOUND ||
-                    status===google.maps.places.PlacesServiceStatus.INVALID_REQUEST){ findPlaceByQuery(); }
-            else{
-              reviewsEl.innerHTML=`<div class="review">Erreur Google Places : <strong>${status}</strong></div>`;
-              linkEl.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(GOOGLE_PLACES.QUERY);
-            }
-          });
-      }
-
-      function findPlaceByQuery(){
-        svc.findPlaceFromQuery({
-          query: GOOGLE_PLACES.QUERY,
-          fields: ['place_id','name'],
-          locationBias: new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng)
-        }, (results,status)=>{
-          console.log('[findPlaceFromQuery]',status,results);
-          if(status===google.maps.places.PlacesServiceStatus.OK && results && results[0]){ getDetails(results[0].place_id); }
-          else{
-            reviewsEl.innerHTML='<div class="review">Fiche introuvable avec le nom fourni.</div>';
-            linkEl.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(GOOGLE_PLACES.QUERY);
+        console.log('[getDetails] placeId=', placeId);
+        svc.getDetails({
+          placeId,
+          fields: ['name','rating','user_ratings_total','url','reviews','place_id','formatted_address','geometry']
+        }, (place, status) => {
+          console.log('[getDetails:status]', status, place?.name, place?.formatted_address);
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            renderPlace(place);
+          } else if (status === google.maps.places.PlacesServiceStatus.NOT_FOUND ||
+                     status === google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
+            findPlaceRobust();
+          } else {
+            reviewsEl.innerHTML = `<div class="review">Erreur Google Places : <strong>${status}</strong></div>`;
+            linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
           }
         });
       }
 
-      if(GOOGLE_PLACES.PLACE_ID) getDetails(GOOGLE_PLACES.PLACE_ID); else findPlaceByQuery();
+      function keepCandidate(r){
+        const addr = (r.formatted_address || r.vicinity || '').toLowerCase();
+        const okCity  = GOOGLE_PLACES.CITY_FILTER && addr.includes(GOOGLE_PLACES.CITY_FILTER.toLowerCase());
+        const okZip   = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER);
+        return okCity || okZip;
+      }
+
+      function findPlaceRobust(){
+        const loc = new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng);
+        const variants = GOOGLE_PLACES.QUERY_VARIANTS.slice();
+
+        function tryNext(){
+          const q = variants.shift();
+          if (!q) { reviewsEl.innerHTML = '<div class="review">Fiche introuvable avec le nom fourni.</div>'; return; }
+
+          console.log('[findPlaceFromQuery] →', q);
+          svc.findPlaceFromQuery({ query: q, fields: ['place_id','name','formatted_address','geometry'], locationBias: loc },
+            (res, status) => {
+              console.log('[findPlaceFromQuery:status]', status, res?.map(r=>r.name));
+              if (status === google.maps.places.PlacesServiceStatus.OK && res && res.length) {
+                const filtered = res.filter(keepCandidate);
+                const chosen = filtered[0] || res[0];
+                console.log('[findPlaceFromQuery:chosen]', chosen?.name, chosen?.formatted_address);
+                getDetails(chosen.place_id);
+              } else {
+                console.log('[textSearch] →', q);
+                svc.textSearch({ query: q, location: loc, radius: GOOGLE_PLACES.SEARCH_RADIUS },
+                  (results, st) => {
+                    console.log('[textSearch:status]', st, results?.map(r=>r.name));
+                    if (st === google.maps.places.PlacesServiceStatus.OK && results && results.length){
+                      const filtered = results.filter(keepCandidate);
+                      const chosen = filtered[0] || results[0];
+                      console.log('[textSearch:chosen]', chosen?.name, chosen?.formatted_address);
+                      getDetails(chosen.place_id);
+                    } else {
+                      tryNext();
+                    }
+                  });
+              }
+            });
+        }
+        tryNext();
+      }
+
+      if (GOOGLE_PLACES.PLACE_ID) getDetails(GOOGLE_PLACES.PLACE_ID);
+      else findPlaceRobust();
     }
 
-    // Charge Maps JS + callback
     (function loadMaps(){
-      const s=document.createElement('script');
-      s.src=`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES.API_KEY}&libraries=places&language=fr&callback=initGoogleReviews`;
-      s.async=true; s.defer=true;
-      s.onerror=()=>{
-        const reviewsEl=document.getElementById('googleReviews');
-        const linkEl=document.getElementById('gmapsLink');
-        if(reviewsEl) reviewsEl.innerHTML='<div class="review">Google Maps JS ne s’est pas chargé (clé API / restrictions ?).</div>';
-        if(linkEl) linkEl.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(GOOGLE_PLACES.QUERY);
+      const s = document.createElement('script');
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES.API_KEY}&libraries=places&language=fr&callback=initGoogleReviews`;
+      s.async = true; s.defer = true;
+      s.onerror = () => {
+        const reviewsEl = document.getElementById('googleReviews');
+        const linkEl = document.getElementById('gmapsLink');
+        if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS ne s’est pas chargé (clé / restrictions ?).</div>';
+        if (linkEl) linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
       };
       document.head.appendChild(s);
     })();
   </script>
 
-  <!-- ---------- COOKIES + Analytics (conservé) ---------- -->
   <script>
-    const cookieBanner=document.getElementById("cookie-banner");
-    const acceptBtn=document.getElementById("cookie-accept");
-    const rejectBtn=document.getElementById("cookie-reject");
+    /* ---------- COOKIES (conservé) ---------- */
+    const cookieBanner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("cookie-accept");
+    const rejectBtn = document.getElementById("cookie-reject");
 
-    function loadAnalytics(){
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-        var f=d.getElementsByTagName(s)[0], j=d.createElement(s), dl=l!='dataLayer'?'&l='+l:'';
-        j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    function loadAnalytics() {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-PC3K8HGL');
 
-      var gaScript=document.createElement("script");
-      gaScript.async=true; gaScript.src="https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      var gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
       document.head.appendChild(gaScript);
 
-      window.dataLayer=window.dataLayer||[];
-      function gtag(){dataLayer.push(arguments)} window.gtag=gtag;
-      gtag('js',new Date()); gtag('config','G-NGR43J81FE',{ 'anonymize_ip':true });
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+      gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
     }
 
-    const cookieChoice=localStorage.getItem("cookiesAccepted");
-    if(cookieChoice==="true"){loadAnalytics();cookieBanner.style.display="none";}
-    else if(cookieChoice==="false"){cookieBanner.style.display="none";}
-    else{cookieBanner.style.display="block";}
+    const cookieChoice = localStorage.getItem("cookiesAccepted");
 
-    acceptBtn.addEventListener("click",()=>{localStorage.setItem("cookiesAccepted","true");loadAnalytics();cookieBanner.style.display="none";});
-    rejectBtn.addEventListener("click",()=>{localStorage.setItem("cookiesAccepted","false");cookieBanner.style.display="none";});
+    if (cookieChoice === "true") {
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    } else if (cookieChoice === "false") {
+      cookieBanner.style.display = "none";
+    } else {
+      cookieBanner.style.display = "block";
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("cookiesAccepted", "true");
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    });
+
+    rejectBtn.addEventListener("click", () => {
+      localStorage.setItem("cookiesAccepted", "false");
+      cookieBanner.style.display = "none";
+    });
   </script>
 
   <!-- Service Worker (conservé) -->
   <script>
-    if("serviceWorker" in navigator){
+    if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("vitre-pwa/service-worker.js")
-        .then(reg=>console.log("✅ Service Worker enregistré :",reg))
-        .catch(err=>console.error("❌ Erreur Service Worker :",err));
+        .then(reg => console.log("✅ Service Worker enregistré :", reg))
+        .catch(err => console.error("❌ Erreur Service Worker :", err));
     }
   </script>
 </body>
