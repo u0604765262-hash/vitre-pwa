@@ -439,9 +439,9 @@ const payload = {
           // 🔁 Repli mailto si EmailJS échoue
           const subject = encodeURIComponent('Demande de prestation vitres');
           const body = encodeURIComponent(
-`Nom: ${payload.from_name}
+`Nom: ${payload.fullname}
 Téléphone: ${payload.phone}
-Email: ${payload.from_email}
+Email: ${payload.email}
 Type: ${payload.clientType}
 Adresse: ${payload.address}
 Créneau souhaité: ${payload.slot}
