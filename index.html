@@ -474,11 +474,11 @@ Prestations: ${services || '—'}
   </script>
 
   <script>
-  /* === Avis Google dynamiques (Places API) — support PLACE_ID ou fallback QUERY (nom+ville) === */
+  /* === Avis Google dynamiques (Places API) — PLACE_ID OU fallback par NOM+VILLE, avec biais géographique === */
   const GOOGLE_PLACES = {
-    API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',
-    PLACE_ID: 'ChIJF0ylJdEM5kcRHHCkzfAYqcs',
-    QUERY: 'Bulle de Savon Maisons-Alfort 94700',
+    API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M', // ⚠️ restreindre aux bons référents
+    QUERY: 'Bulle de Savon Maisons-Alfort 94700',        // nom + ville
+    LOCATION: { lat: 48.7799077, lng: 2.4574978 },       // centre/biais
     MAX_REVIEWS: 6
   };
 
@@ -493,7 +493,7 @@ Prestations: ${services || '—'}
         return;
       }
       const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
-      reviewsEl.innerHTML = '';
+      reviewsEl.innerHTML = list.length ? '' : '<div class="review">Aucun avis n\'est encore publié sur Google pour le moment.</div>';
       list.forEach(r => {
         const el = document.createElement('div');
         el.className = 'review';
@@ -511,15 +511,15 @@ Prestations: ${services || '—'}
       });
       linkEl.href = place.url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon'));
       linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
+      // console.log('Résolu place_id =', place.place_id || '(non exposé)');
     }
 
-    // Service Places (sans carte visible)
     const service = new google.maps.places.PlacesService(document.createElement('div'));
 
     function fetchDetailsByPlaceId(placeId){
       service.getDetails({
         placeId,
-        fields: ['name','rating','user_ratings_total','url','reviews']
+        fields: ['name','rating','user_ratings_total','url','reviews','place_id']
       }, (place, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           renderPlace(place);
@@ -530,23 +530,36 @@ Prestations: ${services || '—'}
       });
     }
 
-    // 1) Si on a un PLACE_ID → direct
+    // 1) Si PLACE_ID → direct
     if (GOOGLE_PLACES.PLACE_ID && !GOOGLE_PLACES.PLACE_ID.includes('ICI')) {
       fetchDetailsByPlaceId(GOOGLE_PLACES.PLACE_ID);
       return;
     }
 
-    // 2) Sinon → recherche par nom + ville (Find Place from Query)
+    // 2) Sinon: Find Place + biais géographique
     if (GOOGLE_PLACES.QUERY) {
       service.findPlaceFromQuery({
         query: GOOGLE_PLACES.QUERY,
-        fields: ['place_id','name','formatted_address']
+        fields: ['place_id','name','formatted_address'],
+        locationBias: GOOGLE_PLACES.LOCATION ? new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng) : undefined
       }, (res, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK && res && res[0]) {
           fetchDetailsByPlaceId(res[0].place_id);
         } else {
-          reviewsEl.innerHTML = '<div class="review">Fiche introuvable avec le nom donné. Vérifiez l’orthographe.</div>';
-          linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY);
+          // 3) Fallback: Text Search
+          const ts = new google.maps.places.PlacesService(document.createElement('div'));
+          ts.textSearch({
+            query: GOOGLE_PLACES.QUERY,
+            location: GOOGLE_PLACES.LOCATION ? new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng) : undefined,
+            radius: 4000
+          }, (results, st) => {
+            if (st === google.maps.places.PlacesServiceStatus.OK && results && results[0]) {
+              fetchDetailsByPlaceId(results[0].place_id);
+            } else {
+              reviewsEl.innerHTML = '<div class="review">Fiche introuvable avec le nom donné. Vérifiez l\'orthographe.</div>';
+              linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY);
+            }
+          });
         }
       });
     } else {
@@ -566,7 +579,7 @@ Prestations: ${services || '—'}
     s.onerror = () => {
       const reviewsEl = document.getElementById('googleReviews');
       const linkEl = document.getElementById('gmapsLink');
-      if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n’a pas pu être chargé (clé API ?).</div>';
+      if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n\'a pas pu être chargé (clé API ?).</div>';
       if (linkEl) linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
     };
     document.head.appendChild(s);
