@@ -14,8 +14,8 @@
 
   <style>
     :root {
-      --primary: #0F384D;         /* Couleur de marque */
-      --primary-600: #0C2C3A;     /* Hover */
+      --primary: #0F384D;
+      --primary-600: #0C2C3A;
       --bg: #f4f6f8;
       --card: #ffffff;
       --text: #2b2b2b;
@@ -26,7 +26,6 @@
       --radius: 14px;
     }
 
-    /* Base */
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -41,7 +40,6 @@
     img { max-width: 100%; display: block; }
     .container { width: min(1100px, 92%); margin: 0 auto; }
 
-    /* Header */
     header { position: sticky; top: 0; z-index: 50; background: #fff; box-shadow: var(--shadow); }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:10px 0; }
     .brand { display:flex; align-items:center; gap:12px; }
@@ -54,7 +52,6 @@
     .btn-primary:hover { background: var(--primary-600); }
     .btn-ghost { background: #fff; color: var(--primary); border:2px solid rgba(15,56,77,.2); }
 
-    /* Hero */
     .hero { background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); padding: 36px 0 24px; border-bottom: 1px solid #eef2f7; }
     .hero-grid { display:grid; grid-template-columns: 1.15fr .85fr; gap: 28px; align-items:center; }
     .hero h2 { font-size: clamp(28px, 4vw, 40px); margin: 0 0 8px; color: var(--primary); }
@@ -66,39 +63,34 @@
     .usp .item { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:12px; border-radius:12px; }
     .usp .item .icon { font-size:20px; }
 
-    /* Sections */
     section { padding: 28px 0; }
     .section-title { font-size: 22px; color:#0f172a; margin: 0 0 8px; }
     .section-sub { color:#64748b; margin: 0 0 18px; }
 
-    /* Services */
     .cards { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
     .card { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
     .card h3 { margin:0 0 6px; font-size:18px; color:#0f172a; }
     .card p { margin:0; color:#616e7c; font-size:15px; }
 
-    /* Galerie */
     .masonry { columns: 1; column-gap: 12px; }
     @media (min-width: 640px) { .masonry { columns: 2; } }
     @media (min-width: 960px) { .masonry { columns: 3; } }
     .masonry figure { break-inside: avoid; background:#fff; margin:0 0 12px; border-radius: 12px; overflow:hidden; box-shadow: var(--shadow); border:1px solid #eef2f7; }
     .masonry figcaption { padding:10px 12px; font-size:14px; color:#475569; }
 
-    /* Étapes */
     .steps { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
     .step { background:#fff; border:1px solid #eef2f7; border-radius: 12px; padding:14px; box-shadow: var(--shadow); }
     .step .num { font-weight:800; color:#0ea5e9; font-size:14px; }
     .step h4 { margin:6px 0 6px; font-size:16px; }
     .step p { margin:0; color:#64748b; font-size:14px; }
 
-    /* Avis Google */
+    /* Avis */
     .reviews { display:grid; gap:16px; margin-top:20px; }
     .review { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid #eef2f7; }
     .review-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
     .review-name { font-weight:700; color:#0F384D; }
     .stars { color:#f59e0b; }
 
-    /* Formulaire */
     .form-wrap { background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); border:1px solid #eef2f7; padding: 18px; }
     form .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
     @media (min-width: 720px) { form .grid.two { grid-template-columns: 1fr 1fr; } }
@@ -109,11 +101,9 @@
     .check-group { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
     .checkbox { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:10px 12px; border-radius:10px; }
 
-    /* Footer */
     footer { color:#64748b; font-size: 13px; text-align:center; padding: 18px 12px 28px; }
     footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
 
-    /* Cookies (conservé) */
     #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none; }
     #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
     #cookie-banner button { margin-left: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
@@ -189,26 +179,11 @@
     <h3 class="section-title">Avant / Après</h3>
     <p class="section-sub">Quelques réalisations récentes. Remplacez ces images par vos photos.</p>
     <div class="masonry">
-      <figure>
-        <img src="photos/apres-1.jpg" alt="Résultat nettoyage 1" loading="lazy">
-        <figcaption>Vitrine – centre-ville</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-2.jpg" alt="Résultat nettoyage 2" loading="lazy">
-        <figcaption>Véranda – particulier</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-3.jpg" alt="Résultat nettoyage 3" loading="lazy">
-        <figcaption>Baie vitrée – maison</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-4.jpg" alt="Résultat nettoyage 4" loading="lazy">
-        <figcaption>Vitres d’angle – commerce</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-5.jpg" alt="Résultat nettoyage 5" loading="lazy">
-        <figcaption>Velux – étage</figcaption>
-      </figure>
+      <figure><img src="photos/apres-1.jpg" alt="Résultat 1" loading="lazy"><figcaption>Vitrine – centre-ville</figcaption></figure>
+      <figure><img src="photos/apres-2.jpg" alt="Résultat 2" loading="lazy"><figcaption>Véranda – particulier</figcaption></figure>
+      <figure><img src="photos/apres-3.jpg" alt="Résultat 3" loading="lazy"><figcaption>Baie vitrée – maison</figcaption></figure>
+      <figure><img src="photos/apres-4.jpg" alt="Résultat 4" loading="lazy"><figcaption>Vitres d’angle – commerce</figcaption></figure>
+      <figure><img src="photos/apres-5.jpg" alt="Résultat 5" loading="lazy"><figcaption>Velux – étage</figcaption></figure>
     </div>
   </section>
 
@@ -223,82 +198,380 @@
     </div>
   </section>
 
-  <!-- Avis clients (dynamique Google) -->
+  <!-- Avis clients (Google Places API avec Place ID) -->
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
-    <p class="section-sub">Avis vérifiés Google. (Dynamique — clé API et recherche par <strong>nom + ville</strong> avec filtre sur <strong>Maisons‑Alfort 94700</strong>.)</p>
+    <p class="section-sub">Avis vérifiés Google (chargés automatiquement depuis ta fiche).</p>
 
     <div id="googleReviews" class="reviews"></div>
 
     <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-      <a id="gmapsLink" class="btn btn-primary" target="_
+      <a id="gmapsLink" class="btn btn-primary" target="_blank" rel="noopener">Voir plus d’avis sur Google</a>
+      <span class="hint">Si rien ne s’affiche, vérifie ta clé API Google Cloud et les restrictions de domaine.</span>
+    </div>
+  </section>
 
-<script>
-  /* === Avis Google dynamiques (Places API) — version simplifiée avec PLACE_ID uniquement === */
-  const GOOGLE_PLACES = {
-    API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',                        // ⚠️ restreindre aux bons référents (domaine + localhost si test)
-    PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',             // Place ID trouvé pour Bulle de Savon (Maisons-Alfort)
-    MAX_REVIEWS: 6
-  };
+  <!-- Formulaire Devis / Demande de prestation -->
+  <section class="container" id="devis">
+    <h3 class="section-title">Demande de prestation / devis</h3>
+    <p class="section-sub">Gratuit et sans engagement. Nous revenons vers vous très vite pour planifier une visite et vous donner le prix exact.</p>
 
-  function initGoogleReviews(){
-    const reviewsEl = document.getElementById('googleReviews');
-    const linkEl    = document.getElementById('gmapsLink');
-
-    function renderPlace(place){
-      if (!place) {
-        reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
-        linkEl.href = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID;
-        return;
-      }
-      const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
-      reviewsEl.innerHTML = list.length ? '' : '<div class="review">Aucun avis n’est encore publié pour cette fiche.</div>';
-      list.forEach(r => {
-        const el = document.createElement('div');
-        el.className = 'review';
-        el.innerHTML = `
-          <div class="review-header">
-            <span class="review-name">${r.author_name || 'Client Google'}</span>
-            <span class="stars" aria-label="${r.rating} étoiles">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}</span>
+    <div class="form-wrap">
+      <form id="requestForm" novalidate>
+        <div class="grid two">
+          <div>
+            <label for="fullname">Nom & prénom *</label>
+            <input id="fullname" name="fullname" type="text" autocomplete="name" required>
           </div>
-          <p>${r.text || ''}</p>
-          <div class="hint">${new Date(r.time * 1000).toLocaleDateString('fr-FR')}</div>
-        `;
-        reviewsEl.appendChild(el);
+          <div>
+            <label for="phone">Téléphone *</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="06…" required>
+            <div class="hint">On vous appelle seulement pour fixer un créneau.</div>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" placeholder="contact@exemple.fr">
+          </div>
+          <div>
+            <label for="clientType">Vous êtes *</label>
+            <select id="clientType" name="clientType" required>
+              <option value="">Sélectionner…</option>
+              <option>Particulier</option>
+              <option>Professionnel</option>
+              <option>Association / Copropriété</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="address">Adresse d’intervention *</label>
+          <input id="address" name="address" type="text" placeholder="N°, rue, ville" required>
+          <div class="hint">Précisez l’étage et les informations d’accès si utile.</div>
+        </div>
+
+        <div>
+          <label>Type de prestation souhaitée (cochez ce qui s’applique)</label>
+          <div class="check-group">
+            <label class="checkbox"><input type="checkbox" name="services" value="Fenêtres"> Fenêtres / châssis</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Baies"> Baies vitrées</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Véranda"> Véranda</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Vitrine"> Vitrine commerce</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Velux"> Velux</label>
+            <label class="checkbox"><input type="checkbox" name="services" value="Autre"> Autre</label>
+          </div>
+        </div>
+
+        <div class="grid two">
+          <div>
+            <label for="slot">Créneau souhaité</label>
+            <input id="slot" name="slot" type="datetime-local">
+          </div>
+          <div>
+            <label for="frequency">Fréquence</label>
+            <select id="frequency" name="frequency">
+              <option value="Ponctuel">Ponctuel</option>
+              <option value="Mensuel">Mensuel</option>
+              <option value="Trimestriel">Trimestriel</option>
+              <option value="Semestriel">Semestriel</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label for="message">Précisions utiles</label>
+          <textarea id="message" name="message" placeholder="Surface approximative, accès, hauteur, traces spécifiques, etc."></textarea>
+        </div>
+
+        <div>
+          <label>Photos (facultatif)</label>
+          <div id="dropzone" class="dropzone">
+            Glissez-déposez des images ici ou <strong>cliquez</strong> pour sélectionner.
+            <input id="photos" name="photos" type="file" accept="image/*" multiple style="display:none">
+          </div>
+          <div class="hint">Les pièces jointes seront envoyées si votre point de terminaison le permet. Sinon, on vous proposera de répondre à l’email avec les photos.</div>
+          <div id="preview" class="preview"></div>
+        </div>
+
+        <!-- Anti-spam honeypot -->
+        <input type="text" id="company" name="company" style="position:absolute; left:-9999px; top:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <div class="consent">
+          <input id="consent" type="checkbox" required>
+          <label for="consent">J’accepte d’être contacté par Bulle de Savon pour ma demande. Mes données ne seront pas partagées à des tiers. (<a href="mentions-legales.html">Confidentialité</a>)</label>
+        </div>
+
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;">
+          <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
+          <a class="btn btn-ghost" href="mailto:contact@bulle-de-savon.fr?subject=Demande%20de%20prestation%20vitres">Ou par email</a>
+          <span id="formStatus" class="hint"></span>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="container" id="faq">
+    <h3 class="section-title">Questions fréquentes</h3>
+    <details>
+      <summary>Comment calculez-vous le tarif ?</summary>
+      <p>Nous venons sur place pour évaluer l’accès, la surface et l’état des vitres. Le prix est fixé et validé avec vous avant toute intervention.</p>
+    </details>
+    <details>
+      <summary>Faut-il être présent ?</summary>
+      <p>Idéalement pour la première visite, oui. Ensuite, nous pouvons convenir d’un mode d’accès sécurisé.</p>
+    </details>
+    <details>
+      <summary>Intervenez-vous le samedi ou tôt le matin ?</summary>
+      <p>Oui, nous nous adaptons à vos contraintes horaires (commerces notamment).</p>
+    </details>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="links">
+      <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
+      <span>•</span>
+      <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>
+      <span>•</span>
+      <a href="tel:+33618100807">06 18 10 08 07</a>
+      <span>•</span>
+      <a href="#devis">Demander un devis</a>
+    </div>
+  </footer>
+
+  <!-- ======== JS page ======== -->
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          e.preventDefault();
+          document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
-      linkEl.href = place.url || ('https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID);
-      linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
+    });
+
+    // Dropzone
+    const dz = document.getElementById('dropzone');
+    const fileInput = document.getElementById('photos');
+    const preview = document.getElementById('preview');
+
+    if (dz) {
+      dz.addEventListener('click', () => fileInput.click());
+      dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+      dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+      dz.addEventListener('drop', e => {
+        e.preventDefault(); dz.classList.remove('drag');
+        fileInput.files = e.dataTransfer.files;
+        renderPreviews();
+      });
+      fileInput.addEventListener('change', renderPreviews);
     }
 
-    const service = new google.maps.places.PlacesService(document.createElement('div'));
+    function renderPreviews(){
+      if (!preview) return;
+      preview.innerHTML = '';
+      const files = Array.from(fileInput.files || []);
+      files.slice(0,8).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const img = document.createElement('img');
+        img.src = url; img.alt = file.name; img.loading = 'lazy';
+        preview.appendChild(img);
+      });
+    }
 
-    service.getDetails({
-      placeId: GOOGLE_PLACES.PLACE_ID,
-      fields: ['name','rating','user_ratings_total','url','reviews','place_id']
-    }, (place, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        renderPlace(place);
-      } else {
-        reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis (Place Details).</div>';
-        linkEl.href = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID;
-      }
-    });
-  }
+    // Form handling
+    const form = document.getElementById('requestForm');
+    const statusEl = document.getElementById('formStatus');
+    const FORM_ENDPOINT = '';
 
-  // Charge Maps JS et lance init
-  (function loadMaps(){
-    const s = document.createElement('script');
-    const key = GOOGLE_PLACES.API_KEY && !GOOGLE_PLACES.API_KEY.includes('ICI') ? GOOGLE_PLACES.API_KEY : '';
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places&language=fr`;
-    s.async = true;
-    s.defer = true;
-    s.onload = initGoogleReviews;
-    s.onerror = () => {
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        statusEl.textContent = '';
+
+        if (document.getElementById('company').value.trim() !== '') return;
+
+        const requiredIds = ['fullname','phone','clientType','address','consent'];
+        for (const id of requiredIds) {
+          const el = document.getElementById(id);
+          if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
+            el.focus();
+            statusEl.textContent = 'Merci de compléter les champs marqués *.';
+            statusEl.style.color = '#ef4444';
+            return;
+          }
+        }
+
+        const data = new FormData(form);
+
+        if (FORM_ENDPOINT) {
+          try {
+            const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            form.reset(); preview.innerHTML = '';
+            statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+            statusEl.style.color = '#16a34a';
+          } catch (err) {
+            statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
+            statusEl.style.color = '#ef4444';
+          }
+        } else {
+          const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+          const subject = encodeURIComponent('Demande de prestation vitres');
+          const body = encodeURIComponent(
+`Nom: ${data.get('fullname')}
+Téléphone: ${data.get('phone')}
+Email: ${data.get('email') || ''}
+Type: ${data.get('clientType')}
+Adresse: ${data.get('address')}
+Créneau souhaité: ${data.get('slot') || ''}
+Fréquence: ${data.get('frequency') || 'Ponctuel'}
+Prestations: ${services || '—'}
+\nMessage:\n${data.get('message') || '—'}\n\n(Photos à envoyer en réponse à l’email si besoin)`);
+          window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
+        }
+      });
+    }
+  </script>
+
+  <!-- === Avis Google dynamiques avec Place ID === -->
+  <script>
+    const GOOGLE_PLACES = {
+      API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',                 // ← remplace par ta clé
+      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',   // ← ton Place ID
+      MAX_REVIEWS: 6
+    };
+
+    function initGoogleReviews() {
       const reviewsEl = document.getElementById('googleReviews');
       const linkEl = document.getElementById('gmapsLink');
-      if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n\'a pas pu être chargé (clé API ?).</div>';
-      if (linkEl) linkEl.href = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID;
-    };
-    document.head.appendChild(s);
-  })();
-</script>
+
+      function renderPlace(place) {
+        if (!place || !place.reviews) {
+          reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
+          linkEl.href = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID;
+          return;
+        }
+        const list = place.reviews.slice(0, GOOGLE_PLACES.MAX_REVIEWS);
+        reviewsEl.innerHTML = '';
+        list.forEach(r => {
+          const el = document.createElement('div');
+          el.className = 'review';
+          el.innerHTML = `
+            <div class="review-header">
+              <span class="review-name">${r.author_name || 'Client Google'}</span>
+              <span class="stars" aria-label="${r.rating} étoiles">
+                ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}
+              </span>
+            </div>
+            <p>${(r.text || '').replace(/</g,'&lt;')}</p>
+            <div class="hint">${new Date(r.time * 1000).toLocaleDateString('fr-FR')}</div>
+          `;
+          reviewsEl.appendChild(el);
+        });
+        linkEl.href = place.url || ('https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID);
+        linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
+      }
+
+      const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+      service.getDetails({
+        placeId: GOOGLE_PLACES.PLACE_ID,
+        fields: ['name','rating','user_ratings_total','url','reviews','place_id']
+      }, (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          renderPlace(place);
+        } else {
+          console.error('Erreur API Google Places:', status);
+          reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis (erreur API).</div>';
+          linkEl.href = 'https://www.google.com/maps/place/?q=place_id:' + GOOGLE_PLACES.PLACE_ID;
+        }
+      });
+    }
+
+    (function loadMaps() {
+      const s = document.createElement('script');
+      s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(GOOGLE_PLACES.API_KEY)}&libraries=places&language=fr`;
+      s.async = true;
+      s.defer = true;
+      s.onload = initGoogleReviews;
+      s.onerror = () => {
+        const reviewsEl = document.getElementById('googleReviews');
+        if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n’a pas pu être chargé.</div>';
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
+
+  <!-- Cookies -->
+  <div id="cookie-banner">
+    🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
+    <div class="cookie-buttons">
+      <button id="cookie-accept">Accepter</button>
+      <button id="cookie-reject">Refuser</button>
+    </div>
+  </div>
+
+  <script>
+    const cookieBanner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("cookie-accept");
+    const rejectBtn = document.getElementById("cookie-reject");
+
+    function loadAnalytics() {
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-PC3K8HGL');
+
+      var gaScript = document.createElement("script");
+      gaScript.async = true;
+      gaScript.src = "https://www.googletagmanager.com/gtag/js?id=G-NGR43J81FE";
+      document.head.appendChild(gaScript);
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);} 
+      window.gtag = gtag;
+
+      gtag('js', new Date());
+      gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
+    }
+
+    const cookieChoice = localStorage.getItem("cookiesAccepted");
+
+    if (cookieChoice === "true") {
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    } else if (cookieChoice === "false") {
+      cookieBanner.style.display = "none";
+    } else {
+      cookieBanner.style.display = "block";
+    }
+
+    acceptBtn.addEventListener("click", () => {
+      localStorage.setItem("cookiesAccepted", "true");
+      loadAnalytics();
+      cookieBanner.style.display = "none";
+    });
+
+    rejectBtn.addEventListener("click", () => {
+      localStorage.setItem("cookiesAccepted", "false");
+      cookieBanner.style.display = "none";
+    });
+  </script>
+
+  <!-- Service Worker (conservé) -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("vitre-pwa/service-worker.js")
+        .then(reg => console.log("✅ Service Worker enregistré :", reg))
+        .catch(err => console.error("❌ Erreur Service Worker :", err));
+    }
+  </script>
+</body>
+</html>
