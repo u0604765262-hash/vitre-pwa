@@ -406,22 +406,29 @@
         const data = new FormData(form);
 
         // Prépare le payload commun (noms alignés avec le template EmailJS)
-        const services = Array.from(form.querySelectorAll('input[name="services"]:checked'))
+       const services = Array.from(form.querySelectorAll('input[name="services"]:checked'))
   .map(el => el.value).join(', ');
 
 const payload = {
-  // tes variables "simples"
-  fullname: data.get('fullname'),
+  // variables “neutres” (à utiliser dans le template)
+  customer_name: data.get('fullname') || '',
+  customer_email: data.get('email') || '',
+
+  // tes variables actuelles (on les garde aussi)
+  fullname: data.get('fullname') || '',
   email: data.get('email') || '',
-  phone: data.get('phone'),
-  clientType: data.get('clientType'),
-  address: data.get('address'),
+
+  phone: data.get('phone') || '',
+  clientType: data.get('clientType') || '',
+  address: data.get('address') || '',
   slot: data.get('slot') || '',
   frequency: data.get('frequency') || 'Ponctuel',
   services: services || '—',
   message: data.get('message') || '—',
   to_email: 'contact@bulle-de-savon.fr'
-        };
+};
+
+console.log('Payload EmailJS ->', payload); // debug temporaire
 
         try {
           // ✅ Envoi via EmailJS (par défaut)
