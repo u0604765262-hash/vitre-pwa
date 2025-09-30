@@ -14,8 +14,8 @@
 
   <style>
     :root {
-      --primary: #0F384D;         /* Couleur de marque */
-      --primary-600: #0C2C3A;     /* Hover */
+      --primary: #0F384D;
+      --primary-600: #0C2C3A;
       --bg: #f4f6f8;
       --card: #ffffff;
       --text: #2b2b2b;
@@ -26,7 +26,6 @@
       --radius: 14px;
     }
 
-    /* Base */
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -113,7 +112,7 @@
     footer { color:#64748b; font-size: 13px; text-align:center; padding: 18px 12px 28px; }
     footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
 
-    /* Cookies (conservé) */
+    /* Cookies */
     #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none; }
     #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
     #cookie-banner button { margin-left: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
@@ -226,15 +225,13 @@
   <!-- Avis clients (dynamique Google) -->
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
-    <p class="section-sub">
-      Avis vérifiés Google (chargés via l’API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions de domaine et la facturation.
-    </p>
+    <p class="section-sub">Avis vérifiés Google (API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions de domaine et la facturation.</p>
 
     <div id="googleReviews" class="reviews"></div>
 
     <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
       <a id="gmapsLink" class="btn btn-primary" target="_blank" rel="noopener">Voir plus d’avis sur Google</a>
-      <span class="hint">Astuce : ouvre la console (F12) pour voir quelle fiche est trouvée.</span>
+      <span class="hint">Chargement automatique depuis ta fiche GMB.</span>
     </div>
   </section>
 
@@ -280,7 +277,7 @@
         </div>
 
         <div>
-          <label>Type de prestation souhaitée (cochez ce qui s’applique)</label>
+          <label>Type de prestation souhaitée</label>
           <div class="check-group">
             <label class="checkbox"><input type="checkbox" name="services" value="Fenêtres"> Fenêtres / châssis</label>
             <label class="checkbox"><input type="checkbox" name="services" value="Baies"> Baies vitrées</label>
@@ -318,7 +315,7 @@
             Glissez-déposez des images ici ou <strong>cliquez</strong> pour sélectionner.
             <input id="photos" name="photos" type="file" accept="image/*" multiple style="display:none">
           </div>
-          <div class="hint">Les pièces jointes seront envoyées si votre point de terminaison le permet. Sinon, on vous proposera de répondre à l’email avec les photos.</div>
+          <div class="hint">Si votre endpoint le permet, les pièces jointes seront envoyées. Sinon, on vous proposera d’y répondre par email.</div>
           <div id="preview" class="preview"></div>
         </div>
 
@@ -378,8 +375,8 @@
     </div>
   </div>
 
+  <!-- ======== JS page ======== -->
   <script>
-    /* ======== JS page ======== */
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
@@ -396,17 +393,20 @@
     const fileInput = document.getElementById('photos');
     const preview = document.getElementById('preview');
 
-    dz.addEventListener('click', () => fileInput.click());
-    dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
-    dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
-    dz.addEventListener('drop', e => {
-      e.preventDefault(); dz.classList.remove('drag');
-      fileInput.files = e.dataTransfer.files;
-      renderPreviews();
-    });
-    fileInput.addEventListener('change', renderPreviews);
+    if (dz) {
+      dz.addEventListener('click', () => fileInput.click());
+      dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
+      dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
+      dz.addEventListener('drop', e => {
+        e.preventDefault(); dz.classList.remove('drag');
+        fileInput.files = e.dataTransfer.files;
+        renderPreviews();
+      });
+      fileInput.addEventListener('change', renderPreviews);
+    }
 
     function renderPreviews(){
+      if (!preview || !fileInput) return;
       preview.innerHTML = '';
       const files = Array.from(fileInput.files || []);
       files.slice(0,8).forEach(file => {
@@ -420,47 +420,43 @@
     // Form handling
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
-
-    // ⚙️ Configurez ceci si vous avez un endpoint (Formspree/Make/Zapier/Netlify/serveur)
     const FORM_ENDPOINT = '';
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      statusEl.textContent = '';
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        statusEl.textContent = '';
 
-      // Honeypot
-      if (document.getElementById('company').value.trim() !== '') return;
+        if (document.getElementById('company').value.trim() !== '') return;
 
-      // Validation simple
-      const requiredIds = ['fullname','phone','clientType','address','consent'];
-      for (const id of requiredIds) {
-        const el = document.getElementById(id);
-        if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
-          el.focus();
-          statusEl.textContent = 'Merci de compléter les champs marqués *.';
-          statusEl.style.color = '#ef4444';
-          return;
+        const requiredIds = ['fullname','phone','clientType','address','consent'];
+        for (const id of requiredIds) {
+          const el = document.getElementById(id);
+          if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
+            el.focus();
+            statusEl.textContent = 'Merci de compléter les champs marqués *.';
+            statusEl.style.color = '#ef4444';
+            return;
+          }
         }
-      }
 
-      const data = new FormData(form);
+        const data = new FormData(form);
 
-      if (FORM_ENDPOINT) {
-        try {
-          const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          form.reset(); preview.innerHTML = '';
-          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-          statusEl.style.color = '#16a34a';
-        } catch (err) {
-          statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
-          statusEl.style.color = '#ef4444';
-        }
-      } else {
-        // Fallback mailto (pièces jointes non prises en charge)
-        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
-        const subject = encodeURIComponent('Demande de prestation vitres');
-        const body = encodeURIComponent(
+        if (FORM_ENDPOINT) {
+          try {
+            const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            form.reset(); preview.innerHTML = '';
+            statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+            statusEl.style.color = '#16a34a';
+          } catch (err) {
+            statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
+            statusEl.style.color = '#ef4444';
+          }
+        } else {
+          const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+          const subject = encodeURIComponent('Demande de prestation vitres');
+          const body = encodeURIComponent(
 `Nom: ${data.get('fullname')}
 Téléphone: ${data.get('phone')}
 Email: ${data.get('email') || ''}
@@ -470,27 +466,42 @@ Créneau souhaité: ${data.get('slot') || ''}
 Fréquence: ${data.get('frequency') || 'Ponctuel'}
 Prestations: ${services || '—'}
 \nMessage:\n${data.get('message') || '—'}\n\n(Photos à envoyer en réponse à l’email si besoin)`);
-        window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
-      }
-    });
+          window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
+        }
+      });
+    }
   </script>
 
-  <!-- === Avis Google dynamiques (robuste) === -->
+  <!-- === Avis Google dynamiques — filtrage robuste pour ta fiche === -->
   <script>
     const GOOGLE_PLACES = {
-      API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',   // ⚠️ restreins aux référents bulle-de-savon.fr + http://localhost/*
-      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',              // si c’est bien le tien, il sera utilisé en priorité
+      API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',
+      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE', // laisse vide "" si tu veux forcer la recherche
+      TARGET_NAME: 'Bulle de Savon',
+      CITY_FILTER: 'Maisons-Alfort',
+      POSTAL_FILTER: '94700',
+      TYPES_EXCLUDE: ['laundry','dry_cleaner','car_wash','beauty_salon'],
       QUERY_VARIANTS: [
         'Bulle de Savon, 94700 Maisons-Alfort',
         '"Bulle de Savon" nettoyage de vitres Maisons-Alfort',
-        'Bulle de savon vitres Maisons-Alfort 94700'
+        'Bulle de Savon vitres Maisons-Alfort 94700'
       ],
-      CITY_FILTER: 'Maisons-Alfort',
-      POSTAL_FILTER: '94700',
       LOCATION: { lat: 48.79, lng: 2.45 },
       SEARCH_RADIUS: 12000,
       MAX_REVIEWS: 6
     };
+
+    const norm = s => (s || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').trim();
+
+    function looksLikeOurs(result){
+      const nameOk = norm(result.name) === norm(GOOGLE_PLACES.TARGET_NAME);
+      const addr   = norm(result.formatted_address || result.vicinity || '');
+      const cityOk = GOOGLE_PLACES.CITY_FILTER && addr.includes(norm(GOOGLE_PLACES.CITY_FILTER));
+      const zipOk  = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER);
+      const types  = (result.types || []).map(norm);
+      const bad    = GOOGLE_PLACES.TYPES_EXCLUDE.some(t => types.includes(norm(t)));
+      return nameOk && (cityOk || zipOk) && !bad;
+    }
 
     function renderPlace(place){
       const reviewsEl = document.getElementById('googleReviews');
@@ -526,71 +537,63 @@ Prestations: ${services || '—'}
       const linkEl    = document.getElementById('gmapsLink');
       const svc = new google.maps.places.PlacesService(document.createElement('div'));
 
-      function getDetails(placeId){
-        console.log('[getDetails] placeId=', placeId);
+      function getDetailsChecked(placeId, onFallback){
         svc.getDetails({
           placeId,
-          fields: ['name','rating','user_ratings_total','url','reviews','place_id','formatted_address','geometry']
+          fields: ['name','rating','user_ratings_total','url','reviews','place_id','formatted_address','geometry','types']
         }, (place, status) => {
-          console.log('[getDetails:status]', status, place?.name, place?.formatted_address);
-          if (status === google.maps.places.PlacesServiceStatus.OK) {
+          if (status === google.maps.places.PlacesServiceStatus.OK && place && looksLikeOurs(place)) {
             renderPlace(place);
-          } else if (status === google.maps.places.PlacesServiceStatus.NOT_FOUND ||
-                     status === google.maps.places.PlacesServiceStatus.INVALID_REQUEST) {
-            findPlaceRobust();
           } else {
-            reviewsEl.innerHTML = `<div class="review">Erreur Google Places : <strong>${status}</strong></div>`;
-            linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
+            onFallback?.();
           }
         });
       }
 
-      function keepCandidate(r){
-        const addr = (r.formatted_address || r.vicinity || '').toLowerCase();
-        const okCity  = GOOGLE_PLACES.CITY_FILTER && addr.includes(GOOGLE_PLACES.CITY_FILTER.toLowerCase());
-        const okZip   = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER);
-        return okCity || okZip;
-      }
-
-      function findPlaceRobust(){
+      function searchRobust(){
         const loc = new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng);
         const variants = GOOGLE_PLACES.QUERY_VARIANTS.slice();
 
         function tryNext(){
           const q = variants.shift();
-          if (!q) { reviewsEl.innerHTML = '<div class="review">Fiche introuvable avec le nom fourni.</div>'; return; }
+          if (!q) {
+            reviewsEl.innerHTML = '<div class="review">Fiche introuvable (nom trop proche d’autres entreprises). Donnez-moi votre Place ID exact et je le verrouille.</div>';
+            linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
+            return;
+          }
 
-          console.log('[findPlaceFromQuery] →', q);
-          svc.findPlaceFromQuery({ query: q, fields: ['place_id','name','formatted_address','geometry'], locationBias: loc },
+          svc.findPlaceFromQuery(
+            { query: q, fields:['place_id','name','formatted_address','types'], locationBias: loc },
             (res, status) => {
-              console.log('[findPlaceFromQuery:status]', status, res?.map(r=>r.name));
-              if (status === google.maps.places.PlacesServiceStatus.OK && res && res.length) {
-                const filtered = res.filter(keepCandidate);
-                const chosen = filtered[0] || res[0];
-                console.log('[findPlaceFromQuery:chosen]', chosen?.name, chosen?.formatted_address);
-                getDetails(chosen.place_id);
-              } else {
-                console.log('[textSearch] →', q);
-                svc.textSearch({ query: q, location: loc, radius: GOOGLE_PLACES.SEARCH_RADIUS },
-                  (results, st) => {
-                    console.log('[textSearch:status]', st, results?.map(r=>r.name));
-                    if (st === google.maps.places.PlacesServiceStatus.OK && results && results.length){
-                      const filtered = results.filter(keepCandidate);
-                      const chosen = filtered[0] || results[0];
-                      console.log('[textSearch:chosen]', chosen?.name, chosen?.formatted_address);
-                      getDetails(chosen.place_id);
-                    } else {
-                      tryNext();
-                    }
-                  });
+              if (status === google.maps.places.PlacesServiceStatus.OK && res && res.length){
+                const cand = res.find(looksLikeOurs) || res[0];
+                return getDetailsChecked(cand.place_id, textSearch);
               }
-            });
+              textSearch();
+            }
+          );
+
+          function textSearch(){
+            svc.textSearch(
+              { query: q, location: loc, radius: GOOGLE_PLACES.SEARCH_RADIUS },
+              (results, st) => {
+                if (st === google.maps.places.PlacesServiceStatus.OK && results && results.length){
+                  const cand = results.find(looksLikeOurs) || results[0];
+                  return getDetailsChecked(cand.place_id, tryNext);
+                }
+                tryNext();
+              }
+            );
+          }
         }
         tryNext();
       }
 
-      if (GOOGLE_PLACES.PLACE_ID) getDetails(GOOGLE_PLACES.PLACE_ID);
-      else findPlaceRobust();
+      if (GOOGLE_PLACES.PLACE_ID) {
+        getDetailsChecked(GOOGLE_PLACES.PLACE_ID, searchRobust);
+      } else {
+        searchRobust();
+      }
     }
 
     (function loadMaps(){
@@ -607,8 +610,8 @@ Prestations: ${services || '—'}
     })();
   </script>
 
+  <!-- Cookies / Analytics -->
   <script>
-    /* ---------- COOKIES (conservé) ---------- */
     const cookieBanner = document.getElementById("cookie-banner");
     const acceptBtn = document.getElementById("cookie-accept");
     const rejectBtn = document.getElementById("cookie-reject");
@@ -634,7 +637,6 @@ Prestations: ${services || '—'}
     }
 
     const cookieChoice = localStorage.getItem("cookiesAccepted");
-
     if (cookieChoice === "true") {
       loadAnalytics();
       cookieBanner.style.display = "none";
@@ -644,19 +646,18 @@ Prestations: ${services || '—'}
       cookieBanner.style.display = "block";
     }
 
-    acceptBtn.addEventListener("click", () => {
+    acceptBtn?.addEventListener("click", () => {
       localStorage.setItem("cookiesAccepted", "true");
       loadAnalytics();
       cookieBanner.style.display = "none";
     });
-
-    rejectBtn.addEventListener("click", () => {
+    rejectBtn?.addEventListener("click", () => {
       localStorage.setItem("cookiesAccepted", "false");
       cookieBanner.style.display = "none";
     });
   </script>
 
-  <!-- Service Worker (conservé) -->
+  <!-- Service Worker -->
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("vitre-pwa/service-worker.js")
