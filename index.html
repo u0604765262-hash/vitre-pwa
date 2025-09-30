@@ -76,13 +76,6 @@
     .card h3 { margin:0 0 6px; font-size:18px; color:#0f172a; }
     .card p { margin:0; color:#616e7c; font-size:15px; }
 
-    /* Galerie */
-    .masonry { columns: 1; column-gap: 12px; }
-    @media (min-width: 640px) { .masonry { columns: 2; } }
-    @media (min-width: 960px) { .masonry { columns: 3; } }
-    .masonry figure { break-inside: avoid; background:#fff; margin:0 0 12px; border-radius: 12px; overflow:hidden; box-shadow: var(--shadow); border:1px solid #eef2f7; }
-    .masonry figcaption { padding:10px 12px; font-size:14px; color:#475569; }
-
     /* Étapes */
     .steps { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
     .step { background:#fff; border:1px solid #eef2f7; border-radius: 12px; padding:14px; box-shadow: var(--shadow); }
@@ -150,7 +143,7 @@
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
           <a class="btn btn-primary" href="#devis">Je veux un devis sur place</a>
-          <a class="btn btn-ghost" href="#galerie">Voir des résultats</a>
+          <a class="btn btn-ghost" href="#etapes">Voir des résultats</a>
         </div>
       </div>
       <div class="hero-card">
@@ -180,34 +173,6 @@
       <article class="card"><h3>Vitres & fenêtres</h3><p>Intérieur / extérieur, encadrements et finitions incluses.</p></article>
       <article class="card"><h3>Baies vitrées & vérandas</h3><p>Grands formats, accès difficile, perches télescopiques.</p></article>
       <article class="card"><h3>Vitrines de commerces</h3><p>Entretien régulier ou passage ponctuel avant événement.</p></article>
-    </div>
-  </section>
-
-  <!-- Galerie -->
-  <section class="container" id="galerie">
-    <h3 class="section-title">Avant / Après</h3>
-    <p class="section-sub">Quelques réalisations récentes. Remplacez ces images par vos photos.</p>
-    <div class="masonry">
-      <figure>
-        <img src="photos/apres-1.jpg" alt="Résultat nettoyage 1" loading="lazy">
-        <figcaption>Vitrine – centre-ville</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-2.jpg" alt="Résultat nettoyage 2" loading="lazy">
-        <figcaption>Véranda – particulier</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-3.jpg" alt="Résultat nettoyage 3" loading="lazy">
-        <figcaption>Baie vitrée – maison</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-4.jpg" alt="Résultat nettoyage 4" loading="lazy">
-        <figcaption>Vitres d’angle – commerce</figcaption>
-      </figure>
-      <figure>
-        <img src="photos/apres-5.jpg" alt="Résultat nettoyage 5" loading="lazy">
-        <figcaption>Velux – étage</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -383,68 +348,34 @@
       });
     });
 
-    // Dropzone (sans bloc HTML, mais laissé intact : ne fait rien si absent)
-    const dz = document.getElementById('dropzone');
-    const fileInput = document.getElementById('photos');
-    const preview = document.getElementById('preview');
-
-    if (dz) {
-      dz.addEventListener('click', () => fileInput.click());
-      dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag'); });
-      dz.addEventListener('dragleave', () => dz.classList.remove('drag'));
-      dz.addEventListener('drop', e => {
-        e.preventDefault(); dz.classList.remove('drag');
-        fileInput.files = e.dataTransfer.files;
-        renderPreviews();
-      });
-      fileInput.addEventListener('change', renderPreviews);
-    }
-
-    function renderPreviews(){
-      if (!preview || !fileInput) return;
-      preview.innerHTML = '';
-      const files = Array.from(fileInput.files || []);
-      files.slice(0,8).forEach(file => {
-        const url = URL.createObjectURL(file);
-        const img = document.createElement('img');
-        img.src = url; img.alt = file.name; img.loading = 'lazy';
-        preview.appendChild(img);
-      });
-    }
-
     // Form handling
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
     const FORM_ENDPOINT = '';
-    let FORCE_EMAILJS = false; // ← force l'envoi via EmailJS quand on clique sur le bouton dédié
+    let FORCE_EMAILJS = false;
 
-    // Bouton "Envoyer directement à contact@..."
+    // Bouton d'envoi direct via EmailJS
     document.getElementById('sendEmailNow')?.addEventListener('click', () => {
       FORCE_EMAILJS = true;
       statusEl.textContent = 'Envoi en cours…';
       statusEl.style.color = '#64748b';
-
-      if (form?.requestSubmit) {
-        form.requestSubmit();               // ✅ moderne & fiable
-      } else {
-        form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
-      }
+      if (form?.requestSubmit) form.requestSubmit();
+      else form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     });
 
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        statusEl.textContent = '';
 
-        statusEl.textContent = 'Vérification du formulaire…';
-        statusEl.style.color = '#64748b';
-
+        // Anti-spam
         if (document.getElementById('company').value.trim() !== '') return;
 
+        // Validation minimale
         const requiredIds = ['fullname','phone','clientType','address','consent'];
         for (const id of requiredIds) {
           const el = document.getElementById(id);
-          const empty = (el.type === 'checkbox') ? !el.checked : (el.value || '').trim() === '';
-          if (empty) {
+          if ((el.type === 'checkbox' && !el.checked) || (el.value || '').trim() === '') {
             el.focus();
             statusEl.textContent = (id === 'consent')
               ? 'Merci de cocher la case de consentement pour pouvoir envoyer.'
@@ -458,22 +389,20 @@
         const data = new FormData(form);
 
         if (FORM_ENDPOINT && !FORCE_EMAILJS) {
+          // Envoi vers un endpoint serveur si défini (inchangé)
           try {
             const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
             if (!res.ok) throw new Error('HTTP ' + res.status);
             form.reset();
-            if (preview) preview.innerHTML = '';
             statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
             statusEl.style.color = '#16a34a';
           } catch (err) {
             statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
             statusEl.style.color = '#ef4444';
-          } finally {
-            FORCE_EMAILJS = false;
           }
         } else {
+          // Prépare le payload commun
           const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
-
           const payload = {
             to_email:  'contact@bulle-de-savon.fr',
             fullname:  data.get('fullname'),
@@ -487,25 +416,36 @@
             message:   data.get('message') || '—'
           };
 
-          try {
-            statusEl.textContent = 'Envoi via EmailJS…';
-            statusEl.style.color = '#64748b';
-            console.log('[EmailJS] payload →', payload);
+          if (FORCE_EMAILJS) {
+            // ✅ Envoi via EmailJS
+            try {
+              statusEl.textContent = 'Envoi via EmailJS…';
+              statusEl.style.color = '#64748b';
+              await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
+              form.reset();
+              statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+              statusEl.style.color = '#16a34a';
+            } catch (err) {
+              // Repli mailto si EmailJS échoue
+              const subject = encodeURIComponent('Demande de prestation vitres');
+              const body = encodeURIComponent(
+`Nom: ${payload.fullname}
+Téléphone: ${payload.phone}
+Email: ${payload.email}
+Type: ${payload.clientType}
+Adresse: ${payload.address}
+Créneau souhaité: ${payload.slot}
+Fréquence: ${payload.frequency}
+Prestations: ${payload.services}
 
-            await emailjs.send(
-              'service_b7vi3ol',      // ID service EmailJS
-              'template_wxnjg9e',     // ID template EmailJS
-              payload
-            );
-            form.reset();
-            if (preview) preview.innerHTML = '';
-            statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-            statusEl.style.color = '#16a34a';
-          } catch (err) {
-            console.error('[EmailJS] erreur →', err);
-            statusEl.textContent = "Échec EmailJS, ouverture de votre messagerie…";
-            statusEl.style.color = '#ef4444';
-
+Message:
+${payload.message}`);
+              window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
+            } finally {
+              FORCE_EMAILJS = false;
+            }
+          } else {
+            // Comportement existant : mailto:
             const subject = encodeURIComponent('Demande de prestation vitres');
             const body = encodeURIComponent(
 `Nom: ${payload.fullname}
@@ -520,8 +460,6 @@ Prestations: ${payload.services}
 Message:
 ${payload.message}`);
             window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
-          } finally {
-            FORCE_EMAILJS = false;
           }
         }
       });
@@ -532,7 +470,7 @@ ${payload.message}`);
   <script>
     const GOOGLE_PLACES = {
       API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',
-      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE', // laisse vide "" si tu veux forcer la recherche
+      PLACE_ID: 'ChIJBU4SvmCv9oERPHIX2gvzLkE',
       TARGET_NAME: 'Bulle de Savon',
       CITY_FILTER: 'Maisons-Alfort',
       POSTAL_FILTER: '94700',
@@ -713,10 +651,10 @@ ${payload.message}`);
     });
   </script>
 
-  <!-- Service Worker -->
+  <!-- Service Worker (racine) -->
   <script>
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("vitre-pwa/service-worker.js")
+      navigator.serviceWorker.register("service-worker.js")
         .then(reg => console.log("✅ Service Worker enregistré :", reg))
         .catch(err => console.error("❌ Erreur Service Worker :", err));
     }
