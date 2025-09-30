@@ -25,7 +25,6 @@
       --shadow: 0 6px 18px rgba(0,0,0,0.08);
       --radius: 14px;
     }
-
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     body {
@@ -35,7 +34,6 @@
       color: var(--text);
       line-height: 1.5;
     }
-
     a { color: var(--primary); text-decoration: none; }
     img { max-width: 100%; display: block; }
     .container { width: min(1100px, 92%); margin: 0 auto; }
@@ -47,7 +45,13 @@
     .brand img { height: 56px; }
     .brand h1 { font-size: 20px; margin: 0; color: var(--primary); letter-spacing: .2px; }
     .cta-header { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-    .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 18px; border-radius: 999px; font-weight: 700; border: 0; cursor:pointer; transition: .2s transform ease, .25s box-shadow ease; box-shadow: var(--shadow); font-family:'Antic Slab', serif; }
+
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 18px; border-radius: 999px; font-weight: 700; border: 0; cursor:pointer;
+      transition: .2s transform ease, .25s box-shadow ease; box-shadow: var(--shadow);
+      font-family:'Antic Slab', serif;
+    }
     .btn:hover { transform: translateY(-1px); }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-600); }
@@ -96,7 +100,9 @@
     @media (min-width: 720px) { form .grid.two { grid-template-columns: 1fr 1fr; } }
     label { display:block; font-weight:700; font-size:14px; color:#0f172a; margin-bottom:6px; }
     .hint { font-size:12px; color:#6b7280; margin-top:4px; }
-    input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], textarea, select { width:100%; padding:12px 12px; border-radius:10px; border:1px solid #d7dee6; outline: none; background:#fbfdff; font-size:15px; font-family:'Antic Slab', serif; }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], textarea, select {
+      width:100%; padding:12px 12px; border-radius:10px; border:1px solid #d7dee6; outline: none; background:#fbfdff; font-size:15px; font-family:'Antic Slab', serif;
+    }
     textarea { min-height: 110px; resize: vertical; }
     .check-group { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
     .checkbox { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:10px 12px; border-radius:10px; }
@@ -106,7 +112,10 @@
     footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
 
     /* Cookies */
-    #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none; }
+    #cookie-banner {
+      position: fixed; bottom: 20px; right: 20px; max-width: 280px; background: #222; color: #fff;
+      padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10000; font-size: 14px; display: none;
+    }
     #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
     #cookie-banner button { margin-left: 5px; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
     #cookie-accept { background: #28a745; color: #fff; }
@@ -146,6 +155,7 @@
           <a class="btn btn-ghost" href="#etapes">Voir des résultats</a>
         </div>
       </div>
+
       <div class="hero-card">
         <div class="usp">
           <div class="item"><div class="icon">🏠</div><div>
@@ -191,9 +201,7 @@
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
     <p class="section-sub">Avis vérifiés Google (API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions de domaine et la facturation.</p>
-
     <div id="googleReviews" class="reviews"></div>
-
     <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
       <a id="gmapsLink" class="btn btn-primary" target="_blank" rel="noopener">Voir plus d’avis sur Google</a>
       <span class="hint">Chargement automatique depuis ta fiche GMB.</span>
@@ -204,7 +212,6 @@
   <section class="container" id="devis">
     <h3 class="section-title">Demande de prestation / devis</h3>
     <p class="section-sub">Gratuit et sans engagement. Nous revenons vers vous très vite pour planifier une visite et vous donner le prix exact.</p>
-
     <div class="form-wrap">
       <form id="requestForm" novalidate>
         <div class="grid two">
@@ -351,7 +358,7 @@
     // Form handling
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
-    const FORM_ENDPOINT = '';
+    const FORM_ENDPOINT = '';         // pas de backend ici
     let FORCE_EMAILJS = false;
 
     // Bouton d'envoi direct via EmailJS
@@ -367,6 +374,9 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         statusEl.textContent = '';
+
+        // ✅ Forcer EmailJS par défaut pour le bouton principal
+        FORCE_EMAILJS = true;
 
         // Anti-spam
         if (document.getElementById('company').value.trim() !== '') return;
@@ -386,81 +396,72 @@
           }
         }
 
+        // Vérifie que EmailJS est bien chargé
+        if (!window.emailjs) {
+          statusEl.textContent = "Le module d'envoi (EmailJS) ne s'est pas chargé. Réessayez ou utilisez l'email direct.";
+          statusEl.style.color = '#ef4444';
+          return;
+        }
+
         const data = new FormData(form);
 
-        if (FORM_ENDPOINT && !FORCE_EMAILJS) {
-          // Envoi vers un endpoint serveur si défini (inchangé)
+        // Prépare le payload commun (noms alignés avec le template EmailJS)
+       const services = Array.from(form.querySelectorAll('input[name="services"]:checked'))
+  .map(el => el.value).join(', ');
+
+const payload = {
+  // variables “neutres” (à utiliser dans le template)
+  customer_name: data.get('fullname') || '',
+  customer_email: data.get('email') || '',
+
+  // tes variables actuelles (on les garde aussi)
+  fullname: data.get('fullname') || '',
+  email: data.get('email') || '',
+
+  phone: data.get('phone') || '',
+  clientType: data.get('clientType') || '',
+  address: data.get('address') || '',
+  slot: data.get('slot') || '',
+  frequency: data.get('frequency') || 'Ponctuel',
+  services: services || '—',
+  message: data.get('message') || '—',
+  to_email: 'contact@bulle-de-savon.fr'
+};
+
+console.log('Payload EmailJS ->', payload); // debug temporaire
+
+        try {
+          // ✅ Envoi via EmailJS (par défaut)
+          statusEl.textContent = 'Envoi via EmailJS…';
+          statusEl.style.color = '#64748b';
+          await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
+          form.reset();
+          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+          statusEl.style.color = '#16a34a';
+        } catch (err) {
+          // 🔁 Repli mailto si EmailJS échoue
+          const subject = encodeURIComponent('Demande de prestation vitres');
+          const body = encodeURIComponent(
+`Nom: ${payload.fullname}
+Téléphone: ${payload.phone}
+Email: ${payload.email}
+Type: ${payload.clientType}
+Adresse: ${payload.address}
+Créneau souhaité: ${payload.slot}
+Fréquence: ${payload.frequency}
+Prestations: ${payload.services}
+Message: ${payload.message}`
+          );
           try {
-            const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            form.reset();
-            statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-            statusEl.style.color = '#16a34a';
-          } catch (err) {
+            window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
+            statusEl.textContent = "Si rien ne s'ouvre, aucun client mail n'est configuré sur cet appareil.";
+            statusEl.style.color = '#64748b';
+          } catch {
             statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
             statusEl.style.color = '#ef4444';
           }
-        } else {
-          // Prépare le payload commun
-          const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
-          const payload = {
-            to_email:  'contact@bulle-de-savon.fr',
-            fullname:  data.get('fullname'),
-            phone:     data.get('phone'),
-            email:     data.get('email') || '',
-            clientType:data.get('clientType'),
-            address:   data.get('address'),
-            slot:      data.get('slot') || '',
-            frequency: data.get('frequency') || 'Ponctuel',
-            services:  services || '—',
-            message:   data.get('message') || '—'
-          };
-
-          if (FORCE_EMAILJS) {
-            // ✅ Envoi via EmailJS
-            try {
-              statusEl.textContent = 'Envoi via EmailJS…';
-              statusEl.style.color = '#64748b';
-              await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
-              form.reset();
-              statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
-              statusEl.style.color = '#16a34a';
-            } catch (err) {
-              // Repli mailto si EmailJS échoue
-              const subject = encodeURIComponent('Demande de prestation vitres');
-              const body = encodeURIComponent(
-`Nom: ${payload.fullname}
-Téléphone: ${payload.phone}
-Email: ${payload.email}
-Type: ${payload.clientType}
-Adresse: ${payload.address}
-Créneau souhaité: ${payload.slot}
-Fréquence: ${payload.frequency}
-Prestations: ${payload.services}
-
-Message:
-${payload.message}`);
-              window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
-            } finally {
-              FORCE_EMAILJS = false;
-            }
-          } else {
-            // Comportement existant : mailto:
-            const subject = encodeURIComponent('Demande de prestation vitres');
-            const body = encodeURIComponent(
-`Nom: ${payload.fullname}
-Téléphone: ${payload.phone}
-Email: ${payload.email}
-Type: ${payload.clientType}
-Adresse: ${payload.address}
-Créneau souhaité: ${payload.slot}
-Fréquence: ${payload.frequency}
-Prestations: ${payload.services}
-
-Message:
-${payload.message}`);
-            window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
-          }
+        } finally {
+          FORCE_EMAILJS = false;
         }
       });
     }
@@ -489,58 +490,60 @@ ${payload.message}`);
 
     function looksLikeOurs(result){
       const nameOk = norm(result.name) === norm(GOOGLE_PLACES.TARGET_NAME);
-      const addr   = norm(result.formatted_address || result.vicinity || '');
+      const addr = norm(result.formatted_address || result.vicinity || '');
       const cityOk = GOOGLE_PLACES.CITY_FILTER && addr.includes(norm(GOOGLE_PLACES.CITY_FILTER));
-      const zipOk  = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER);
-      const types  = (result.types || []).map(norm);
-      const bad    = GOOGLE_PLACES.TYPES_EXCLUDE.some(t => types.includes(norm(t)));
+      const zipOk = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER));
+      const types = (result.types || []).map(norm);
+      const bad = GOOGLE_PLACES.TYPES_EXCLUDE.some(t => types.includes(norm(t)));
       return nameOk && (cityOk || zipOk) && !bad;
     }
 
     function renderPlace(place){
       const reviewsEl = document.getElementById('googleReviews');
-      const linkEl    = document.getElementById('gmapsLink');
+      const linkEl = document.getElementById('gmapsLink');
+
       if (!place){
         reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
         linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY_VARIANTS[0]);
         return;
       }
+
       const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
       reviewsEl.innerHTML = list.length ? '' : '<div class="review">Aucun avis publié pour l’instant.</div>';
+
       list.forEach(r => {
         const el = document.createElement('div');
         el.className = 'review';
         el.innerHTML = `
-          <div class="review-header">
-            <span class="review-name">${r.author_name || 'Client Google'}</span>
-            <span class="stars" aria-label="${r.rating} étoiles">
-              ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}
-            </span>
-          </div>
-          <p>${r.text || ''}</p>
-          <div class="hint">${new Date(r.time*1000).toLocaleDateString('fr-FR')}</div>
-        `;
+<div class="review-header">
+  <span class="review-name">${r.author_name || 'Client Google'}</span>
+  <span class="stars" aria-label="${r.rating} étoiles">
+    ${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}
+  </span>
+</div>
+<p>${r.text || ''}</p>
+<div class="hint">${new Date(r.time*1000).toLocaleDateString('fr-FR')}</div>
+`;
         reviewsEl.appendChild(el);
       });
+
       linkEl.href = place.url || ('https://www.google.com/maps/place/?q=place_id:' + (place.place_id || ''));
       linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
     }
 
     function initGoogleReviews(){
       const reviewsEl = document.getElementById('googleReviews');
-      const linkEl    = document.getElementById('gmapsLink');
+      const linkEl = document.getElementById('gmapsLink');
       const svc = new google.maps.places.PlacesService(document.createElement('div'));
 
       function getDetailsChecked(placeId, onFallback){
-        svc.getDetails({
-          placeId,
-          fields: ['name','rating','user_ratings_total','url','reviews','place_id','formatted_address','geometry','types']
-        }, (place, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.OK && place && looksLikeOurs(place)) {
-            renderPlace(place);
-          } else {
-            onFallback?.();
-          }
+        svc.getDetails({ placeId, fields: ['name','rating','user_ratings_total','url','reviews','place_id','formatted_address','geometry','types'] },
+          (place, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK && place && looksLikeOurs(place)) {
+              renderPlace(place);
+            } else {
+              onFallback?.();
+            }
         });
       }
 
@@ -593,7 +596,8 @@ ${payload.message}`);
     (function loadMaps(){
       const s = document.createElement('script');
       s.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_PLACES.API_KEY}&libraries=places&language=fr&callback=initGoogleReviews`;
-      s.async = true; s.defer = true;
+      s.async = true;
+      s.defer = true;
       s.onerror = () => {
         const reviewsEl = document.getElementById('googleReviews');
         const linkEl = document.getElementById('gmapsLink');
@@ -611,10 +615,8 @@ ${payload.message}`);
     const rejectBtn = document.getElementById("cookie-reject");
 
     function loadAnalytics() {
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-PC3K8HGL');
 
       var gaScript = document.createElement("script");
@@ -623,9 +625,8 @@ ${payload.message}`);
       document.head.appendChild(gaScript);
 
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);} 
+      function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
-
       gtag('js', new Date());
       gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
     }
@@ -645,6 +646,7 @@ ${payload.message}`);
       loadAnalytics();
       cookieBanner.style.display = "none";
     });
+
     rejectBtn?.addEventListener("click", () => {
       localStorage.setItem("cookiesAccepted", "false");
       cookieBanner.style.display = "none";
