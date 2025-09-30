@@ -226,9 +226,139 @@
   <!-- Avis clients (dynamique Google) -->
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
-    <p class="section-sub">Avis vérifiés Google. (Dynamique — configurez votre clé API et requête ci-dessous.)</p>
+    <p class="section-sub">Avis vérifiés Google. (Dynamique — clé API et recherche par <strong>nom + ville</strong> avec filtre sur <strong>Maisons‑Alfort 94700</strong>.)</p>
 
     <div id="googleReviews" class="reviews"></div>
 
     <div style="margin-top:16px; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
       <a id="gmapsLink" class="btn btn-primary" target="_
+
+<script>
+  /* === Avis Google dynamiques (Places API) — sans PLACE_ID, filtre strict ville/CP et biais géographique === */
+  const GOOGLE_PLACES = {
+    API_KEY: 'AIzaSyDkaBdmo0KQ8iWol2ZIgUKEsOIhe2tld-M',                        // ⚠️ restreignez aux bons référents (domaine + localhost si test)
+    PLACE_ID: '',                                        // ← désactivé
+    QUERY: 'Bulle de Savon, Nettoyage de vitres, 94700 Maisons-Alfort',
+    CITY: 'Maisons-Alfort',                              // filtre ville
+    POSTAL: '94700',                                     // filtre code postal
+    LOCATION: { lat: 48.7799077, lng: 2.4574978 },       // biais géographique
+    RADIUS_M: 7000,                                      // rayon fallback
+    MAX_REVIEWS: 6
+  };
+
+  function initGoogleReviews(){
+    const reviewsEl = document.getElementById('googleReviews');
+    const linkEl    = document.getElementById('gmapsLink');
+
+    function renderPlace(place){
+      if (!place) {
+        reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis pour le moment.</div>';
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+        return;
+      }
+      const list = (place.reviews || []).slice(0, GOOGLE_PLACES.MAX_REVIEWS);
+      reviewsEl.innerHTML = list.length ? '' : '<div class="review">Aucun avis n’est encore publié pour cette fiche.</div>';
+      list.forEach(r => {
+        const el = document.createElement('div');
+        el.className = 'review';
+        el.innerHTML = `
+          <div class="review-header">
+            <span class="review-name">${r.author_name || 'Client Google'}</span>
+            <span class="stars" aria-label="${r.rating} étoiles">${'★'.repeat(Math.round(r.rating))}${'☆'.repeat(5 - Math.round(r.rating))}</span>
+          </div>
+          <p>${r.text || ''}</p>
+          <div class="hint">${new Date(r.time * 1000).toLocaleDateString('fr-FR')}</div>
+        `;
+        reviewsEl.appendChild(el);
+      });
+      linkEl.href = place.url || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon'));
+      linkEl.textContent = `Voir ${place.user_ratings_total || ''} avis sur Google`;
+    }
+
+    const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+    function addressMatches(place){
+      const addr = (place.formatted_address || '').toLowerCase();
+      const okCity   = GOOGLE_PLACES.CITY   ? addr.includes(GOOGLE_PLACES.CITY.toLowerCase()) : true;
+      const okPostal = GOOGLE_PLACES.POSTAL ? addr.includes(GOOGLE_PLACES.POSTAL) : true;
+      return okCity && okPostal;
+    }
+
+    function fetchDetailsByPlaceId(placeId){
+      service.getDetails({
+        placeId,
+        fields: ['name','rating','user_ratings_total','url','reviews','formatted_address','place_id','geometry']
+      }, (place, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+          if (!addressMatches(place)) {
+            reviewsEl.innerHTML = '<div class="review">Homonyme détecté hors de Maisons‑Alfort (94700). Ajoutez la rue ou le téléphone dans la requête.</div>';
+            linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY);
+            return;
+          }
+          renderPlace(place);
+        } else {
+          reviewsEl.innerHTML = '<div class="review">Impossible de charger les avis (Place Details).</div>';
+          linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+        }
+      });
+    }
+
+    // 1) Recherche précise (Find Place) puis 2) fallback Text Search
+    service.findPlaceFromQuery({
+      query: GOOGLE_PLACES.QUERY,
+      fields: ['place_id','name','formatted_address','geometry'],
+      locationBias: GOOGLE_PLACES.LOCATION ? new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng) : undefined
+    }, (res, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK && res && res.length) {
+        const byAddr = res.filter(c => addressMatches(c));
+        let pool = byAddr.length ? byAddr : res;
+        if (GOOGLE_PLACES.LOCATION && window.google?.maps?.geometry?.spherical) {
+          const ref = new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng);
+          pool = pool
+            .map(c => ({ c, d: c.geometry?.location ? google.maps.geometry.spherical.computeDistanceBetween(ref, c.geometry.location) : Number.POSITIVE_INFINITY }))
+            .sort((a,b) => (a.d||1e9) - (b.d||1e9))
+            .map(x => x.c);
+        }
+        if (pool[0]) return fetchDetailsByPlaceId(pool[0].place_id);
+      }
+      // Fallback plus permissif
+      service.textSearch({
+        query: GOOGLE_PLACES.QUERY,
+        location: GOOGLE_PLACES.LOCATION ? new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng) : undefined,
+        radius: GOOGLE_PLACES.RADIUS_M || 5000
+      }, (results, st) => {
+        if (st === google.maps.places.PlacesServiceStatus.OK && results && results.length) {
+          const byAddr = results.filter(c => addressMatches(c));
+          let pool = byAddr.length ? byAddr : results;
+          if (GOOGLE_PLACES.LOCATION && window.google?.maps?.geometry?.spherical) {
+            const ref = new google.maps.LatLng(GOOGLE_PLACES.LOCATION.lat, GOOGLE_PLACES.LOCATION.lng);
+            pool = pool
+              .map(c => ({ c, d: c.geometry?.location ? google.maps.geometry.spherical.computeDistanceBetween(ref, c.geometry.location) : Number.POSITIVE_INFINITY }))
+              .sort((a,b) => (a.d||1e9) - (b.d||1e9))
+              .map(x => x.c);
+          }
+          if (pool[0]) return fetchDetailsByPlaceId(pool[0].place_id);
+        }
+        reviewsEl.innerHTML = '<div class="review">Fiche introuvable à Maisons‑Alfort (94700). Ajoutez la rue ou le téléphone dans la requête.</div>';
+        linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY);
+      });
+    });
+  }
+
+  // Charge Maps JS (avec geometry) et lance init
+  (function loadMaps(){
+    const s = document.createElement('script');
+    const key = GOOGLE_PLACES.API_KEY && !GOOGLE_PLACES.API_KEY.includes('ICI') ? GOOGLE_PLACES.API_KEY : '';
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=places,geometry&language=fr`;
+    s.async = true;
+    s.defer = true;
+    s.onload = initGoogleReviews;
+    s.onerror = () => {
+      const reviewsEl = document.getElementById('googleReviews');
+      const linkEl = document.getElementById('gmapsLink');
+      if (reviewsEl) reviewsEl.innerHTML = '<div class="review">Google Maps JS n\'a pas pu être chargé (clé API ?).</div>';
+      if (linkEl) linkEl.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(GOOGLE_PLACES.QUERY || 'Bulle de Savon');
+    };
+    document.head.appendChild(s);
+  })();
+</script>
