@@ -58,7 +58,11 @@
     }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:10px 0; }
     .brand { display:flex; align-items:center; gap:12px; }
-    .brand img { height: 56px; }
+    .brand img {
+  max-height: 150px;
+  height: auto;
+  width: auto;
+}
     .brand h1 { font-size: 21px; margin: 0; color: var(--primary); letter-spacing: .2px; }
     .cta-header { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
@@ -193,8 +197,8 @@
   <section class="hero">
     <div class="container hero-grid">
       <div>
-        <h2>Nettoyage de vitres impeccable pour <em>particuliers</em> & <em>professionnels</em></h2>
-        <p class="lead">Fini le calcul automatique. Ici, on vient voir, on conseille, et on fixe un <strong>prix juste</strong> sur place — sans mauvaise surprise.</p>
+        <h2>Nettoyage de vitres pour <em>particuliers</em> & <em>professionnels</em></h2>
+        <p class="lead">Fini la prestation à l'heure. Ici, on vient voir, on conseille, et on fixe un <strong>prix juste</strong> sur place — sans mauvaise surprise.</p>
         <div class="badges">
           <span class="badge">✅ Intervention locale</span>
           <span class="badge">🧼 Matériel pro</span>
@@ -202,7 +206,7 @@
         </div>
         <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
           <a class="btn btn-primary" href="#devis">Je veux un devis sur place</a>
-          <a class="btn btn-ghost" href="#etapes">Voir des résultats</a>
+          <a class="btn btn-ghost" href="#etapes">Voir les avis</a>
         </div>
       </div>
 
@@ -296,18 +300,6 @@
           <label for="address">Adresse d’intervention *</label>
           <input id="address" name="address" type="text" placeholder="N°, rue, ville" required>
           <div class="hint">Précisez l’étage et les informations d’accès si utile.</div>
-        </div>
-
-        <div>
-          <label>Type de prestation souhaitée</label>
-          <div class="check-group">
-            <label class="checkbox"><input type="checkbox" name="services" value="Fenêtres"> Fenêtres / châssis</label>
-            <label class="checkbox"><input type="checkbox" name="services" value="Baies"> Baies vitrées</label>
-            <label class="checkbox"><input type="checkbox" name="services" value="Véranda"> Véranda</label>
-            <label class="checkbox"><input type="checkbox" name="services" value="Vitrine"> Vitrine commerce</label>
-            <label class="checkbox"><input type="checkbox" name="services" value="Velux"> Velux</label>
-            <label class="checkbox"><input type="checkbox" name="services" value="Autre"> Autre</label>
-          </div>
         </div>
 
         <div class="grid two">
