@@ -329,6 +329,7 @@
 
         <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:6px;">
           <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
+          <button class="btn btn-ghost" type="button" id="sendEmailNow">Envoyer directement à contact@bulle-de-savon.fr</button>
           <a class="btn btn-ghost" href="mailto:contact@bulle-de-savon.fr?subject=Demande%20de%20prestation%20vitres">Ou par email</a>
           <span id="formStatus" class="hint"></span>
         </div>
@@ -374,6 +375,10 @@
       <button id="cookie-reject">Refuser</button>
     </div>
   </div>
+
+  <!-- ✅ EmailJS SDK + init -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>(function(){ emailjs.init("P5p4M_38kKjmuJPjz"); })();</script>
 
   <!-- ======== JS page ======== -->
   <script>
@@ -421,14 +426,23 @@
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
     const FORM_ENDPOINT = '';
+    let FORCE_EMAILJS = false; // ← force l'envoi via EmailJS quand on clique sur le bouton dédié
+
+    // Bouton "Envoyer directement à contact@..."
+    document.getElementById('sendEmailNow')?.addEventListener('click', () => {
+      FORCE_EMAILJS = true;
+      form?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+    });
 
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         statusEl.textContent = '';
 
+        // anti-spam
         if (document.getElementById('company').value.trim() !== '') return;
 
+        // validations
         const requiredIds = ['fullname','phone','clientType','address','consent'];
         for (const id of requiredIds) {
           const el = document.getElementById(id);
@@ -441,8 +455,24 @@
         }
 
         const data = new FormData(form);
+        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
 
-        if (FORM_ENDPOINT) {
+        // payload commun
+        const payload = {
+          to_email:  'contact@bulle-de-savon.fr', // ← destinataire souhaité
+          fullname:  data.get('fullname'),
+          phone:     data.get('phone'),
+          email:     data.get('email') || '',
+          clientType:data.get('clientType'),
+          address:   data.get('address'),
+          slot:      data.get('slot') || '',
+          frequency: data.get('frequency') || 'Ponctuel',
+          services:  services || '—',
+          message:   data.get('message') || '—'
+        };
+
+        // 1) Endpoint custom si défini ET qu'on ne force pas EmailJS
+        if (FORM_ENDPOINT && !FORCE_EMAILJS) {
           try {
             const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data });
             if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -452,21 +482,42 @@
           } catch (err) {
             statusEl.textContent = "Échec de l'envoi. Vous pouvez nous joindre au 06 18 10 08 07 ou par email.";
             statusEl.style.color = '#ef4444';
+          } finally {
+            FORCE_EMAILJS = false;
           }
-        } else {
-          const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
+          return;
+        }
+
+        // 2) Envoi via EmailJS (forcé par le bouton ou par défaut si pas d'endpoint)
+        try {
+          await emailjs.send(
+            'service_b7vi3ol',   // ← TON service EmailJS
+            'template_wxnjg9e',  // ← TON template EmailJS
+            payload
+          );
+          form.reset(); preview.innerHTML = '';
+          statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
+          statusEl.style.color = '#16a34a';
+        } catch (err) {
+          // 3) Fallback mailto si EmailJS échoue
           const subject = encodeURIComponent('Demande de prestation vitres');
           const body = encodeURIComponent(
-`Nom: ${data.get('fullname')}
-Téléphone: ${data.get('phone')}
-Email: ${data.get('email') || ''}
-Type: ${data.get('clientType')}
-Adresse: ${data.get('address')}
-Créneau souhaité: ${data.get('slot') || ''}
-Fréquence: ${data.get('frequency') || 'Ponctuel'}
-Prestations: ${services || '—'}
-\nMessage:\n${data.get('message') || '—'}\n\n(Photos à envoyer en réponse à l’email si besoin)`);
-          window.location.href = `mailto:contact@bulle-de-savon.fr?subject=${subject}&body=${body}`;
+`Nom: ${payload.fullname}
+Téléphone: ${payload.phone}
+Email: ${payload.email}
+Type: ${payload.clientType}
+Adresse: ${payload.address}
+Créneau souhaité: ${payload.slot}
+Fréquence: ${payload.frequency}
+Prestations: ${payload.services}
+
+Message:
+${payload.message}
+
+(Photos à envoyer en réponse à l’email si besoin)`);
+          window.location.href = `mailto:${payload.to_email}?subject=${subject}&body=${body}`;
+        } finally {
+          FORCE_EMAILJS = false;
         }
       });
     }
@@ -487,7 +538,7 @@ Prestations: ${services || '—'}
         'Bulle de Savon vitres Maisons-Alfort 94700'
       ],
       LOCATION: { lat: 48.79, lng: 2.45 },
-      SEARCH_RADIUS: 12000,
+        SEARCH_RADIUS: 12000,
       MAX_REVIEWS: 6
     };
 
