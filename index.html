@@ -154,6 +154,13 @@
     }
     .datetime input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15,56,77,.12); }
 
+    /* ✅ Légère augmentation de la case à cocher (consentement) */
+    .consent{ display:flex; align-items:flex-start; gap:10px; }
+    #consent{
+      transform: scale(1.25);
+      transform-origin: top left;
+    }
+
     /* Footer / Cookies / Responsive (inchangés) */
     footer { color:#64748b; font-size: 13px; text-align:center; padding: 22px 12px 32px; border-top:1px solid var(--slate-200); background:#fff; }
     footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
