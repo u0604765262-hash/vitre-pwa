@@ -11,6 +11,8 @@
 
   <!-- ✅ Police Antic Slab -->
   <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
+  <!-- ✅ Flatpickr (calendrier/heure avec jours/horaires grisés) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <style>
     :root {
@@ -41,8 +43,8 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;          /* ✅ lisibilité */
-      font-size: 17px;           /* ✅ lisibilité */
+      line-height: 1.6;
+      font-size: 17px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
@@ -53,16 +55,12 @@
     /* Header */
     header {
       position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.9);
-      backdrop-filter: saturate(150%) blur(6px);  /* ✅ léger verre dépoli */
+      backdrop-filter: saturate(150%) blur(6px);
       border-bottom: 1px solid var(--slate-200);
     }
     .nav { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:10px 0; }
     .brand { display:flex; align-items:center; gap:12px; }
-    .brand img {
-      max-height: 150px;
-      height: auto;
-      width: auto;
-    }
+    .brand img { max-height: 150px; height: auto; width: auto; }
     .cta-header { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
     .btn {
@@ -74,13 +72,11 @@
     .btn:hover { transform: translateY(-1px); }
     .btn:focus-visible { outline: 3px solid rgba(15,56,77,.25); outline-offset: 2px; }
 
-    /* ✅ Ajout: style commun pour tous les boutons primaires (#0F384D) */
     .btn-primary { background: var(--primary); color: #fff; border: 2px solid transparent; }
     .btn-primary:hover { background: var(--primary-600); }
-
     .btn-ghost { background: #fff; color: var(--primary); border:2px solid rgba(15,56,77,.15); }
 
-    /* Hero avec bulles douces */
+    /* Hero */
     .hero { position: relative; background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); padding: 42px 0 28px; border-bottom: 1px solid #eef2f7; overflow:hidden; }
     .hero::before{
       content:""; position:absolute; inset:-20% -10% auto -10%; height: 120%;
@@ -108,23 +104,19 @@
     .usp .item { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:12px; border-radius:12px; }
     .usp .item .icon { font-size:20px; }
 
-    /* Sections */
     section { padding: 32px 0; }
     .section-title { font-size: 24px; color:var(--slate-700); margin: 0 0 8px; position:relative; display:inline-block; }
     .section-title::after{ content:""; display:block; height:4px; width:56px; border-radius:999px; margin-top:6px;
       background: linear-gradient(90deg, var(--primary), rgba(15,56,77,.1)); }
     .section-sub { color:#64748b; margin: 0 0 18px; }
 
-    /* Services */
     .cards { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
-    .card { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid var(--slate-200);
-      position:relative; }
+    .card { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid var(--slate-200); position:relative; }
     .card::before{ content:""; position:absolute; inset:0 0 auto 0; height:6px; border-radius:14px 14px 0 0;
       background: linear-gradient(90deg, var(--teal-200), var(--sky-200), var(--amber-200)); opacity:.7; }
     .card h3 { margin:8px 0 6px; font-size:18px; color:var(--slate-700); }
     .card p { margin:0; color:#616e7c; font-size:15px; }
 
-    /* Étapes */
     .steps { display:grid; grid-template-columns: repeat(4,1fr); gap:14px; }
     .step { background:#fff; border:1px solid var(--slate-200); border-radius: 14px; padding:14px; box-shadow: var(--shadow); position:relative; }
     .step .num { display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; border-radius:999px; font-weight:800; 
@@ -132,7 +124,6 @@
     .step h4 { margin:8px 0 6px; font-size:16px; }
     .step p { margin:0; color:#64748b; font-size:14px; }
 
-    /* Avis Google */
     .reviews { display:grid; gap:16px; margin-top:20px; }
     .review { background:#fff; border-radius: var(--radius); padding:16px; box-shadow: var(--shadow); border:1px solid var(--slate-200); position:relative; }
     .review::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:6px; border-radius:14px 0 0 14px; background:linear-gradient(180deg, var(--amber-200), var(--rose-200)); opacity:.8; }
@@ -140,12 +131,12 @@
     .review-name { font-weight:700; color:#0F384D; }
     .stars { color:#f59e0b; }
 
-    /* Formulaire */
     .form-wrap { background:#fff; border-radius: var(--radius); box-shadow: var(--shadow); border:1px solid var(--slate-200); padding: 18px; }
     form .grid { display:grid; grid-template-columns: 1fr; gap:12px; }
     @media (min-width: 720px) { form .grid.two { grid-template-columns: 1fr 1fr; } }
     label { display:block; font-weight:700; font-size:14px; color:var(--slate-700); margin-bottom:6px; }
     .hint { font-size:12px; color:#6b7280; margin-top:4px; }
+
     input[type="text"], input[type="email"], input[type="tel"], input[type="datetime-local"], textarea, select {
       width:100%; padding:12px 12px; border-radius:10px; border:1px solid #d7dee6; outline: none; background:#fbfdff; font-size:15px; font-family:'Antic Slab', serif;
       transition: box-shadow .2s ease, border-color .2s ease;
@@ -155,42 +146,35 @@
     .check-group { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; }
     .checkbox { display:flex; align-items:flex-start; gap:10px; background:#f9fbfd; border:1px solid #e6eef5; padding:10px 12px; border-radius:10px; }
 
-    /* FAQ */
-    details{ background:#fff; border:1px solid var(--slate-200); border-radius:12px; padding:10px 12px; margin-bottom:10px; box-shadow: var(--shadow); }
-    summary{ cursor:pointer; font-weight:700; color:var(--slate-700); }
-    details[open] summary{ color: var(--primary); }
+    /* ✅ Styles applicables aussi aux inputs du picker custom */
+    .datetime { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .datetime input[type="text"] {
+      width: 100%; padding: 12px 12px; border-radius: 10px; border: 1px solid #d7dee6; background: #fbfdff;
+      font-size: 16px; font-family: 'Antic Slab', serif; transition: box-shadow .2s ease, border-color .2s ease;
+    }
+    .datetime input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15,56,77,.12); }
 
-    /* Footer */
+    /* Footer / Cookies / Responsive (inchangés) */
     footer { color:#64748b; font-size: 13px; text-align:center; padding: 22px 12px 32px; border-top:1px solid var(--slate-200); background:#fff; }
     footer .links { display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
-
-    /* Cookies */
-    #cookie-banner {
-      position: fixed; bottom: 20px; right: 20px; max-width: 320px; background: #222; color: #fff;
-      padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); z-index: 10000; font-size: 14px; display: none;
-    }
+    #cookie-banner { position: fixed; bottom: 20px; right: 20px; max-width: 320px; background: #222; color: #fff;
+      padding: 15px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); z-index: 10000; font-size: 14px; display: none; }
     #cookie-banner .cookie-buttons { margin-top: 10px; text-align: right; }
     #cookie-banner button { margin-left: 5px; padding: 8px 12px; border: none; border-radius: 999px; cursor: pointer; font-weight: bold; }
     #cookie-accept { background: #28a745; color: #fff; }
     #cookie-reject { background: #dc3545; color: #fff; }
-    #cookie-accept:hover { filter: brightness(0.95); }
-    #cookie-reject:hover { filter: brightness(0.95); }
-
-    /* Petites améliorations responsives */
+    #cookie-accept:hover, #cookie-reject:hover { filter: brightness(0.95); }
     @media (max-width: 920px){ .hero-grid{ grid-template-columns: 1fr; } }
     @media (max-width: 720px){ .steps{ grid-template-columns: repeat(2,1fr);} .cards{ grid-template-columns: 1fr; } }
-#sendEmailNow {
-  font-size: 19px; /* ajuste à 18px/20px si tu préfères */
-}
+
+    #sendEmailNow { font-size: 19px; }
   </style>
 </head>
 <body>
   <!-- Header -->
   <header>
     <div class="container nav">
-      <div class="brand">
-        <img src="logo.png" alt="Logo Bulle de Savon" />
-      </div>
+      <div class="brand"><img src="logo.png" alt="Logo Bulle de Savon" /></div>
       <div class="cta-header">
         <a class="btn btn-ghost" href="tel:+33618100807">📞 06 18 10 08 07</a>
         <a class="btn btn-primary" href="#devis">Demander une visite & devis</a>
@@ -249,14 +233,14 @@
   <section class="container" id="etapes">
     <h3 class="section-title">Comment ça se passe ?</h3>
     <div class="steps">
-      <div class="step"><div class="num">1/4</div><h4>Vous décrivez votre besoin</h4><p>Un petit formulaire, quelques photos si besoin.</p></div>
+      <div class="step"><div class="num">1/4</div><h4>Vous décrivez votre besoin</h4><p>Par téléphone ou en remplissant le formulaire ci-dessous.</p></div>
       <div class="step"><div class="num">2/4</div><h4>Visite rapide</h4><p>On passe sur place pour valider l’accès et la surface.</p></div>
       <div class="step"><div class="num">3/4</div><h4>Prix clair</h4><p>Le tarif est fixé avec vous, sans surprise.</p></div>
-      <div class="step"><div class="num">4/4</div><h4>Intervention</h4><p>On intervient au créneau qui vous arrange.</p></div>
+      <div class="step"><div class="num">4/4</div><h4>Intervention</h4><p>On intervient au créneau convenu.</p></div>
     </div>
   </section>
 
-  <!-- Avis clients (dynamique Google) -->
+  <!-- Avis clients -->
   <section class="container" id="avis">
     <h3 class="section-title">Avis clients</h3>
     <p class="section-sub">Avis vérifiés Google (API Places). Si rien ne s’affiche, vérifiez la clé API, les restrictions de domaine et la facturation.</p>
@@ -267,7 +251,7 @@
     </div>
   </section>
 
-  <!-- Formulaire Devis / Demande de prestation -->
+  <!-- Formulaire -->
   <section class="container" id="devis">
     <h3 class="section-title">Demande de prestation / devis</h3>
     <p class="section-sub">Gratuit et sans engagement. Nous revenons vers vous très vite pour planifier une visite et vous donner le prix exact.</p>
@@ -309,8 +293,14 @@
 
         <div class="grid two">
           <div>
-            <label for="slot">Créneau souhaité</label>
-            <input id="slot" name="slot" type="datetime-local">
+            <label for="slotDate">Créneau souhaité</label>
+            <div class="datetime">
+              <!-- ⬇️ Passés en type="text" pour activer Flatpickr -->
+              <input id="slotDate" name="slotDate" type="text" placeholder="Choisir une date (lun–mer)" />
+              <input id="slotTime" name="slotTime" type="text" placeholder="Choisir une heure (06:00–16:00)" />
+            </div>
+            <!-- On conserve le champ “slot” attendu par le backend/EmailJS -->
+            <input id="slot" name="slot" type="hidden">
           </div>
           <div>
             <label for="frequency">Fréquence</label>
@@ -356,8 +346,8 @@
       <p>Idéalement pour la première visite, oui. Ensuite, nous pouvons convenir d’un mode d’accès sécurisé.</p>
     </details>
     <details>
-      <summary>Intervenez-vous le samedi ou tôt le matin ?</summary>
-      <p>Oui, nous nous adaptons à vos contraintes horaires (commerces notamment).</p>
+      <summary>Quels sont vos horaires d'interventions ?</summary>
+      <p>Du lundi au mercredi de 6h à 18h.</p>
     </details>
   </section>
 
@@ -384,6 +374,8 @@
   </div>
 
   <!-- ✅ EmailJS SDK + init -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>(function(){ emailjs.init("P5p4M_38kKjmuJPjz"); })();</script>
 
@@ -403,8 +395,37 @@
     // Form handling
     const form = document.getElementById('requestForm');
     const statusEl = document.getElementById('formStatus');
-    const FORM_ENDPOINT = '';         // pas de backend ici
+    const FORM_ENDPOINT = '';
     let FORCE_EMAILJS = false;
+
+    // ✅ Flatpickr — Griser jours/horaires hors plage
+    const slotDateEl = document.getElementById('slotDate');
+    const slotTimeEl = document.getElementById('slotTime');
+
+    // Date: autoriser uniquement Lun(1) → Mer(3)
+    flatpickr.localize(flatpickr.l10ns.fr);
+    const fpDate = flatpickr(slotDateEl, {
+      dateFormat: "Y-m-d",
+      disableMobile: true,
+      disable: [
+        function(date){
+          const d = date.getDay(); // 0=Dim .. 6=Sam
+          return (d === 0 || d >= 4); // gris + inactif sauf lun, mar, mer
+        }
+      ]
+    });
+
+    // Heure: limiter à 06:00–16:00, pas d'autres heures
+    const fpTime = flatpickr(slotTimeEl, {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: "H:i",
+      time_24hr: true,
+      minuteIncrement: 15,
+      minTime: "06:00",
+      maxTime: "16:00",
+      disableMobile: true
+    });
 
     // Bouton d'envoi direct via EmailJS
     document.getElementById('sendEmailNow')?.addEventListener('click', () => {
@@ -419,8 +440,6 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         statusEl.textContent = '';
-
-        // ✅ Forcer EmailJS par défaut pour le bouton principal
         FORCE_EMAILJS = true;
 
         // Anti-spam
@@ -441,7 +460,12 @@
           }
         }
 
-        // Vérifie que EmailJS est bien chargé
+        // Recomposer "slot" depuis les champs visibles
+        const slotDate = slotDateEl?.value || '';
+        const slotTime = slotTimeEl?.value || '';
+        document.getElementById('slot').value = (slotDate && slotTime) ? `${slotDate}T${slotTime}` : (slotDate || '');
+
+        // Vérifie EmailJS
         if (!window.emailjs) {
           statusEl.textContent = "Le module d'envoi (EmailJS) ne s'est pas chargé. Réessayez ou utilisez l'email direct.";
           statusEl.style.color = '#ef4444';
@@ -449,34 +473,26 @@
         }
 
         const data = new FormData(form);
+        const services = Array.from(form.querySelectorAll('input[name="services"]:checked')).map(el => el.value).join(', ');
 
-        // Prépare le payload commun (noms alignés avec le template EmailJS)
-       const services = Array.from(form.querySelectorAll('input[name="services"]:checked'))
-  .map(el => el.value).join(', ');
+        const payload = {
+          customer_name: data.get('fullname') || '',
+          customer_email: data.get('email') || '',
+          fullname: data.get('fullname') || '',
+          email: data.get('email') || '',
+          phone: data.get('phone') || '',
+          clientType: data.get('clientType') || '',
+          address: data.get('address') || '',
+          slot: data.get('slot') || '',
+          frequency: data.get('frequency') || 'Ponctuel',
+          services: services || '—',
+          message: data.get('message') || '—',
+          to_email: 'contact@bulle-de-savon.fr'
+        };
 
-const payload = {
-  // variables “neutres” (à utiliser dans le template)
-  customer_name: data.get('fullname') || '',
-  customer_email: data.get('email') || '',
-
-  // tes variables actuelles (on les garde aussi)
-  fullname: data.get('fullname') || '',
-  email: data.get('email') || '',
-
-  phone: data.get('phone') || '',
-  clientType: data.get('clientType') || '',
-  address: data.get('address') || '',
-  slot: data.get('slot') || '',
-  frequency: data.get('frequency') || 'Ponctuel',
-  services: services || '—',
-  message: data.get('message') || '—',
-  to_email: 'contact@bulle-de-savon.fr'
-};
-
-console.log('Payload EmailJS ->', payload); // debug temporaire
+        console.log('Payload EmailJS ->', payload);
 
         try {
-          // ✅ Envoi via EmailJS (par défaut)
           statusEl.textContent = 'Envoi via EmailJS…';
           statusEl.style.color = '#64748b';
           await emailjs.send('service_b7vi3ol', 'template_wxnjg9e', payload);
@@ -484,7 +500,6 @@ console.log('Payload EmailJS ->', payload); // debug temporaire
           statusEl.textContent = 'Merci ! Votre demande a bien été envoyée. Nous vous recontactons très vite.';
           statusEl.style.color = '#16a34a';
         } catch (err) {
-          // 🔁 Repli mailto si EmailJS échoue
           const subject = encodeURIComponent('Demande de prestation vitres');
           const body = encodeURIComponent(
 `Nom: ${payload.fullname}
@@ -670,7 +685,7 @@ Message: ${payload.message}`
       document.head.appendChild(gaScript);
 
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);} // eslint-disable-line
+      function gtag(){dataLayer.push(arguments);}
       window.gtag = gtag;
       gtag('js', new Date());
       gtag('config', 'G-NGR43J81FE', { 'anonymize_ip': true });
