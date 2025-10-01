@@ -8,107 +8,134 @@
 
   <!-- ✅ PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#007bff">
+  <meta name="theme-color" content="#0F384D">
+
+  <!-- ✅ Police Antic Slab (même que le site) -->
+  <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f4f6f8;
-      color: #333;
-      padding-bottom: 100px;
+    :root{
+      /* Palette du site */
+      --primary:#0F384D;
+      --primary-600:#0C2C3A;
+      --bg:#f4f6f8;
+      --card:#ffffff;
+      --text:#2b2b2b;
+      --muted:#6b7280;
+      --slate-200:#eef2f7;
+      --slate-700:#0f172a;
+      --teal-200:#c9eee8;
+      --sky-200:#cfeafd;
+      --amber-200:#ffe6b8;
+      --shadow:0 6px 18px rgba(0,0,0,.08);
+      --radius:14px;
     }
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      background: #ffffff;
-      padding: 10px 20px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    header img { height: 60px; }
-    .container { padding: 20px; }
-    .card {
-      background: white;
-      border-radius: 10px;
-      padding: 20px;
-      margin: 15px 0;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    h2 {
-      color: #333;
-      margin-top: 0;
-      font-size: 20px;
-    }
-    ul { list-style: disc; margin-left: 20px; }
-    li { margin: 5px 0; font-size: 16px; color: #333; }
 
-    /* ✅ Bouton retour à l'accueil */
-    .btn-home {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      transition: background 0.3s ease, transform 0.2s ease;
-      z-index: 1000;
-    }
-    .btn-home:hover { background: #0056b3; transform: scale(1.1); }
-    .btn-home:active { background: #004494; transform: scale(0.95); }
+    *{box-sizing:border-box}
+    html,body{height:100%}
 
-    footer {
-      background: transparent;
-      color: #666;
-      font-size: 12px;
-      text-align: center;
-      padding: 14px 12px 24px;
+    body{
+      font-family:'Antic Slab', serif;
+      margin:0;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.6;
+      font-size:17px;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding-bottom:100px;
     }
-    footer a { color: #007bff; text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
 
-    /* ✅ Bannière cookies (style uniforme) */
-    #cookie-banner {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      max-width: 280px;
-      background: #222;
-      color: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      z-index: 10000;
-      font-size: 14px;
-      display: none; /* caché par défaut */
+    a{color:var(--primary); text-decoration:none}
+    img{max-width:100%; display:block}
+    .container{width:min(1100px,92%); margin:0 auto; padding:20px}
+
+    /* Header (même esprit : sticky + verre dépoli léger) */
+    header{
+      position:sticky; top:0; z-index:50;
+      background:rgba(255,255,255,.9);
+      backdrop-filter:saturate(150%) blur(6px);
+      border-bottom:1px solid var(--slate-200);
     }
-    #cookie-banner .cookie-buttons {
-      margin-top: 10px;
-      text-align: right;
+    .nav{display:flex; align-items:center; gap:16px; padding:10px 20px}
+    header img{height:60px}
+
+    /* Boutons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:12px 18px; border-radius:999px; font-weight:700; border:0; cursor:pointer;
+      transition:.2s transform ease,.25s box-shadow ease,.2s background-color ease;
+      box-shadow:var(--shadow); font-family:'Antic Slab',serif;
     }
-    #cookie-banner button {
-      margin-left: 5px;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{background:var(--primary); color:#fff; border:2px solid transparent}
+    .btn-primary:hover{background:var(--primary-600)}
+
+    /* Cartes (même style que sur l'accueil) */
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:20px;
+      margin:15px 0;
+      box-shadow:var(--shadow);
+      border:1px solid var(--slate-200);
+      position:relative;
     }
-    #cookie-accept { background: #28a745; color: #fff; }
-    #cookie-reject { background: #dc3545; color: #fff; }
-    #cookie-accept:hover { background: #218838; }
-    #cookie-reject:hover { background: #b02a37; }
+    .card::before{
+      content:"";
+      position:absolute; inset:0 0 auto 0; height:6px; border-radius:14px 14px 0 0;
+      background:linear-gradient(90deg, var(--teal-200), var(--sky-200), var(--amber-200));
+      opacity:.7;
+    }
+    h2{
+      color:var(--slate-700);
+      margin-top:6px; /* pour compenser la barre décorative */
+      font-size:20px;
+    }
+    ul{list-style:disc; margin-left:20px}
+    li{margin:5px 0; font-size:16px; color:var(--text)}
+
+    /* Bouton retour à l'accueil */
+    .btn-home{
+      position:fixed; bottom:80px; right:20px;
+      background:var(--primary); color:#fff; border:none; border-radius:50%;
+      width:60px; height:60px; font-size:28px; cursor:pointer;
+      box-shadow:var(--shadow);
+      transition:background .3s ease, transform .2s ease;
+      z-index:1000;
+    }
+    .btn-home:hover{background:var(--primary-600); transform:scale(1.06)}
+    .btn-home:active{transform:scale(.96)}
+
+    /* Footer — identique à l'index */
+    footer{
+      background:#fff; color:#64748b; font-size:13px; text-align:center;
+      padding:22px 12px 32px; border-top:1px solid var(--slate-200);
+    }
+    footer .links{display:flex; justify-content:center; gap:16px; flex-wrap:wrap}
+    footer a{color:var(--primary)}
+    footer a:hover{text-decoration:underline}
+
+    /* Bannière cookies harmonisée */
+    #cookie-banner{
+      position:fixed; bottom:20px; right:20px; max-width:320px;
+      background:#222; color:#fff; padding:15px; border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35); z-index:10000; font-size:14px; display:none;
+    }
+    #cookie-banner .cookie-buttons{margin-top:10px; text-align:right}
+    #cookie-banner button{
+      margin-left:5px; padding:8px 12px; border:none; border-radius:999px; cursor:pointer; font-weight:bold;
+    }
+    #cookie-accept{background:#28a745; color:#fff}
+    #cookie-reject{background:#dc3545; color:#fff}
+    #cookie-accept:hover,#cookie-reject:hover{filter:brightness(.95)}
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo Bulle de Savon">
+    <div class="nav">
+      <img src="logo.png" alt="Logo Bulle de Savon">
+    </div>
   </header>
 
   <div class="container">
@@ -121,6 +148,7 @@
       Email : contact@bulle-de-savon.fr<br>
       Téléphone : 06 18 10 08 07</p>
     </div>
+
     <div class="card">
       <h2>Responsable de la publication</h2>
       <p>Romain Vivien</p>
@@ -147,14 +175,14 @@
         <li>Adresse (obligatoire)</li>
         <li>Téléphone (facultatif)</li>
       </ul>
-      <p>Ces données sont uniquement utilisées pour répondre à votre demande et ne sont jamais transmises à des tiers.  
+      <p>Ces données sont uniquement utilisées pour répondre à votre demande et ne sont jamais transmises à des tiers.
       La durée de conservation des données est limitée à <strong>3 ans après le dernier contact</strong>.</p>
     </div>
 
     <div class="card">
       <h2>Droit d'accès et de rectification</h2>
-      <p>Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification, d’opposition et de suppression de vos données.  
-      Pour l’exercer, contactez : 
+      <p>Conformément à la loi « Informatique et Libertés » et au RGPD, vous disposez d’un droit d’accès, de rectification, d’opposition et de suppression de vos données.
+      Pour l’exercer, contactez :
         <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>.
       </p>
       <p>Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la <a href="https://www.cnil.fr">CNIL</a>.</p>
@@ -162,36 +190,43 @@
 
     <div class="card">
       <h2>Politique de confidentialité</h2>
-      <p>Nous attachons une grande importance à la protection de vos données personnelles.  
+      <p>Nous attachons une grande importance à la protection de vos données personnelles.
       Vos informations ne sont utilisées que pour :</p>
       <ul>
         <li>Répondre à vos demandes via le formulaire de contact ou de devis</li>
         <li>Améliorer le site grâce à l’analyse anonyme de sa fréquentation (si vous acceptez les cookies)</li>
       </ul>
-      <p>Nous ne partageons jamais vos données avec des tiers à des fins commerciales.  
-      Vous pouvez demander la suppression de vos données à tout moment en nous contactant à 
+      <p>Nous ne partageons jamais vos données avec des tiers à des fins commerciales.
+      Vous pouvez demander la suppression de vos données à tout moment en nous contactant à
       <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>.</p>
     </div>
   </div>
-  
-<!-- ✅ Bannière cookies -->
+
+  <!-- ✅ Bannière cookies -->
   <div id="cookie-banner">
-   🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
+    🍪 Ce site utilise des cookies pour mesurer l’audience (Google Analytics).
     <div class="cookie-buttons">
       <button id="cookie-accept">Accepter</button>
       <button id="cookie-reject">Refuser</button>
     </div>
   </div>
-    
+
   <!-- ✅ Bouton retour -->
   <button class="btn-home" onclick="window.location.href='index.html'">🏠</button>
 
+  <!-- ✅ Footer identique à l’index -->
   <footer>
-    <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
-    &nbsp;•&nbsp;
-    <a href="mailto:contact@bulle-de-savon.fr">Contact</a>
+    <div class="links">
+      <a href="mentions-legales.html">Mentions légales & Politique de confidentialité</a>
+      <span>•</span>
+      <a href="mailto:contact@bulle-de-savon.fr">contact@bulle-de-savon.fr</a>
+      <span>•</span>
+      <a href="tel:+33618100807">06 18 10 08 07</a>
+      <span>•</span>
+      <a href="index.html#devis">Demander un devis</a>
+    </div>
   </footer>
-  
+
   <!-- ✅ Script cookies + Google Analytics conditionnel -->
   <script>
     function loadAnalytics() {
@@ -227,6 +262,10 @@
       document.getElementById("cookie-banner").style.display = "none";
     }
 
+    // ✅ Écouteurs de clic pour la bannière
+    document.getElementById('cookie-accept')?.addEventListener('click', acceptCookies);
+    document.getElementById('cookie-reject')?.addEventListener('click', refuseCookies);
+
     window.onload = function() {
       let choice = localStorage.getItem("cookiesAccepted");
       if (!choice) {
@@ -247,8 +286,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
