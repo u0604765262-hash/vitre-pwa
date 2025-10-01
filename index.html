@@ -552,7 +552,7 @@ Message: ${payload.message}`
       const nameOk = norm(result.name) === norm(GOOGLE_PLACES.TARGET_NAME);
       const addr = norm(result.formatted_address || result.vicinity || '');
       const cityOk = GOOGLE_PLACES.CITY_FILTER && addr.includes(norm(GOOGLE_PLACES.CITY_FILTER));
-      const zipOk = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER));
+      const zipOk = GOOGLE_PLACES.POSTAL_FILTER && addr.includes(GOOGLE_PLACES.POSTAL_FILTER); /* ✅ corrigé */
       const types = (result.types || []).map(norm);
       const bad = GOOGLE_PLACES.TYPES_EXCLUDE.some(t => types.includes(norm(t)));
       return nameOk && (cityOk || zipOk) && !bad;
